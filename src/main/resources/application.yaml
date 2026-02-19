@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: Icom
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=IcomDB;encrypt=true;trustServerCertificate=true
+    username: userDBO
+    password: userDBO
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+server:
+  port:9091
+
