@@ -42,6 +42,11 @@ public class WebSecurityConfig {
                         // endpoints publics (adapte selon ton API)
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/welcome").permitAll()
+                        // routes ADMIN
+                        .requestMatchers("/api/admin/**").hasRole("Admin")
+
+                        //routes USER (et ADMIN aussi si tu veux)
+                        .requestMatchers("/api/user/**").hasAnyRole("User", "Admin")
                         // tout le reste protégé
                         .anyRequest().authenticated()
                 );
