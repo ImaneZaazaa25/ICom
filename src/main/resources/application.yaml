@@ -2,7 +2,7 @@ spring:
   application:
     name: Icom
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=IcomDB;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=Icom;encrypt=true;trustServerCertificate=true
     username: userDBO
     password: userDBO
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -13,5 +13,8 @@ spring:
     database-platform: org.hibernate.dialect.SQLServerDialect
 
 server:
-  port:9091
+  port: 9091
 
+jwt:
+  secret: QWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwISE=
+  expiration: 86400000
