@@ -3,9 +3,8 @@ package com.ICom.Icom.Controller;
 import com.ICom.Icom.DTO.ProductDTO;
 import com.ICom.Icom.Model.Product;
 import com.ICom.Icom.Service.ProductService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,44 +48,38 @@ public class ProductController {
         productService.supprimerProduit(id);
     }
 
-    // Lister tous les produits
+    // Lister tous les produits — public (visiteurs inclus)
     @GetMapping
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public List<Product> listerProduits() {
         return productService.listerProduits();
     }
 
-    // Chercher un produit par ID
+    // Chercher un produit par ID — public
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public Optional<Product> trouverProduit(@PathVariable Long id) {
         return productService.trouverProduit(id);
     }
 
-    // Rechercher produits par catégorie
+    // Rechercher produits par catégorie — public
     @GetMapping("/categorie/{categoryId}")
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public List<Product> produitsParCategorie(@PathVariable Long categoryId) {
         return productService.produitsParCategorie(categoryId);
     }
 
-    // Rechercher produits par nom
+    // Rechercher produits par nom — public
     @GetMapping("/nom/{keyword}")
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public List<Product> produitsParNom(@PathVariable String keyword) {
         return productService.produitsParNom(keyword);
     }
 
-    // Rechercher produits par prix
+    // Rechercher produits par prix — public
     @GetMapping("/prix")
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public List<Product> produitsParPrix(@RequestParam double min, @RequestParam double max) {
         return productService.produitsParPrix(min, max);
     }
 
-    // Lister produits actifs
+    // Lister produits actifs — public
     @GetMapping("/actifs")
-    @PreAuthorize("hasAnyRole('Admin','User')")
     public List<Product> produitsActifs() {
         return productService.produitsActifs();
     }
