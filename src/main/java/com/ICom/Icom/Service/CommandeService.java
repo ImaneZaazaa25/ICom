@@ -60,8 +60,8 @@ public class CommandeService {
         Commande commande = new Commande();
         commande.setClient(user);
         commande.setDateCommande(new Date());
-        commande.setEtat(EtatCommande.VALIDEE);
-        commandeRepository.save(commande);
+        commande.setEtat(EtatCommande.EN_COURS);
+       commande= commandeRepository.save(commande);
 
         double total = 0;
 
@@ -85,7 +85,8 @@ public class CommandeService {
 
         // Sauvegarder le total dans la commande (snapshot)
         commande.setTotal(total);
-        commandeRepository.save(commande);
+        commande.setEtat(EtatCommande.VALIDEE);
+        commande=commandeRepository.save(commande);
 
         // === PHASE 4 : Vider le panier ===
         lignePanierRepository.deleteAll(lignes);
