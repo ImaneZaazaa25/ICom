@@ -22,14 +22,14 @@ public class ProductController {
 
     // Ajouter un produit
     @PostMapping
-    @PreAuthorize("hasAnyRole('Admin')")
+    @PreAuthorize("hasRole('Admin')")
     public Product ajouterProduit(@RequestBody ProductDTO dto) {
         return productService.ajouterProduit(dto.toProduct(), dto.getCategoryId(), dto.getImages());
     }
 
     // Modifier un produit
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('Admin')")
+    @PreAuthorize("hasRole('Admin')")
     public Product modifierProduit(@PathVariable Long id, @RequestBody ProductDTO dto) {
         Product produitExistant = productService.trouverProduit(id)
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
@@ -44,7 +44,7 @@ public class ProductController {
 
     // Supprimer un produit
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('Admin')")
+    @PreAuthorize("hasRole('Admin')")
     public void supprimerProduit(@PathVariable Long id) {
         productService.supprimerProduit(id);
     }
