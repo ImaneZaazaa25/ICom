@@ -1,21 +1,13 @@
 package com.ICom.Icom.Controller;
 
 import com.ICom.Icom.Model.User;
-import com.ICom.Icom.Repositories.UserRepository;
-import com.ICom.Icom.Security.JWTUtil;
 import com.ICom.Icom.Service.AuthService;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class AuthticationController {
+public class AuthenticationController {
 
     private final AuthService authService;
 
