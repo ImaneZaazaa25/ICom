@@ -60,7 +60,7 @@ class JwtIntegrationTest {
                 .getContentAsString();
 
         // 3️⃣ Accéder à un endpoint protégé avec le token
-        mockMvc.perform(get("/api/admin/dashboard")
+        mockMvc.perform(get("/api/user/profile")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
