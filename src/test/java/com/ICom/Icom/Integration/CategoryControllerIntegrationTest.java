@@ -1,10 +1,12 @@
 package com.ICom.Icom.Integration;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -12,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional
 class CategoryControllerIntegrationTest {
 
     @Autowired
@@ -27,9 +31,9 @@ class CategoryControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "nom": "Admin",
+                            "nom": "Admina",
                             "prenom": "Test",
-                            "username": "adminCategory",
+                            "username": "adminaCategory",
                             "email": "adminCategory@test.com",
                             "motdepasse": "admin123",
                             "role": "Admin",
@@ -52,7 +56,7 @@ class CategoryControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                         {
-                            "username": "adminCategory",
+                            "username": "adminaCategory",
                             "motdepasse": "admin123"
                         }
                         """))
