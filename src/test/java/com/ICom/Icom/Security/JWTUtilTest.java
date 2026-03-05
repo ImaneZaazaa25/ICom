@@ -15,17 +15,17 @@ class JWTUtilTest {
     @Test
     void testGenerateAndValidateToken() {
 
-        // 1️⃣ Génération
+        //  Génération
         String token = jwtUtil.generateToken("imane");
 
         assertNotNull(token);
 
-        // 2️⃣ Extraction username
+        //  Extraction username
         String username = jwtUtil.getUserFromToken(token);
 
         assertEquals("imane", username);
 
-        // 3️⃣ Validation
+        //  Validation
         boolean isValid = jwtUtil.validateJwtToken(token);
 
         assertTrue(isValid);

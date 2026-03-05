@@ -3,6 +3,7 @@ package com.ICom.Icom.Controller;
 import com.ICom.Icom.Model.User;
 import com.ICom.Icom.Service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
@@ -21,8 +22,6 @@ public class AuthenticationController {
         return authService.signup(user);
     }
 
-    @GetMapping("/welcome")
-    public String WelcomeTest(){
-        return "Welcome!!";
-    }
+
+
 }
