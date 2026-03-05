@@ -14,6 +14,7 @@ spring:
   h2:
     console:
       enabled: true
+      path: /h2-console
 
 jwt:
   secret: QWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwISE=
