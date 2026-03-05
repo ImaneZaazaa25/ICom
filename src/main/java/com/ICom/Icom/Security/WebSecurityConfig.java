@@ -4,6 +4,7 @@ import com.ICom.Icom.Service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -41,15 +42,23 @@ public class WebSecurityConfig {
                 .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPointJwt))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a
-                        // endpoints publics (adapte selon ton API)
+                        // Endpoints publics : auth + lecture catalogue
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/welcome").permitAll()
-                        // routes ADMIN
+                        .requestMatchers(HttpMethod.GET, "/api/produits/**").permitAll()
+
+                        // Écriture produits/catégories : Admin uniquement
+                        .requestMatchers(HttpMethod.POST, "/api/produits/**").hasRole("Admin")
+                        .requestMatchers(HttpMethod.PUT, "/api/produits/**").hasRole("Admin")
+                        .requestMatchers(HttpMethod.DELETE, "/api/produits/**").hasRole("Admin")
                         .requestMatchers("/api/admin/**").hasRole("Admin")
 
-                        //routes USER (et ADMIN aussi si tu veux)
+                        // Profil, panier, commandes : User ou Admin authentifié
                         .requestMatchers("/api/user/**").hasAnyRole("User", "Admin")
-                        // tout le reste protégé
+                        .requestMatchers("/api/panier/**").hasAnyRole("User", "Admin")
+                        .requestMatchers("/api/commandes/**").hasAnyRole("User", "Admin")
+
+                        // Tout le reste : authentifié
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);

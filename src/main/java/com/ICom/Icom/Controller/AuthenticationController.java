@@ -25,13 +25,4 @@ public class AuthenticationController {
     public String WelcomeTest(){
         return "Welcome!!";
     }
-    @GetMapping("/user/profile")
-    public String profile() {
-        return "USER profile";
-    }
-
-    @GetMapping("/admin/dashboard")
-    public String dashboard() {
-        return "ADMIN dashboard";
-    }
 }
