@@ -52,6 +52,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/produits/**").hasRole("Admin")
                         .requestMatchers(HttpMethod.DELETE, "/api/produits/**").hasRole("Admin")
                         .requestMatchers("/api/admin/**").hasRole("Admin")
+                        .requestMatchers("/h2-console/**").permitAll() // autorise H2
 
                         // Profil, panier, commandes : User ou Admin authentifié
                         .requestMatchers("/api/user/**").hasAnyRole("User", "Admin")
