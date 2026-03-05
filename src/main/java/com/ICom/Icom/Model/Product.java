@@ -1,7 +1,6 @@
 package com.ICom.Icom.Model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity

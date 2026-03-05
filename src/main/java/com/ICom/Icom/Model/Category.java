@@ -1,7 +1,6 @@
 package com.ICom.Icom.Model;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -13,7 +12,7 @@ public class Category {
     private Long id;
 
     private String nom;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL)
     private List<Product> produits;
 

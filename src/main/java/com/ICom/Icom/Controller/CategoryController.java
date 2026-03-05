@@ -22,6 +22,8 @@ public class CategoryController {
 
     // Ajouter une catégorie
     @PostMapping
+    @PreAuthorize("hasRole('Admin')")
+
     public ResponseEntity<Category> ajouterCategory(@RequestBody Category category) {
         Category savedCategory = categoryService.ajouterCategory(category);
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
@@ -76,7 +78,7 @@ public class CategoryController {
 
     // Vérifier si une catégorie existe par nom
     @GetMapping("/exists")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('Admin')")
 
     public ResponseEntity<Boolean> existeCategory(@RequestParam String nom) {
         boolean exists = categoryService.existeCategory(nom);

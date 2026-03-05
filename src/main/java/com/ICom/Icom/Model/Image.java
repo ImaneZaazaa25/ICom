@@ -1,5 +1,6 @@
 package com.ICom.Icom.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Image {
 
     private String url;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "product_id")
     private Product produit;
 
