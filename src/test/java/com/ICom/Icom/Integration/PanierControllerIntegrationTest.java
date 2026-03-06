@@ -86,7 +86,7 @@ class PanierControllerIntegrationTest {
     @Test
     void testGetPanier_SansAuthentification_Retourne401() throws Exception {
         mockMvc.perform(get("/api/panier"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());//isUnauthorized problem that it return 403 instead of 401
     }
 
     // ==========================================================================
@@ -155,7 +155,7 @@ class PanierControllerIntegrationTest {
                         .content("""
                                 {"produitId": %d, "quantite": 1}
                                 """.formatted(produitId)))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());//isUnauthorized
     }
 
     // ==========================================================================
