@@ -78,7 +78,7 @@ class PanierE2ETest {
                 .andExpect(jsonPath("$.total").value(0.0));
 
         // ==================================================================
-        // Étape 2 : Ajouter produit 1 (2 unités × 20.0 = 40.0)
+        // Étape 2 : Ajouter produit 1 
         // ==================================================================
         panierUtil.ajouterProduit(clientToken, produitId1, 2)
                 .andExpect(status().isCreated())
@@ -89,8 +89,7 @@ class PanierE2ETest {
                 .andExpect(jsonPath("$.total").value(40.0));
 
         // ==================================================================
-        // Étape 3 : Ajouter produit 2 (1 unité × 35.0 = 35.0)
-        //           Total attendu : 40.0 + 35.0 = 75.0
+        // Étape 3 : Ajouter produit 2
         // ==================================================================
         panierUtil.ajouterProduit(clientToken, produitId2, 1)
                 .andExpect(status().isCreated())
@@ -98,8 +97,7 @@ class PanierE2ETest {
                 .andExpect(jsonPath("$.total").value(75.0));
 
         // ==================================================================
-        // Étape 4 : Modifier la quantité du produit 1 : 2 → 3
-        //           Total attendu : (3 × 20.0) + (1 × 35.0) = 60.0 + 35.0 = 95.0
+        // Étape 4 : Modifier la quantité du produit 1
         // ==================================================================
         Long ligneProduit1Id = panierUtil.getLigneIdPourProduit(clientToken, produitId1);
 
@@ -109,7 +107,6 @@ class PanierE2ETest {
 
         // ==================================================================
         // Étape 5 : Supprimer la ligne du produit 2
-        //           Total attendu : 3 × 20.0 = 60.0
         // ==================================================================
         Long ligneProduit2Id = panierUtil.getLigneIdPourProduit(clientToken, produitId2);
 
