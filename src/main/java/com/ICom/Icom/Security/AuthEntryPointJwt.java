@@ -20,11 +20,11 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
 
-        if (authException instanceof InsufficientAuthenticationException) {
-            // Pas de token du tout → pas identifié
+        if (authException instanceof InsufficientAuthenticationException) {//Updated
+            // Utilisateur authentifié mais pas autorisé
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "401 Non authentifié");
         } else {
-            // Token présent mais mauvais rôle → pas autorisé
+            // Pas authentifié
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "403 Non autorisé");
         }
     }
