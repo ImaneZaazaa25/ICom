@@ -4,104 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a341055d-f84d-4985-85c7-1cfbaf418fe8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/java-ci.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/qodana_code_quality.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/icomdb.mv.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/qodana.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Config/WebConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/AuthenticationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/CategoryController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/CommandeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/ImageController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/PanierController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/ProductController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/AjoutPanierDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/CommandeResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/LigneCommandeResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/LignePanierResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/ModifierQuantiteDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/PanierResponseDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/ProductDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/UpdateProfileDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/DTO/UserProfileDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Exception/ErrorResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Exception/ProduitInactifException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Exception/StockInsuffisantException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/IcomApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Commande.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/EtatCommande.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Image.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/LigneCommande.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/LignePanier.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Panier.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Model/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/CategoryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/CommandeRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/ImageRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/LigneCommandeRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/LignePanierRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/PanierRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/ProductRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Repositories/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Security/AuthEntryPointJwt.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Security/AuthTokenFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Security/JWTUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Security/WebSecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/CategoryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/CommandeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/ImageService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/PanierService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/ProductService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/UserDetailService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ICom/Icom/Service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/IcomApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Integration/CategoryControllerIntegrationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Integration/ImageFileIntegrationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Integration/JwtIntegrationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Integration/ProductImageIntegrationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Security/JWTUtilTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/AuthServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/CategoryServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/CommandeServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/ImageServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/PanierServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/ProductServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/UserServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/ICom/Icom/Service/test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/application-test.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/0940c775-0244-4e5f-89c6-e975f09b566b_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/231b6ba4-807a-419f-85f2-c0d70c77fc06_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/407e5f29-03e4-418a-85d6-6e6f4a7aa385_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/48585afb-f3ef-4bd4-b1ac-edcb05046d8d_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/52a97e35-88e2-4dde-94f7-5fc840f82e5e_phone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/616722d2-25e3-4e21-b6f5-59235dcbd74d_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/6478fcbd-3f27-47a3-a959-48cb24ba8e57_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/6ac7d8a0-4a1c-46ce-a52f-67f399252263_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/7eef3f12-59c2-457f-a36f-1a8a664e8c98_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/839d5e16-fa82-44a3-8dcd-6963f5347a0c_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/8d13a0ac-5f0e-4a89-b416-5b2e4213e0d4_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/b38b58ba-0554-4e68-9919-229725b4bfee_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/b45a975b-aaaf-49b2-8cef-9b6bd5a4f6b6_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/b9c6de26-190b-4542-b610-d688a2f17777_Capture d'écran 2026-02-22 131226.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/c3a76fd9-deb7-4df5-baf5-bb2219e85d41_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/f951c349-0e51-4bbd-b360-f42f16e2eefe_image.png" beforeDir="false" />
-    </list>
+    <list default="true" id="a341055d-f84d-4985-85c7-1cfbaf418fe8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="TestProduit+Image" />
+        <entry key="$PROJECT_DIR$" value="TestProduit+Image2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -144,26 +47,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.IcomApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;TestProduit+Image2&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/admin/Desktop/Ilisi2phase3/icom&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.IcomApplication.executor": "Run",
+    "git-widget-placeholder": "front",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/admin/Desktop/Ilisi2phase3/icom",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="IcomApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Icom" />
@@ -205,7 +108,7 @@
       <workItem from="1772746598463" duration="5545000" />
       <workItem from="1772806701352" duration="1676000" />
       <workItem from="1773177649289" duration="4833000" />
-      <workItem from="1773407472101" duration="2327000" />
+      <workItem from="1773407472101" duration="2707000" />
     </task>
     <servers />
   </component>
