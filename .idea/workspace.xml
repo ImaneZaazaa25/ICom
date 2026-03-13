@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f5cd277-d0a9-44e1-9a0e-52955613dce1" name="Changes" comment="" />
+    <list default="true" id="9f5cd277-d0a9-44e1-9a0e-52955613dce1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +88,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.IcomApplication.executor": "Run",
-    "git-widget-placeholder": "integrationFrontV1",
+    "git-widget-placeholder": "integrationFrontV1.1",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/pc/Downloads/Icom/Icom/front-end",
     "project.structure.last.edited": "Modules",
