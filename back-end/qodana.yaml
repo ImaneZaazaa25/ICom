@@ -1,19 +1,15 @@
-#-------------------------------------------------------------------------------#
-#               Qodana analysis is configured by qodana.yaml file               #
-#             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
-#-------------------------------------------------------------------------------#
-
 version: "1.0"
 
-# Specify inspection profile for code analysis
+# Inspection profile
 profile:
   name: qodana.starter
 
+# JDK à utiliser
 projectJDK: "17"
 
-# Linter image
-linter: jetbrains/qodana-jvm-community:2025.3
+# Linter Community (pas de token requis)
+linter: qodana-jvm-community
 
-# Paths to scan (backend only)
+# Dossier à scanner
 paths:
   - back-end

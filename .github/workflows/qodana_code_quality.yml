@@ -29,5 +29,4 @@ jobs:
           post-pr-comment: true
           upload-result: false
           push-fixes: 'none'
-          # Forcer la Community version
-          args: "--image jetbrains/qodana-jvm-community:2025.3 --project backend"
+          # plus besoin d'args, .qodana.yaml gère tout
