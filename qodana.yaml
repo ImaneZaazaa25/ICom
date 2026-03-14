@@ -9,7 +9,3 @@ projectJDK: "17"
 
 # Linter Community (pas de token requis)
 linter: qodana-jvm-community
-
-# Dossier à scanner
-paths:
-  - back-end

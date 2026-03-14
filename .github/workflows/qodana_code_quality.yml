@@ -29,4 +29,4 @@ jobs:
           post-pr-comment: true
           upload-result: false
           push-fixes: 'none'
-          # plus besoin d'args, .qodana.yaml gère tout
+          args: --only-directory=back-end
