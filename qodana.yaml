@@ -1,0 +1,11 @@
+version: "1.0"
+
+# Inspection profile
+profile:
+  name: qodana.starter
+
+# JDK à utiliser
+projectJDK: "17"
+
+# Linter Community (pas de token requis)
+linter: qodana-jvm-community
