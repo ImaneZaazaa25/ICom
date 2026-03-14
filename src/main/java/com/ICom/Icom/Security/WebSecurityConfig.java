@@ -72,7 +72,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/welcome").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/produits/**").permitAll()
-
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()  
                         // Écriture produits/catégories : Admin uniquement
                         .requestMatchers(HttpMethod.POST, "/api/produits/**").hasRole("Admin")
                         .requestMatchers(HttpMethod.PUT, "/api/produits/**").hasRole("Admin")
