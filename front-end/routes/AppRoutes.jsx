@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "../components/layout/Navbar";
+import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Home from "../pages/Home/Home";
 import Products from "../pages/Products/Products";
@@ -12,7 +12,7 @@ import Register from "../pages/Register/Register";
 function AppRoutes() {
   return (
     <Router>
-      <Navbar />
+      <Header />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
