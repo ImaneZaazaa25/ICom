@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // <-- import
+import useAuth from '../../hooks/useAuth';
 import "./Login.css";
 
 function Login() {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
+  const navigate = useNavigate(); // <-- initialise le navigate
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -13,13 +15,17 @@ function Login() {
 
     const userData = {
       username,
-      motdepasse: password // 🔹 clé exacte pour backend
+      motdepasse: password
     };
 
     try {
       const token = await login(userData);
       alert("Connexion réussie !");
       localStorage.setItem("token", token); // stocke le JWT
+      console.log(token);
+
+      // Redirection vers la page home après login réussi
+      navigate("/home");
     } catch (err) {
       console.error("Erreur login :", err.response || err.message || err);
       setError("Nom d'utilisateur ou mot de passe incorrect");

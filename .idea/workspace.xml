@@ -5,28 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f5cd277-d0a9-44e1-9a0e-52955613dce1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/hooks/useAuth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/App.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/components/Footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Footer/Footer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/components/Navbar/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Navbar/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/components/ProductCard/ProductCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductCard/ProductCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/AuthContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/context/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/CartContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/hooks/useAuth.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useAuth.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/main.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Cart/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Cart/Cart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Login/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login/Login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/ProductDetails/ProductDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductDetails/ProductDetails.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Products/Products.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Products/Products.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Register/Register.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Register/Register.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/pages/Register/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Register/Register.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/routes/AppRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/context/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/context/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useAuth.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Register/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Register/Register.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,36 +88,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.IcomApplication.executor": "Run",
-    "git-widget-placeholder": "fixqodana2",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/pc/Downloads/Icom/Icom/frontend/src",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.IcomApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fixfront&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pc/Downloads/Icom/Icom/frontend/src&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\front-end" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\src\main\resources" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\src\main\java\com\ICom\Icom\Service" />
-      <recent name="C:\Users\pc\Downloads\Icom\Icom\src\main\java\com\ICom\Icom\Repositories" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\back-end" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\src\test\resources" />
@@ -141,7 +133,6 @@
   </component>
   <component name="RunManager">
     <configuration name="IcomApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="Icom (1)" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ICom.Icom.IcomApplication" />
       <method v="2">
         <option name="Make" enabled="true" />

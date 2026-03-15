@@ -1,44 +1,48 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // <-- import
+import useAuth from '../../hooks/useAuth';
 import "./Register.css";
 
 function Register() {
-  const { register } = useContext(AuthContext);
+  const { register } = useAuth();
+  const navigate = useNavigate(); // <-- initialise le navigate
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [tel, setTel] = useState(""); 
+  const [tel, setTel] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const userData = {
-    nom,
-    prenom,
-    username,
-    email,
-    tel,
-    motdepasse: password, // clé exacte backend
-    role: "User",
-    status: "Active"
+    const userData = {
+      nom,
+      prenom,
+      username,
+      email,
+      tel,
+      motdepasse: password,
+      role: "User",
+      status: "Active"
+    };
+
+    console.log("Données envoyées :", userData);
+
+    try {
+      const result = await register(userData);
+      console.log("Réponse du backend :", result);
+      setMessage(result);
+
+      // Si l'inscription réussit, redirige vers /login
+      navigate("/login");
+    } catch (err) {
+      console.error("Erreur lors de l'inscription :", err.response || err.message || err);
+      setMessage("Erreur lors de l'inscription");
+    }
   };
 
-  // Affiche les données avant l'envoi
-  console.log("Données envoyées :", userData);
-
-  try {
-    const result = await register(userData);
-    console.log("Réponse du backend :", result);
-    setMessage(result);
-  } catch (err) {
-    // Affiche toute l'erreur pour comprendre pourquoi ça échoue
-    console.error("Erreur lors de l'inscription :", err.response || err.message || err);
-    setMessage("Erreur lors de l'inscription");
-  }
-};
   return (
     <div className="auth-container">
       <h2>Inscription</h2>

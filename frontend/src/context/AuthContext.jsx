@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         email: userData.email,
         tel: userData.tel,
         motdepasse: userData.motdepasse, // clé exacte
-        role: userData.role || "CLIENT",   // valeur par défaut
+        role: userData.role || "User",   // valeur par défaut
         status: userData.status || "ACTIVE" // valeur par défaut
       });
 
