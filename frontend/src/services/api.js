@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
   baseURL: "http://localhost:9091/api", // backend Spring Boot
@@ -7,7 +7,7 @@ const api = axios.create({
 export const signin = async (user) => {
   const response = await api.post("/auth/signin", {
     username: user.username, // utiliser username comme dans ton AuthService
-    motdepasse: user.password || user.motdepasse
+    motdepasse: user.motdepasse
   });
   return response.data; // c'est le token JWT
 };
@@ -18,10 +18,10 @@ export const signup = async (user) => {
     prenom: user.prenom || "",
     username: user.username,
     email: user.email,
-    motdepasse: user.password || user.motdepasse,
-    role: user.role || "USER",
+    motdepasse: user.motdepasse,
+    role: user.role || "User",
     tel: user.tel || "",
-    status: user.status || "ACTIVE"
+    status: user.status || "Active"
   });
   return response.data; // c'est le message du backend
 };
