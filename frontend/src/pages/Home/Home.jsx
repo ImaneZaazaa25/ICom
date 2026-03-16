@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Link } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
 import ProductGrid from "../../components/product/ProductGrid";
@@ -36,3 +37,4 @@ const Home = () => {
 };
 
 export default Home;
+
