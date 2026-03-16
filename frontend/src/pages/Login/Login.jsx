@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // <-- import
 import useAuth from '../../hooks/useAuth';
-import "./Login.css";
+// import "./Login.css";
 
 function Login() {
   const { login } = useAuth();
@@ -25,7 +25,7 @@ function Login() {
       console.log(token);
 
       // Redirection vers la page home après login réussi
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.error("Erreur login :", err.response || err.message || err);
       setError("Nom d'utilisateur ou mot de passe incorrect");

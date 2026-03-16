@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // <-- import
 import useAuth from '../../hooks/useAuth';
-import "./Register.css";
+// import "./Register.css";
 
 function Register() {
   const { register } = useAuth();

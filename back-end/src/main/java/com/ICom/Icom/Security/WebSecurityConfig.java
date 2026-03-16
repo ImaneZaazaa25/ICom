@@ -16,6 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.security.config.Customizer;
 
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true)
@@ -31,6 +35,18 @@ public class WebSecurityConfig {
             "/v3/api-docs/**",
             "/v3/api-docs",
     };
+
+       @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:5173"); // ton frontend React
+        configuration.addAllowedMethod("*"); // GET, POST, PUT, DELETE…
+        configuration.addAllowedHeader("*"); // tous les headers
+        configuration.setAllowCredentials(true); // si tu utilises JWT ou cookies
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -60,7 +76,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPointJwt))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(a -> a
