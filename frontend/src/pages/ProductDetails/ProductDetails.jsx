@@ -75,9 +75,7 @@ const ProductDetails = () => {
             <button className="btn-add-cart" disabled={!inStock}>
               Ajouter au panier
             </button>
-            <button className="btn-order" disabled={!inStock}>
-              Commander
-            </button>
+           
           </div>
         </div>
       </div>
