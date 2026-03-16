@@ -31,7 +31,7 @@ public class ImageController {
 
     // Images d’un produit
     @GetMapping("/product/{productId}")
-    @PreAuthorize("hasRole('Admin')")
+    // @PreAuthorize("hasRole('Admin')")
 
     public List<Image> imagesParProduit(@PathVariable Long productId) {
         return imageService.imagesParProduit(productId);
