@@ -1,10 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProductById } from "../../api/productApi";
 import ImageCarousel from "../../components/product/ImageCarousel";
 import Loader from "../../components/common/Loader";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import { formatPrice } from "../../utils/formatPrice";
+import useAuth from "../../hooks/useAuth";
+import useCart from "../../hooks/useCart";
 import "./ProductDetails.css";
 
 const initialState = { product: null, loading: true, error: null };
@@ -20,8 +22,14 @@ const reducer = (state, action) => {
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { ajouterArticle } = useCart();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [quantity, setQuantity] = useState(1);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [cartError, setCartError] = useState(null);
+  const [cartSuccess, setCartSuccess] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -36,6 +44,24 @@ const ProductDetails = () => {
 
     return () => controller.abort();
   }, [id]);
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setCartError(null);
+    setCartSuccess(false);
+    setCartLoading(true);
+    try {
+      await ajouterArticle(state.product.id, quantity);
+      setCartSuccess(true);
+    } catch (err) {
+      setCartError(err.response?.data?.message || err.message || "Erreur lors de l'ajout au panier");
+    } finally {
+      setCartLoading(false);
+    }
+  };
 
   if (state.loading) return <Loader />;
   if (state.error) return <ErrorMessage message={state.error.message || "Erreur lors du chargement du produit"} />;
@@ -59,6 +85,9 @@ const ProductDetails = () => {
           {inStock ? `En stock (${state.product.quantite})` : "Rupture de stock"}
         </p>
 
+        {cartError && <p className="product-details-cart-error">{cartError}</p>}
+        {cartSuccess && <p className="product-details-cart-success">Produit ajouté au panier !</p>}
+
         <div className="product-details-actions">
           <div className="product-details-quantity">
             <label htmlFor="qty">Quantité</label>
@@ -68,14 +97,20 @@ const ProductDetails = () => {
               min="1"
               max={state.product.quantite}
               value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => {
+                setCartSuccess(false);
+                setQuantity(Math.max(1, Math.min(parseInt(e.target.value) || 1, state.product.quantite)));
+              }}
             />
           </div>
           <div className="product-details-buttons">
-            <button className="btn-add-cart" disabled={!inStock}>
-              Ajouter au panier
+            <button
+              className="btn-add-cart"
+              disabled={!inStock || cartLoading}
+              onClick={handleAddToCart}
+            >
+              {cartLoading ? "Ajout en cours…" : "Ajouter au panier"}
             </button>
-           
           </div>
         </div>
       </div>
