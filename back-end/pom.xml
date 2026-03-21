@@ -26,9 +26,27 @@
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
-		<java.version>17</java.version>
-	</properties>
+<properties>
+    <java.version>17</java.version>
+
+    <!-- SonarQube -->
+    <sonar.projectKey>Icom-backend</sonar.projectKey>
+    <sonar.projectName>ICommerce Backend</sonar.projectName>
+    <sonar.host.url>http://localhost:9000</sonar.host.url>
+
+    <!-- JaCoCo : chemin du rapport de couverture -->
+    <sonar.coverage.jacoco.xmlReportPaths>
+        target/site/jacoco/jacoco.xml
+    </sonar.coverage.jacoco.xmlReportPaths>
+
+    <!-- Exclure les classes qui n'ont pas besoin d'être testées -->
+    <sonar.exclusions>
+        **/model/**,
+        **/dto/**,
+        **/config/**,
+        **/*Application.java
+    </sonar.exclusions>
+</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -138,6 +156,34 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<!-- Plugin JaCoCo : génère le rapport de couverture -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Plugin SonarQube -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.11.0.3922</version>
 			</plugin>
 		</plugins>
 	</build>
