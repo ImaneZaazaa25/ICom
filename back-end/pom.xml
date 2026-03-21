@@ -30,7 +30,7 @@
     <java.version>17</java.version>
 
     <!-- SonarQube -->
-    <sonar.projectKey>Icom-backend</sonar.projectKey>
+    <sonar.projectKey>ICOM</sonar.projectKey>
     <sonar.projectName>ICommerce Backend</sonar.projectName>
     <sonar.host.url>http://localhost:9000</sonar.host.url>
 
