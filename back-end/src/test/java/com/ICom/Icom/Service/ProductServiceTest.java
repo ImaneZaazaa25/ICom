@@ -5,6 +5,7 @@ import com.ICom.Icom.Model.Image;
 import com.ICom.Icom.Model.Product;
 import com.ICom.Icom.Repositories.CategoryRepository;
 import com.ICom.Icom.Repositories.ImageRepository;
+import com.ICom.Icom.Repositories.LigneCommandeRepository;
 import com.ICom.Icom.Repositories.ProductRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,9 @@ public class ProductServiceTest {
     @Mock
     private ImageRepository imageRepository;
 
+    @Mock
+    private LigneCommandeRepository ligneCommandeRepository; // <-- ajouté
+
     @InjectMocks
     private ProductService productService;
 
@@ -50,7 +54,6 @@ public class ProductServiceTest {
 
     @Test
     void testAjouterProduit() {
-
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.save(product)).thenReturn(product);
 
@@ -67,7 +70,6 @@ public class ProductServiceTest {
 
     @Test
     void testListerProduits() {
-
         List<Product> produits = List.of(product);
         when(productRepository.findAll()).thenReturn(produits);
 
@@ -79,7 +81,6 @@ public class ProductServiceTest {
 
     @Test
     void testTrouverProduit() {
-
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
         Optional<Product> result = productService.trouverProduit(1L);
@@ -90,16 +91,19 @@ public class ProductServiceTest {
 
     @Test
     void testSupprimerProduit() {
+        Long produitId = 1L;
 
-        productService.supprimerProduit(1L);
+        // Mock pour éviter NullPointerException
+        when(ligneCommandeRepository.existsByProduitId(produitId)).thenReturn(false);
 
-        verify(imageRepository).deleteByProduitId(1L);
-        verify(productRepository).deleteById(1L);
+        productService.supprimerProduit(produitId);
+
+        verify(imageRepository).deleteByProduitId(produitId);
+        verify(productRepository).deleteById(produitId);
     }
 
     @Test
     void testProduitsParCategorie() {
-
         List<Product> produits = List.of(product);
         when(productRepository.findByCategorieId(1L)).thenReturn(produits);
 
@@ -110,7 +114,6 @@ public class ProductServiceTest {
 
     @Test
     void testProduitsParNom() {
-
         List<Product> produits = List.of(product);
         when(productRepository.findByNomContaining("Lap")).thenReturn(produits);
 
