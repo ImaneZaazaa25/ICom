@@ -89,32 +89,30 @@ class AuthServiceTest {
         user.setUsername("imane25");
         user.setMotdepasse("imane2511");
 
-        // Mocker l'authentication
+        // Mock authentication
         Authentication authentication = mock(Authentication.class);
 
         UserDetails springUser =
                 new org.springframework.security.core.userdetails.User(
                         "imane25",
                         "imane2511",
-                        List.of(new SimpleGrantedAuthority("ROLE_Admin"))
+                        List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
                 );
 
-        // Simuler l'authentification réussie
+        // Simuler authentication OK
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(springUser);
 
-        // Simuler la génération du token JWT
-        when(jwtUtil.generateToken("imane25")).thenReturn("admintoken123");
+        // ✅ Correction ici
+        when(jwtUtil.generateToken(springUser)).thenReturn("admintoken123");
 
-        // Appel de la méthode signin
+        // Appel
         String token = authService.signin(user);
 
-        // Vérifier le token
+        // Vérification
         assertEquals("admintoken123", token);
 
-        // Vérifier les appels
         verify(authenticationManager).authenticate(any());
-        verify(jwtUtil).generateToken("imane25");
+        verify(jwtUtil).generateToken(springUser);
     }
-
 }
