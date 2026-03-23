@@ -6,6 +6,7 @@ import com.ICom.Icom.Model.Product;
 import com.ICom.Icom.Repositories.CategoryRepository;
 import com.ICom.Icom.Repositories.ImageRepository;
 import com.ICom.Icom.Repositories.ProductRepository;
+import com.ICom.Icom.Repositories.LigneCommandeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +18,16 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
+    private final LigneCommandeRepository ligneCommandeRepository;
 
     public ProductService(ProductRepository productRepository,
                           CategoryRepository categoryRepository,
-                          ImageRepository imageRepository) {
+                          ImageRepository imageRepository,
+                          LigneCommandeRepository ligneCommandeRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.imageRepository = imageRepository;
+        this.ligneCommandeRepository = ligneCommandeRepository;
     }
 
     // Ajouter un produit
@@ -68,8 +72,22 @@ public class ProductService {
 
     // Supprimer un produit
     public void supprimerProduit(Long id) {
-        imageRepository.deleteByProduitId(id);
-        productRepository.deleteById(id);
+
+        boolean existeDansCommande = ligneCommandeRepository.existsByProduitId(id);
+
+        if (existeDansCommande) {
+            // ne pas supprimer → désactiver
+            Product produit = productRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Produit introuvable"));
+
+            produit.setStatut(false);
+            productRepository.save(produit);
+
+        } else {
+            // suppression réelle
+            imageRepository.deleteByProduitId(id);
+            productRepository.deleteById(id);
+        }
     }
 
     // Lister tous les produits
