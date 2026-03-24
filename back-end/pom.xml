@@ -185,3 +185,4 @@
 	</build>
 
 </project>
+<!-- mvn sonar:sonar "-Dsonar.token=sqa_dfbd36f5ae5fa303546af3412c0708fef0b477f9" "-Dsonar.host.url=http://localhost:9000" "-Dsonar.projectKey=ICOM"-->
