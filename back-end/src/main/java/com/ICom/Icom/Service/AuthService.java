@@ -29,7 +29,7 @@ public class AuthService {
         );
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtUtil.generateToken(userDetails.getUsername());
+        return jwtUtil.generateToken(userDetails);
     }
 
     public String signup(User user) {

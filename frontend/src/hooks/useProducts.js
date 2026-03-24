@@ -1,25 +1,35 @@
-import { useState, useEffect } from "react";
-import { getAllProducts } from "../api/productApi";
+// src/hooks/useProducts.js
+import { useState, useEffect, useCallback } from 'react';
+import { getAllProducts } from '../api/productApi';
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    getAllProducts()
-      .then((data) => {
-        setProducts(data);
-        console.log("Products fetched:", data); // <-- affiche le retour dans la console
-      })
-      .catch((err) => {
-        setError(err);
-        console.error("Error fetching products:", err);
-      })
-      .finally(() => setLoading(false));
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getAllProducts();
+      setProducts(data);
+      setError(null);
+    } catch (err) {
+      setError(err);
+      console.error('Error fetching products:', err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return { products, loading, error };
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const refreshProducts = useCallback(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, loading, error, refreshProducts };
 };
 
 export default useProducts;
