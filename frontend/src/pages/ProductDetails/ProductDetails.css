@@ -77,6 +77,27 @@
   background: #fef2f2;
 }
 
+/* Cart feedback messages */
+.product-details-cart-error {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  background: #fef2f2;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.product-details-cart-success {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #15803d;
+  background: #f0fdf4;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
 /* Quantity + action buttons */
 .product-details-actions {
   display: flex;
