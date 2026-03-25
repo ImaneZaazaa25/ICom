@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Button = ({ children, onClick, type = "button", className = "", disabled = false }) => {
   return (
