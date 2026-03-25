@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const ProductFilters = ({ filters, onFilterChange, onReset, categories }) => {
   return (
@@ -49,6 +50,21 @@ const ProductFilters = ({ filters, onFilterChange, onReset, categories }) => {
       </button>
     </div>
   );
+};
+
+ProductFilters.propTypes = {
+  filters: PropTypes.shape({
+    nom: PropTypes.string,
+    categorieId: PropTypes.number,
+    prixMin: PropTypes.number,
+    prixMax: PropTypes.number,
+  }).isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    nom: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default ProductFilters;

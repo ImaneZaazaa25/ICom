@@ -99,7 +99,7 @@ const ProductDetails = () => {
               value={quantity}
               onChange={(e) => {
                 setCartSuccess(false);
-                setQuantity(Math.max(1, Math.min(parseInt(e.target.value) || 1, state.product.quantite)));
+                setQuantity(Math.max(1, Math.min(Number.parseInt(e.target.value) || 1, state.product.quantite)));
               }}
             />
           </div>
