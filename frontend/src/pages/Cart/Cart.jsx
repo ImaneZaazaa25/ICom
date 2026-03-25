@@ -40,7 +40,7 @@ const Cart = () => {
   }, [user]);
 
   const handleQuantityChange = async (ligneId, newQty) => {
-    const qty = Math.max(1, parseInt(newQty) || 1);
+    const qty = Math.max(1, Number.parseInt(newQty) || 1);
     setActionError(null);
     setActionLoading(true);
     try {
