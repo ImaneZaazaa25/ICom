@@ -12,7 +12,7 @@ const Button = ({ children, onClick, type = "button", className = "", disabled =
     </button>
   );
 };
-Button.prototype = {
+Button.prototypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   type: PropTypes.string,
