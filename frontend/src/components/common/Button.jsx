@@ -12,5 +12,11 @@ const Button = ({ children, onClick, type = "button", className = "", disabled =
     </button>
   );
 };
-
+Button.prototype = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  type: PropTypes.string,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
+}
 export default Button;
