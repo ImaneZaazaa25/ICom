@@ -1,5 +1,5 @@
 package com.ICom.Icom.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.ICom.Icom.Model.Category;
 import com.ICom.Icom.Model.Image;
 import com.ICom.Icom.Model.Product;
@@ -50,6 +50,8 @@ public class ProductService {
     }
 
     // Modifier un produit
+    @Transactional
+
     public Product modifierProduit(Product produit, Long newCategoryId, List<Image> newImages) {
         if (newCategoryId != null) {
             Category cat = categoryRepository.findById(newCategoryId)
@@ -71,6 +73,7 @@ public class ProductService {
     }
 
     // Supprimer un produit
+    @Transactional
     public void supprimerProduit(Long id) {
 
         boolean existeDansCommande = ligneCommandeRepository.existsByProduitId(id);

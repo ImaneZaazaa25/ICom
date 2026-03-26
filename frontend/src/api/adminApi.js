@@ -2,11 +2,14 @@
 import axiosInstance from "./axiosInstance";
 
 export const updateProduct = async (id, productData) => {
+console.log("PUT productId:", id);
+  console.log("Payload envoyé:", productData);
   const response = await axiosInstance.put(`/produits/${id}`, productData);
   return response.data;
 };
 
 export const deleteProduct = async (id) => {
+  if (!id) throw new Error("ID du produit manquant");
   const response = await axiosInstance.delete(`/produits/${id}`);
   return response.data;
 };

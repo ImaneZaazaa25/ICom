@@ -66,29 +66,11 @@ const HomeAdmin = () => {
     setIsModalOpen(true);
   }, []);
 
-  const handleModalSubmit = useCallback(async (productData) => {
-    setActionLoading(true);
-    try {
-      if (editingProduct) {
-        // Update existing product
-        await updateProduct(editingProduct.id, productData);
-        alert("Produit modifié avec succès !");
-      } else {
-        // Create new product
-        await createProduct(productData);
-        alert("Produit ajouté avec succès !");
-      }
-      await refreshProducts();
-      setIsModalOpen(false);
-      setEditingProduct(null);
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement:", error);
-      alert("Erreur lors de l'enregistrement du produit");
-    } finally {
-      setActionLoading(false);
-    }
-  }, [editingProduct, refreshProducts]);
-
+  const handleModalSubmit = useCallback(async () => {
+    await refreshProducts();
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  }, [refreshProducts]);
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditingProduct(null);

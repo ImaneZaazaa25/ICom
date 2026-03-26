@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,19 +21,24 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    // Upload image pour produit
+    // Upload plusieurs images pour un produit
     @PostMapping("/upload/{productId}")
     @PreAuthorize("hasRole('Admin')")
-    public Image uploadImage(@PathVariable Long productId,
-                             @RequestParam("file") MultipartFile file) throws IOException {
+    public List<Image> uploadImages(@PathVariable Long productId,
+                                    @RequestParam("files") MultipartFile[] files) throws IOException {
 
-        return imageService.ajouterImage(productId, file);
+        List<Image> uploadedImages = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            Image image = imageService.ajouterImage(productId, file);
+            uploadedImages.add(image);
+        }
+
+        return uploadedImages;
     }
 
     // Images d’un produit
     @GetMapping("/product/{productId}")
-    // @PreAuthorize("hasRole('Admin')")
-
     public List<Image> imagesParProduit(@PathVariable Long productId) {
         return imageService.imagesParProduit(productId);
     }
@@ -40,7 +46,6 @@ public class ImageController {
     // Supprimer image
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('Admin')")
-
     public void supprimerImage(@PathVariable Long id) throws IOException {
         imageService.supprimerImage(id);
     }

@@ -26,9 +26,11 @@ function Login() {
       const token = await login(userData);
 
       localStorage.setItem("token", token);
+if (!token) {
+  throw new Error("Token non reçu depuis le backend");
+}
 
-      // Décoder le token pour obtenir les rôles
-      const payload = JSON.parse(atob(token.split('.')[1]));
+const payload = JSON.parse(atob(token.split('.')[1]));
       const userRole = payload.roles?.[0] || payload.role || payload.authorities?.[0];
 
       localStorage.setItem("roles", userRole);

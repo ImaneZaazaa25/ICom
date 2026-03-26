@@ -9,6 +9,8 @@ export const signin = async (user) => {
     username: user.username, // utiliser username comme dans ton AuthService
     motdepasse: user.motdepasse
   });
+    console.log("LOGIN RESPONSE =", response.data); // 👈 ajouter ceci
+
   return response.data; // c'est le token JWT
 };
 

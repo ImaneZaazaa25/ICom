@@ -3,6 +3,7 @@ import React from 'react';
 import ImageCarousel from '../product/ImageCarousel';
 import { formatPrice } from "../../utils/formatPrice";
 import './AdminProductCard.css';
+import { loadImageWithAuth } from "../../utils/loadImageWithAuth";
 
 const AdminProductCard = ({ product, onEdit, onDelete }) => {
   const handleEdit = (e) => {
@@ -17,7 +18,35 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
     }
   };
 
-  const imageUrls = product.images?.map(img => `http://localhost:9091/uploads/${img.url}`) || [];
+const [imageUrls, setImageUrls] = React.useState([]);
+
+React.useEffect(() => {
+
+  const fetchImages = async () => {
+
+    if (!product.images) return;
+
+    const urls = await Promise.all(
+      product.images.map(img =>
+        loadImageWithAuth(`http://localhost:9091/uploads/${img.url}`)
+      )
+    );
+
+    setImageUrls(urls.filter(Boolean));
+  };
+
+  fetchImages();
+
+}, [product.images]);
+
+React.useEffect(() => {
+
+  return () => {
+    imageUrls.forEach(url => URL.revokeObjectURL(url));
+  };
+
+}, [imageUrls]);
+
 
   // Tronquer la description si trop longue
   const truncateDescription = (text, maxLength = 80) => {
