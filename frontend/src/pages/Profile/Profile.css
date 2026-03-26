@@ -1,0 +1,321 @@
+/* Profile page */
+.profile-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Top header: avatar + name */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 0.15rem;
+}
+
+.profile-username {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* Success banner */
+.profile-success {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #15803d;
+  background: #f0fdf4;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+/* Card */
+.profile-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.profile-card-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Edit button */
+.profile-btn-edit {
+  padding: 0.5rem 1.1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-btn-edit:hover {
+  background: var(--color-border);
+  border-color: var(--color-primary);
+  transform: none;
+}
+
+/* Field list (view mode) */
+.profile-fields {
+  padding: 0.5rem 0;
+}
+
+.profile-field {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--color-bg);
+  gap: 1rem;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+}
+
+.profile-field dt {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-field dd {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.profile-empty {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Badges */
+.profile-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-badge-role {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.profile-badge-status-active {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.profile-badge-status-inactive {
+  background: #fef2f2;
+  color: var(--color-accent);
+}
+
+/* Edit form */
+.profile-form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.profile-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.profile-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.profile-form-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-form-field input {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--color-primary);
+  background: var(--color-bg);
+  transition: border-color 0.2s ease;
+}
+
+.profile-form-field input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-card);
+}
+
+/* Password section divider */
+.profile-form-divider {
+  padding: 0.75rem 0 0.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.profile-form-divider span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Hint text */
+.profile-form-hint {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin: 0.2rem 0 0;
+}
+
+/* Username read-only note */
+.profile-form-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+}
+
+.profile-form-note strong {
+  color: var(--color-primary);
+}
+
+/* Form action buttons */
+.profile-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.profile-btn-save {
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.profile-btn-save:hover:not(:disabled) {
+  background: #1a1a1a;
+  transform: scale(1.02);
+}
+
+.profile-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.profile-btn-cancel {
+  padding: 0.75rem 1.25rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profile-btn-cancel:hover:not(:disabled) {
+  background: var(--color-border);
+  transform: none;
+}
+
+.profile-btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .profile-page {
+    padding: 2rem 1rem;
+  }
+
+  .profile-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-field {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+  }
+
+  .profile-btn-save,
+  .profile-btn-cancel {
+    width: 100%;
+    text-align: center;
+  }
+}

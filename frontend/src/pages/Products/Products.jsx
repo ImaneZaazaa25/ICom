@@ -1,36 +1,22 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import useProducts from "../../hooks/useProducts";
 import useFilters from "../../hooks/useFilters";
-import { getAllCategories } from "../../api/categoryApi";
 import ProductGrid from "../../components/product/ProductGrid";
 import ProductFilters from "../../components/product/ProductFilters";
+import { filterProducts } from "../../utils/filterProducts";
+import useCategories from "../../hooks/useCategories";
 import "./Products.css";
 
 const Products = () => {
   const { products, loading, error } = useProducts();
   const { filters, updateFilter, resetFilters } = useFilters();
-  const [categories, setCategories] = useState([]);
+  
+  const categories = useCategories();
 
-useEffect(() => {
-  getAllCategories()
-    .then((data) => {
-      console.log("Categories:", data);
-      setCategories(data);
-    })
-    .catch((err) => console.error("Erreur chargement catégories:", err));
-}, []);
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const matchNom = product.nom
-        .toLowerCase()
-        .includes(filters.nom.toLowerCase());
-      const matchCategorie =
-        !filters.categorieId || product.categorie?.id === filters.categorieId;
-      const matchPrixMin = product.prix >= filters.prixMin;
-      const matchPrixMax = product.prix <= filters.prixMax;
-      return matchNom && matchCategorie && matchPrixMin && matchPrixMax;
-    });
-  }, [products, filters]);
+  const filteredProducts = useMemo(
+    () => filterProducts(products, filters),
+    [products, filters]
+  );
 
   return (
     <div className="products-page">
@@ -45,7 +31,7 @@ useEffect(() => {
         products={filteredProducts}
         loading={loading}
         error={error}
-      />
+        />
     </div>
   );
 };
