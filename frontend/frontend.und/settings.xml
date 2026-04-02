@@ -1274,7 +1274,11 @@
           <dir
             name="admin"/>
           <dir
+            name="common"/>
+          <dir
             name="layout"/>
+          <dir
+            name="product"/>
         </dir>
         <dir
           name="context"/>
@@ -1285,16 +1289,24 @@
           <dir
             name="Admin"/>
           <dir
+            name="Cart"/>
+          <dir
             name="Home"/>
           <dir
             name="Login"/>
+          <dir
+            name="Orders"/>
           <dir
             name="ProductDetails"/>
           <dir
             name="Products"/>
           <dir
+            name="Profile"/>
+          <dir
             name="Register"/>
         </dir>
+        <dir
+          name="routes"/>
         <dir
           name="services"/>
         <dir
@@ -1308,7 +1320,11 @@
     <language
       name="Web"/>
   </languages>
-  <file_types/>
+  <file_types>
+    <file_types
+      ext=".jsx"
+      type="Javascript"/>
+  </file_types>
   <annotations_options/>
   <codecheck_options/>
   <comparison_options
