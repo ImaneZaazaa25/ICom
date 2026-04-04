@@ -7,6 +7,7 @@
     <list default="true" id="9f5cd277-d0a9-44e1-9a0e-52955613dce1" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/frontend/src/utils/loadImageWithAuth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Controller/ImageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/api/adminApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/adminApi.js" afterDir="false" />
@@ -16,6 +17,7 @@
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login/Login.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +122,7 @@
       <recent name="C:\Users\pc\Downloads\Icom\Icom\src\main\java\com\ICom\Icom\Service" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src\pages\Admin" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\back-end" />
@@ -173,16 +176,5 @@
     <MESSAGE value="modify architecture front back separe6" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Model/Image.java</url>
-          <line>9</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
