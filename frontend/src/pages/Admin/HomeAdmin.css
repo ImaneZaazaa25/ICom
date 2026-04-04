@@ -65,26 +65,17 @@
   font-weight: 400;
 }
 
-/* src/pages/admin/HomeAdmin.css - mise à jour */
-
+/* Alternative utilisant Flexbox au lieu de Grid */
 .admin-products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
   margin-top: 24px;
 }
 
-@media (min-width: 1400px) {
-  .admin-products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px;
-  }
-}
-
-@media (max-width: 768px) {
-  .admin-products-grid {
-    gap: 14px;
-  }
+.admin-product-card {
+  width: 280px;
+  flex-shrink: 0;
 }
 
 /* États de chargement et erreur */
@@ -166,7 +157,18 @@
   }
 
   .admin-products-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    justify-content: center;
+  }
+
+  .admin-product-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-product-card {
+    width: 100%;
+    max-width: 100%;
   }
 }
