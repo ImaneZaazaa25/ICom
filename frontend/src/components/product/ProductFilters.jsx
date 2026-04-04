@@ -66,5 +66,4 @@ ProductFilters.propTypes = {
     nom: PropTypes.string.isRequired,
   })).isRequired,
 };
-
 export default ProductFilters;
