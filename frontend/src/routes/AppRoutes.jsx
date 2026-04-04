@@ -13,6 +13,7 @@ import Profile from "../pages/Profile/Profile";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import HomeAdmin from "../pages/admin/HomeAdmin"; // <-- Importez HomeAdmin
+import InactiveProducts from "../pages/admin/InactiveProducts";
 
 function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ function AppRoutes() {
 
           {/* Route admin - protégée par un PrivateRoute si nécessaire */}
           <Route path="/admin/adminhome" element={<HomeAdmin />} />
+          <Route path = "/admin/inactive-products" element= {<InactiveProducts/>} />
         </Routes>
       </main>
 

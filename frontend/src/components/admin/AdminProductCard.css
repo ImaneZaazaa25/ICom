@@ -2,66 +2,112 @@
 
 .admin-product-card {
   background: white;
-  border-radius: 10px;
+  border-radius: 24px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
   border: 1px solid #f0ede8;
   width: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  animation: fadeInUp 0.5s ease-out backwards;
 }
 
 .admin-product-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  border-color: #c8a86b;
 }
+
+.admin-product-card:active {
+  transform: translateY(-2px);
+}
+
+/* Animation d'entrée */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Délais d'animation */
+.admin-product-card:nth-child(1) { animation-delay: 0.05s; }
+.admin-product-card:nth-child(2) { animation-delay: 0.1s; }
+.admin-product-card:nth-child(3) { animation-delay: 0.15s; }
+.admin-product-card:nth-child(4) { animation-delay: 0.2s; }
+.admin-product-card:nth-child(5) { animation-delay: 0.25s; }
+.admin-product-card:nth-child(6) { animation-delay: 0.3s; }
 
 /* Bande de prix attirante */
 .price-ribbon {
   position: absolute;
-  top: 8px;
+  top: 12px;
   left: 0;
   background: linear-gradient(135deg, #c8a86b 0%, #b8945a 100%);
-  padding: 4px 12px;
-  border-radius: 0 16px 16px 0;
+  padding: 6px 16px;
+  border-radius: 0 30px 30px 0;
   z-index: 2;
-  box-shadow: 0 2px 6px rgba(200, 168, 107, 0.25);
+  box-shadow: 0 4px 12px rgba(200, 168, 107, 0.25);
 }
 
 .price-value {
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
 
 .price-value::after {
   content: ' MAD';
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 400;
+}
+
+/* Badge inactif */
+.inactive-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #b87c6e;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  z-index: 2;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(184, 124, 110, 0.3);
+  text-transform: uppercase;
 }
 
 /* Badge de suppression */
 .deleted-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(184, 124, 110, 0.95);
+  top: 12px;
+  right: 12px;
+  background: #b87c6e;
   color: white;
-  padding: 3px 8px;
-  border-radius: 16px;
-  font-size: 0.6rem;
-  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
   z-index: 2;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(184, 124, 110, 0.3);
 }
 
 /* Zone d'image */
 .product-card-image {
   width: 100%;
-  height: 140px;
+  height: 200px;
   overflow: hidden;
   position: relative;
   background: #fefaf7;
@@ -73,43 +119,52 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
-.product-card-image:hover .product-card-img {
-  transform: scale(1.03);
+.admin-product-card:hover .product-card-img {
+  transform: scale(1.05);
 }
 
 .no-image {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   height: 100%;
   color: #d4c5b5;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   background: #fefaf7;
+}
+
+.no-image svg {
+  opacity: 0.5;
+  width: 32px;
+  height: 32px;
 }
 
 /* Informations produit */
 .product-info {
-  padding: 10px 12px 8px 12px;
+  padding: 16px 16px 12px 16px;
   flex-shrink: 0;
 }
 
 .product-name {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
   color: #2c2c2c;
-  line-height: 1.3;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
 }
 
 /* Description */
 .product-description {
-  font-size: 0.75rem;
-  color: #8e8e8e;
-  margin: 0 0 8px 0;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  color: #9a9a9a;
+  margin: 0 0 10px 0;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -121,35 +176,42 @@
   font-size: 0.7rem;
   color: #c8a86b;
   background: #fefaf5;
-  display: inline-block;
-  padding: 2px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
   border-radius: 20px;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
+  border: 1px solid #f0e5d8;
 }
 
 .product-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid #f0ede8;
 }
 
 .product-quantity {
-  font-size: 0.7rem;
-  color: #b8a28c;
-  background: #fefaf5;
-  padding: 3px 8px;
-  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #6f8f6b;
+  background: #eef5ed;
+  padding: 4px 10px;
+  border-radius: 20px;
   line-height: 1;
+  font-weight: 500;
 }
 
 .product-status {
   font-size: 0.7rem;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: 0.3px;
 }
 
 .product-status.active {
@@ -164,25 +226,37 @@
 
 /* Actions */
 .product-actions {
-  padding: 8px 12px 10px 12px;
+  padding: 12px 16px 16px 16px;
   display: flex;
-  gap: 8px;
-  border-top: 1px solid #f5efe8;
+  gap: 10px;
+  border-top: 1px solid #f0ede8;
   background: white;
   margin-top: 4px;
 }
 
+/* Variante inactive : bouton seul */
+.admin-product-card.inactive-variant .product-actions {
+  flex-direction: column;
+}
+
+.admin-product-card.inactive-variant .edit-btn,
+.admin-product-card.inactive-variant .delete-btn {
+  width: 100%;
+}
+
+/* Boutons Modifier/Supprimer */
 .edit-btn,
 .delete-btn {
   flex: 1;
-  padding: 6px 10px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 20px;
+  border-radius: 40px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 0.7rem;
-  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
   line-height: 1;
+  letter-spacing: 0.3px;
 }
 
 .edit-btn {
@@ -194,6 +268,8 @@
 .edit-btn:hover {
   background: #6f8f6b;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(111, 143, 107, 0.2);
 }
 
 .delete-btn {
@@ -205,71 +281,283 @@
 .delete-btn:hover {
   background: #b87c6e;
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(184, 124, 110, 0.2);
+}
+
+/* Bouton d'activation */
+.activate-btn {
+  width: 100%;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6f8f6b 0%, #8aae85 100%);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.activate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(111, 143, 107, 0.3);
+}
+
+.activate-btn:active {
+  transform: translateY(0);
+}
+
+.edit-btn:active,
+.delete-btn:active,
+.activate-btn:active {
+  transform: translateY(0);
+}
+
+/* Les boutons ne doivent pas avoir l'effet de survol de la carte */
+.product-actions button:hover {
+  transform: translateY(-2px);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .product-card-image {
-    height: 130px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-product-card {
+    border-radius: 20px;
+  }
+
+  .product-card-image {
+    height: 160px;
   }
 
   .price-ribbon {
-    top: 6px;
-    padding: 3px 10px;
+    top: 8px;
+    padding: 4px 12px;
   }
 
   .price-value {
     font-size: 0.75rem;
   }
 
+  .inactive-badge,
+  .deleted-badge {
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+  }
+
   .product-info {
-    padding: 8px 10px 6px 10px;
+    padding: 12px 12px 10px 12px;
   }
 
   .product-name {
-    font-size: 0.85rem;
-    margin-bottom: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
   }
 
   .product-description {
     font-size: 0.7rem;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .product-category {
     font-size: 0.65rem;
-    margin-bottom: 6px;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+
+  .product-details {
+    padding-top: 6px;
+  }
+
+  .product-quantity,
+  .product-status {
+    font-size: 0.65rem;
+    padding: 3px 8px;
   }
 
   .product-actions {
-    padding: 6px 10px 8px 10px;
-    gap: 6px;
+    padding: 10px 12px 14px 12px;
+    gap: 8px;
   }
 
   .edit-btn,
   .delete-btn {
-    padding: 5px 8px;
-    font-size: 0.65rem;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+
+  .activate-btn {
+    padding: 8px 16px;
+    font-size: 0.75rem;
   }
 }
 
-/* AdminProductCard.css */
-.admin-product-card {
-  cursor: pointer; /* Change le curseur en main */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+@media (max-width: 480px) {
+  .product-card-image {
+    height: 140px;
+  }
+
+  .product-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+/* Switch Container */
+.switch-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0ede8;
 }
 
-.admin-product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-/* Les boutons ne doivent pas avoir l'effet de survol de la carte */
-.product-actions button:hover {
-  transform: none;
+.switch-text {
+  color: #8a8a8a;
+  transition: color 0.3s ease;
 }
 
-/* Optionnel : ajouter une légère indication visuelle */
-.admin-product-card:active {
-  transform: translateY(-2px);
+.switch-label:has(.switch-input:checked) .switch-text {
+  color: #6f8f6b;
+}
+
+.switch-label:has(.switch-input:not(:checked)) .switch-text {
+  color: #b87c6e;
+}
+
+/* Wrapper du switch */
+.switch-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 26px;
+}
+
+/* Cache la checkbox par défaut */
+.switch-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f0ede8;
+  transition: 0.3s;
+  border-radius: 34px;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* État actif (ON) */
+.switch-input:checked + .switch-slider {
+  background: linear-gradient(135deg, #6f8f6b 0%, #8aae85 100%);
+}
+
+.switch-input:checked + .switch-slider:before {
+  transform: translateX(26px);
+}
+
+/* État inactif (OFF) */
+.switch-input:not(:checked) + .switch-slider {
+  background: linear-gradient(135deg, #b87c6e 0%, #c98a7a 100%);
+}
+
+/* Hover effects */
+.switch-label:hover .switch-slider:before {
+  transform: scale(1.1);
+}
+
+.switch-input:checked:hover + .switch-slider:before {
+  transform: translateX(26px) scale(1.1);
+}
+
+/* Disabled state */
+.switch-input:disabled + .switch-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch-input:disabled + .switch-slider:before {
+  transform: scale(0.9);
+}
+
+/* Animation de chargement */
+.switch-input:disabled + .switch-slider {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+/* Conteneur des boutons d'action */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Ajustement pour le responsive */
+@media (max-width: 768px) {
+  .switch-container {
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+
+  .switch-wrapper {
+    width: 46px;
+    height: 24px;
+  }
+
+  .switch-slider:before {
+    height: 18px;
+    width: 18px;
+  }
+
+  .switch-input:checked + .switch-slider:before {
+    transform: translateX(22px);
+  }
+
+  .switch-text {
+    font-size: 0.75rem;
+  }
 }
