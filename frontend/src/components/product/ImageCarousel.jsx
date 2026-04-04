@@ -27,7 +27,7 @@ const ImageCarousel = ({ images }) => {
         alt={`Image ${currentIndex + 1}`}
         className="carousel-image"
       />
-      
+
 
       {safeImages.length > 1 && (
         <button className="carousel-btn carousel-btn-next" onClick={next}>

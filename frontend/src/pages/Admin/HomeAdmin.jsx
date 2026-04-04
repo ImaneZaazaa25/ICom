@@ -19,7 +19,6 @@ const HomeAdmin = () => {
 
   const categories = useCategories();
 
-  // Filtrer uniquement les produits ACTIFS (statut = true)
   const activeProducts = useMemo(() => {
     const allProducts = filterProducts(products, filters);
     return allProducts.filter(product => product.statut === true);
@@ -51,33 +50,18 @@ const HomeAdmin = () => {
     setIsModalOpen(true);
   }, []);
 
-  const handleModalSubmit = useCallback(async (productData) => {
-    setActionLoading(true);
-    try {
-      if (editingProduct) {
-        await updateProduct(editingProduct.id, productData);
-        alert("✅ Produit modifié avec succès !");
-      } else {
-        await createProduct(productData);
-        alert("✅ Produit ajouté avec succès !");
-      }
-      await refreshProducts();
-      setIsModalOpen(false);
-      setEditingProduct(null);
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement:", error);
-      alert("❌ Erreur lors de l'enregistrement du produit");
-    } finally {
-      setActionLoading(false);
-    }
-  }, [editingProduct, refreshProducts]);
+  const handleModalSubmit = useCallback(async () => {
+    // Cette fonction est appelée après l'enregistrement dans le modal
+    await refreshProducts();
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  }, [refreshProducts]);
 
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditingProduct(null);
   }, []);
 
-  // Fonction pour activer/désactiver un produit
   const handleToggleStatus = useCallback(async (productId, newStatus) => {
     setActionLoading(true);
     try {
@@ -99,7 +83,7 @@ const HomeAdmin = () => {
   return (
     <div className="home-admin" id="admin-products-page">
       <div className="admin-header">
-        <h1 id="admin-title"> Administration des Produits Actifs</h1>
+        <h1 id="admin-title">Administration des Produits Actifs</h1>
         <button
           id="add-product-btn"
           className="add-product-btn"
@@ -127,7 +111,7 @@ const HomeAdmin = () => {
       ) : (
         <>
           <div id="products-stats" className="products-stats">
-             {activeProducts.length} produit(s) actif(s) trouvé(s)
+            {activeProducts.length} produit(s) actif(s) trouvé(s)
           </div>
           <div id="admin-products-grid" className="admin-products-grid">
             {activeProducts.map((product) => (
