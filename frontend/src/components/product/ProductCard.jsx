@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ImageCarousel from "./ImageCarousel";
 import { formatPrice } from "../../utils/formatPrice";
+import PropTypes from "prop-types";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -39,5 +40,17 @@ const ProductCard = ({ product }) => {
     </div>
   );
 };
-
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    nom: PropTypes.string.isRequired,
+    prix: PropTypes.number.isRequired,
+    images: PropTypes.arrayOf(PropTypes.shape({
+      url: PropTypes.string.isRequired,
+    })),
+    categorie: PropTypes.shape({
+      nom: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
 export default ProductCard;

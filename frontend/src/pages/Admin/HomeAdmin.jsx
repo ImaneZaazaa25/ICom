@@ -1,44 +1,30 @@
 // src/pages/admin/HomeAdmin.jsx
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import useProducts from "../../hooks/useProducts";
 import useFilters from "../../hooks/useFilters";
-import { getAllCategories } from "../../api/categoryApi";
 import { updateProduct, deleteProduct, createProduct } from "../../api/adminApi";
 import AdminProductCard from "../../components/admin/AdminProductCard";
 import ProductFilters from "../../components/product/ProductFilters";
 import ProductModal from "../../components/admin/ProductModal";
+import { filterProducts } from "../../utils/filterProducts";
+import useCategories from "../../hooks/useCategories";
 import "./HomeAdmin.css";
 
 const HomeAdmin = () => {
   const { products, loading, error, refreshProducts } = useProducts();
   const { filters, updateFilter, resetFilters } = useFilters();
-  const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
+  
+  const categories = useCategories();
 
-  useEffect(() => {
-    getAllCategories()
-      .then((data) => {
-        console.log("Categories:", data);
-        setCategories(data);
-      })
-      .catch((err) => console.error("Erreur chargement catégories:", err));
-  }, []);
 
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const matchNom = product.nom
-        .toLowerCase()
-        .includes(filters.nom.toLowerCase());
-      const matchCategorie =
-        !filters.categorieId || product.categorie?.id === filters.categorieId;
-      const matchPrixMin = product.prix >= filters.prixMin;
-      const matchPrixMax = product.prix <= filters.prixMax;
-      return matchNom && matchCategorie && matchPrixMin && matchPrixMax;
-    });
-  }, [products, filters]);
+  const filteredProducts = useMemo(
+    () => filterProducts(products, filters),
+    [products, filters]
+  );
 
   const handleEdit = useCallback((product) => {
     setEditingProduct(product);
@@ -66,29 +52,11 @@ const HomeAdmin = () => {
     setIsModalOpen(true);
   }, []);
 
-  const handleModalSubmit = useCallback(async (productData) => {
-    setActionLoading(true);
-    try {
-      if (editingProduct) {
-        // Update existing product
-        await updateProduct(editingProduct.id, productData);
-        alert("Produit modifié avec succès !");
-      } else {
-        // Create new product
-        await createProduct(productData);
-        alert("Produit ajouté avec succès !");
-      }
-      await refreshProducts();
-      setIsModalOpen(false);
-      setEditingProduct(null);
-    } catch (error) {
-      console.error("Erreur lors de l'enregistrement:", error);
-      alert("Erreur lors de l'enregistrement du produit");
-    } finally {
-      setActionLoading(false);
-    }
-  }, [editingProduct, refreshProducts]);
-
+  const handleModalSubmit = useCallback(async () => {
+    await refreshProducts();
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  }, [refreshProducts]);
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditingProduct(null);

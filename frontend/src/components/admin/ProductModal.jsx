@@ -1,77 +1,138 @@
 // src/components/admin/ProductModal.jsx
-import React, { useState, useEffect } from 'react';
-import './ProductModal.css';
+import React, { useState, useEffect } from "react";
+import "./ProductModal.css";
+import axios from "axios";
 
 const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
   const [formData, setFormData] = useState({
-    nom: '',
-    description: '',
-    prix: '',
-    quantite: '',
+    nom: "",
+    description: "",
+    prix: "",
+    quantite: "",
     statut: true,
-    categoryId: '',
-    images: []
+    categoryId: "",
+    images: [], // fichiers sélectionnés
   });
-
-  const [imageInput, setImageInput] = useState('');
 
   useEffect(() => {
     if (product) {
       setFormData({
-        nom: product.nom || '',
-        description: product.description || '',
-        prix: product.prix || '',
-        quantite: product.quantite || '',
-        statut: product.statut !== undefined ? product.statut : true,
-        categoryId: product.categorie?.id || '',
-        images: product.images?.map(img => img.url) || []
+        nom: product.nom || "",
+        description: product.description || "",
+        prix: product.prix || "",
+        quantite: product.quantite || "",
+        statut: product.statut ?? true,
+        categoryId: product.categorie?.id || "",
+        images: [],
       });
     } else {
       setFormData({
-        nom: '',
-        description: '',
-        prix: '',
-        quantite: '',
+        nom: "",
+        description: "",
+        prix: "",
+        quantite: "",
         statut: true,
-        categoryId: '',
-        images: []
+        categoryId: "",
+        images: [],
       });
     }
   }, [product]);
 
+  // Texte, checkbox, select
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  const handleAddImage = () => {
-    if (imageInput.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        images: [...prev.images, imageInput.trim()]
-      }));
-      setImageInput('');
-    }
+  // Sélection de fichiers depuis l'ordi
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
   };
 
+  // Supprimer un fichier sélectionné
   const handleRemoveImage = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index)
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({
-      ...formData,
-      prix: parseFloat(formData.prix),
-      quantite: parseInt(formData.quantite)
-    });
-  };
+  // Soumission du produit
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem("token");
+
+        // ✅ Ajouter ici
+        console.log("Token:", token);
+        console.log("Images sélectionnées:", formData.images);
+
+      try {
+        // 1️⃣ Créer ou modifier le produit (JSON)
+        const token = localStorage.getItem("token");
+        let productId = product?.id;
+
+        if (productId) {
+          // Modifier
+          await axios.put(
+            `http://localhost:9091/api/produits/${productId}`,
+            {
+              nom: formData.nom,
+              description: formData.description,
+              prix: parseFloat(formData.prix),
+              quantite: parseInt(formData.quantite),
+              statut: formData.statut,
+              categoryId: formData.categoryId,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } else {
+          // Créer
+          const res = await axios.post(
+            "http://localhost:9091/api/produits",
+            {
+              nom: formData.nom,
+              description: formData.description,
+              prix: parseFloat(formData.prix),
+              quantite: parseInt(formData.quantite),
+              statut: formData.statut,
+              categoryId: formData.categoryId,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          productId = res.data.id;
+        }
+
+        // 2️⃣ Upload images (si sélectionnées)
+        if (formData.images.length > 0) {
+          const imageData = new FormData();
+          formData.images.forEach((file) => imageData.append("files", file));
+
+          await axios.post(
+            `http://localhost:9091/api/images/upload/${productId}`,
+            imageData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+        }
+
+        alert("Produit enregistré avec succès !");
+        onSubmit(); // rafraîchir la liste dans HomeAdmin
+        onClose();
+      } catch (error) {
+        console.error(error);
+      };
+    };
 
   if (!isOpen) return null;
 
@@ -79,13 +140,16 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>{product ? 'Modifier le produit' : 'Ajouter un produit'}</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
+          <h2>{product ? "Modifier le produit" : "Ajouter un produit"}</h2>
+          <button className="close-btn" onClick={onClose}>
+            ×
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
+          {/* Nom */}
           <div className="form-group">
-            <label>Nom du produit *</label>
+            <label>Nom *</label>
             <input
               type="text"
               name="nom"
@@ -95,6 +159,7 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
             />
           </div>
 
+          {/* Description */}
           <div className="form-group">
             <label>Description</label>
             <textarea
@@ -105,6 +170,7 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
             />
           </div>
 
+          {/* Prix et quantité */}
           <div className="form-row">
             <div className="form-group">
               <label>Prix (MAD) *</label>
@@ -117,7 +183,6 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
                 required
               />
             </div>
-
             <div className="form-group">
               <label>Quantité *</label>
               <input
@@ -130,6 +195,7 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
             </div>
           </div>
 
+          {/* Catégorie */}
           <div className="form-group">
             <label>Catégorie</label>
             <select
@@ -138,14 +204,15 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
               onChange={handleChange}
             >
               <option value="">Sélectionner une catégorie</option>
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.nom}
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.nom}
                 </option>
               ))}
             </select>
           </div>
 
+          {/* Statut */}
           <div className="form-group">
             <label className="checkbox-label">
               <input
@@ -158,24 +225,23 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
             </label>
           </div>
 
+          {/* Images */}
           <div className="form-group">
             <label>Images</label>
-            <div className="image-input-group">
-              <input
-                type="url"
-                value={imageInput}
-                onChange={(e) => setImageInput(e.target.value)}
-                placeholder="URL de l'image"
-              />
-              <button type="button" onClick={handleAddImage}>
-                Ajouter
-              </button>
-            </div>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+            />
             <div className="image-list">
-              {formData.images.map((url, index) => (
+              {formData.images.map((file, index) => (
                 <div key={index} className="image-item">
-                  <img src={url} alt={`Image ${index + 1}`} />
-                  <button type="button" onClick={() => handleRemoveImage(index)}>
+                  <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                  >
                     Supprimer
                   </button>
                 </div>
@@ -183,12 +249,13 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
             </div>
           </div>
 
+          {/* Actions */}
           <div className="modal-actions">
             <button type="button" onClick={onClose} className="cancel-btn">
               Annuler
             </button>
             <button type="submit" className="submit-btn">
-              {product ? 'Modifier' : 'Ajouter'}
+              {product ? "Modifier" : "Ajouter"}
             </button>
           </div>
         </form>

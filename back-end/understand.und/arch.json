@@ -1,0 +1,15 @@
+{
+    "auto": {
+        "Directory Structure 1": {
+            "name": "Directory Structure",
+            "options": {
+                "dir-excludes": "",
+                "file-excludes": ""
+            }
+        }
+    },
+    "ents": {
+    },
+    "tags": [
+    ]
+}
