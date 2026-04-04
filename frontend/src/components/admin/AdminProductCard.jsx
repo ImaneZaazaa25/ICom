@@ -1,10 +1,18 @@
 // src/components/admin/AdminProductCard.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Ajout de l'import
 import ImageCarousel from '../product/ImageCarousel';
 import { formatPrice } from "../../utils/formatPrice";
 import './AdminProductCard.css';
 
 const AdminProductCard = ({ product, onEdit, onDelete }) => {
+  const navigate = useNavigate(); // Ajout du hook de navigation
+
+  // Nouvelle fonction pour la navigation au clic sur la carte
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   const handleEdit = (e) => {
     e.stopPropagation();
     onEdit(product);
@@ -27,7 +35,7 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="admin-product-card">
+    <div className="admin-product-card" onClick={handleCardClick}> {/* Ajout de onClick ici */}
       {/* Bande de prix attirante */}
       <div className="price-ribbon">
         <span className="price-value">{formatPrice(product.prix)}</span>
