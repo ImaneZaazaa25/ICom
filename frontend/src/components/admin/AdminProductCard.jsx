@@ -1,62 +1,56 @@
 // src/components/admin/AdminProductCard.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Ajout de l'import
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../product/ImageCarousel';
 import { formatPrice } from "../../utils/formatPrice";
 import './AdminProductCard.css';
-import { loadImageWithAuth } from "../../utils/loadImageWithAuth";
 
-const AdminProductCard = ({ product, onEdit, onDelete }) => {
-  const navigate = useNavigate(); // Ajout du hook de navigation
+const AdminProductCard = ({
+  product,
+  onEdit,
+  onDelete,
+  onToggleStatus,
+  showEditDelete = true,
+  showToggle = false,
+  showStatus = true,
+  variant = 'default'
+}) => {
+  const navigate = useNavigate();
+  const [isToggling, setIsToggling] = useState(false);
 
-  // Nouvelle fonction pour la navigation au clic sur la carte
   const handleCardClick = () => {
     navigate(`/products/${product.id}`);
   };
 
   const handleEdit = (e) => {
     e.stopPropagation();
-    onEdit(product);
+    if (onEdit) onEdit(product);
   };
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer le produit "${product.nom}" ?`)) {
+    if (onDelete && window.confirm(`Êtes-vous sûr de vouloir supprimer le produit "${product.nom}" ?`)) {
       onDelete(product.id);
     }
   };
 
-const [imageUrls, setImageUrls] = React.useState([]);
+  const handleToggleStatus = async (e) => {
+    e.stopPropagation();
+    const newStatus = !product.statut;
+    const action = newStatus ? 'activer' : 'désactiver';
 
-React.useEffect(() => {
-
-  const fetchImages = async () => {
-
-    if (!product.images) return;
-
-    const urls = await Promise.all(
-      product.images.map(img =>
-        loadImageWithAuth(`http://localhost:9091/uploads/${img.url}`)
-      )
-    );
-
-    setImageUrls(urls.filter(Boolean));
+    if (window.confirm(`Êtes-vous sûr de vouloir ${action} le produit "${product.nom}" ?`)) {
+      setIsToggling(true);
+      try {
+        await onToggleStatus(product.id, newStatus);
+      } finally {
+        setIsToggling(false);
+      }
+    }
   };
 
-  fetchImages();
+  const imageUrls = product.images?.map(img => `http://localhost:9091/uploads/${img.url}`) || [];
 
-}, [product.images]);
-
-React.useEffect(() => {
-
-  return () => {
-    imageUrls.forEach(url => URL.revokeObjectURL(url));
-  };
-
-}, [imageUrls]);
-
-
-  // Tronquer la description si trop longue
   const truncateDescription = (text, maxLength = 80) => {
     if (!text) return '';
     if (text.length <= maxLength) return text;
@@ -64,13 +58,26 @@ React.useEffect(() => {
   };
 
   return (
-    <div className="admin-product-card" onClick={handleCardClick}> {/* Ajout de onClick ici */}
-      {/* Bande de prix attirante */}
+    <div
+      id={`product-card-${product.id}`}
+      className={`admin-product-card ${variant === 'inactive' ? 'inactive-variant' : ''}`}
+      onClick={handleCardClick}
+      data-product-id={product.id}
+      data-product-name={product.nom}
+    >
       <div className="price-ribbon">
-        <span className="price-value">{formatPrice(product.prix)}</span>
+        <span
+          id={`product-price-${product.id}`}
+          className="price-value"
+        >
+          {formatPrice(product.prix)}
+        </span>
       </div>
 
-      <div className="product-card-image">
+      <div
+        id={`product-image-${product.id}`}
+        className="product-card-image"
+      >
         {imageUrls.length > 1 ? (
           <ImageCarousel images={imageUrls} />
         ) : imageUrls.length === 1 ? (
@@ -85,37 +92,92 @@ React.useEffect(() => {
       </div>
 
       <div className="product-info">
-        <h3 className="product-name">{product.nom}</h3>
+        <h3
+          id={`product-name-${product.id}`}
+          className="product-name"
+        >
+          {product.nom}
+        </h3>
 
-        {/* Description */}
         {product.description && (
-          <p className="product-description">
+          <p
+            id={`product-desc-${product.id}`}
+            className="product-description"
+          >
             {truncateDescription(product.description)}
           </p>
         )}
 
-        {/* Catégorie */}
         {product.categorie && (
-          <div className="product-category">
-            {product.categorie.nom}
+          <div
+            id={`product-category-${product.id}`}
+            className="product-category"
+          >
+             {product.categorie.nom}
           </div>
         )}
 
         <div className="product-details">
-          <span className="product-quantity">{product.quantite} en stock</span>
-          <span className={`product-status ${product.statut ? 'active' : 'inactive'}`}>
-            {product.statut ? 'Actif' : 'Inactif'}
+          <span
+            id={`product-quantity-${product.id}`}
+            className="product-quantity"
+          >
+             {product.quantite} en stock
           </span>
+
+          {showStatus && (
+            <span
+              id={`product-status-${product.id}`}
+              className={`product-status ${product.statut ? 'active' : 'inactive'}`}
+            >
+              {product.statut ? ' Actif' : ' Inactif'}
+            </span>
+          )}
         </div>
       </div>
 
       <div className="product-actions">
-        <button className="edit-btn" onClick={handleEdit}>
-          Modifier
-        </button>
-        <button className="delete-btn" onClick={handleDelete}>
-          Supprimer
-        </button>
+        {/* Switch Toggle pour activation/désactivation */}
+        {showToggle && (
+          <div className="switch-container" onClick={(e) => e.stopPropagation()}>
+            <label className="switch-label">
+              <span className="switch-text">
+                {product.statut ? 'Actif' : 'Inactif'}
+              </span>
+              <div className="switch-wrapper">
+                <input
+                  id={`switch-${product.id}`}
+                  type="checkbox"
+                  className="switch-input"
+                  checked={product.statut}
+                  onChange={handleToggleStatus}
+                  disabled={isToggling}
+                />
+                <span className="switch-slider"></span>
+              </div>
+            </label>
+          </div>
+        )}
+
+        {/* Boutons Modifier/Supprimer */}
+        {showEditDelete && (
+          <div className="action-buttons">
+            <button
+              id={`edit-product-${product.id}`}
+              className="edit-btn"
+              onClick={handleEdit}
+            >
+               Modifier
+            </button>
+            <button
+              id={`delete-product-${product.id}`}
+              className="delete-btn"
+              onClick={handleDelete}
+            >
+               Supprimer
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

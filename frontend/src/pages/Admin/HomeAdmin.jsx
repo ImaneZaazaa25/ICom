@@ -16,15 +16,14 @@ const HomeAdmin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
-  const [showAddButton, setShowAddButton] = useState(true);
-  
+
   const categories = useCategories();
 
-
-  const filteredProducts = useMemo(
-    () => filterProducts(products, filters),
-    [products, filters]
-  );
+  // Filtrer uniquement les produits ACTIFS (statut = true)
+  const activeProducts = useMemo(() => {
+    const allProducts = filterProducts(products, filters);
+    return allProducts.filter(product => product.statut === true);
+  }, [products, filters]);
 
   const handleEdit = useCallback((product) => {
     setEditingProduct(product);
@@ -37,10 +36,10 @@ const HomeAdmin = () => {
       try {
         await deleteProduct(productId);
         await refreshProducts();
-        alert("Produit supprimé avec succès !");
+        alert("✅ Produit supprimé avec succès !");
       } catch (error) {
         console.error("Erreur lors de la suppression:", error);
-        alert("Erreur lors de la suppression du produit");
+        alert("❌ Erreur lors de la suppression du produit");
       } finally {
         setActionLoading(false);
       }
@@ -52,56 +51,103 @@ const HomeAdmin = () => {
     setIsModalOpen(true);
   }, []);
 
-  const handleModalSubmit = useCallback(async () => {
-    await refreshProducts();
-    setIsModalOpen(false);
-    setEditingProduct(null);
-  }, [refreshProducts]);
+  const handleModalSubmit = useCallback(async (productData) => {
+    setActionLoading(true);
+    try {
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, productData);
+        alert("✅ Produit modifié avec succès !");
+      } else {
+        await createProduct(productData);
+        alert("✅ Produit ajouté avec succès !");
+      }
+      await refreshProducts();
+      setIsModalOpen(false);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement:", error);
+      alert("❌ Erreur lors de l'enregistrement du produit");
+    } finally {
+      setActionLoading(false);
+    }
+  }, [editingProduct, refreshProducts]);
+
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setEditingProduct(null);
   }, []);
 
+  // Fonction pour activer/désactiver un produit
+  const handleToggleStatus = useCallback(async (productId, newStatus) => {
+    setActionLoading(true);
+    try {
+      const productToUpdate = activeProducts.find(p => p.id === productId);
+      if (productToUpdate) {
+        const updatedProduct = { ...productToUpdate, statut: newStatus };
+        await updateProduct(productId, updatedProduct);
+        await refreshProducts();
+        alert(`✅ Produit ${newStatus ? 'activé' : 'désactivé'} avec succès !`);
+      }
+    } catch (error) {
+      console.error("Erreur lors du changement de statut:", error);
+      alert("❌ Erreur lors du changement de statut du produit");
+    } finally {
+      setActionLoading(false);
+    }
+  }, [activeProducts, refreshProducts]);
+
   return (
-    <div className="home-admin">
+    <div className="home-admin" id="admin-products-page">
       <div className="admin-header">
-        <h1>Administration des Produits</h1>
-        <button className="add-product-btn" onClick={handleAddProduct}>
+        <h1 id="admin-title"> Administration des Produits Actifs</h1>
+        <button
+          id="add-product-btn"
+          className="add-product-btn"
+          onClick={handleAddProduct}
+        >
           + Ajouter un produit
         </button>
       </div>
 
-      <ProductFilters
-        filters={filters}
-        onFilterChange={updateFilter}
-        onReset={resetFilters}
-        categories={categories}
-      />
+      <div id="product-filters-section">
+        <ProductFilters
+          filters={filters}
+          onFilterChange={updateFilter}
+          onReset={resetFilters}
+          categories={categories}
+        />
+      </div>
 
       {loading ? (
-        <div className="loading-spinner">Chargement des produits...</div>
+        <div id="loading-spinner" className="loading-spinner">Chargement des produits actifs...</div>
       ) : error ? (
-        <div className="error-message">
+        <div id="error-message" className="error-message">
           Erreur: {error.message || "Une erreur est survenue"}
         </div>
       ) : (
         <>
-          <div className="products-stats">
-            {filteredProducts.length} produit(s) trouvé(s)
+          <div id="products-stats" className="products-stats">
+             {activeProducts.length} produit(s) actif(s) trouvé(s)
           </div>
-          <div className="admin-products-grid">
-            {filteredProducts.map((product) => (
+          <div id="admin-products-grid" className="admin-products-grid">
+            {activeProducts.map((product) => (
               <AdminProductCard
                 key={product.id}
                 product={product}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onToggleStatus={handleToggleStatus}
+                showEditDelete={true}
+                showToggle={true}
+                showStatus={true}
               />
             ))}
           </div>
-          {filteredProducts.length === 0 && (
-            <div className="no-products">
-              Aucun produit ne correspond à vos critères
+          {activeProducts.length === 0 && (
+            <div id="no-products-message" className="no-products">
+              <div className="no-products-icon"></div>
+              <h3>Aucun produit actif</h3>
+              <p>Aucun produit actif ne correspond à vos critères</p>
             </div>
           )}
         </>
@@ -116,7 +162,7 @@ const HomeAdmin = () => {
       />
 
       {actionLoading && (
-        <div className="action-overlay">
+        <div id="action-overlay" className="action-overlay">
           <div className="loading-spinner">Traitement en cours...</div>
         </div>
       )}
