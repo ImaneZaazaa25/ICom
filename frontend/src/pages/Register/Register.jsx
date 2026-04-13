@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useAuth from '../../hooks/useAuth';
+import { register as registerUser } from "../../api/userApi";
 import "./Register.css";
 
 function Register() {
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -28,7 +27,6 @@ function Register() {
       [name]: value
     }));
 
-    // Vérifier la force du mot de passe
     if (name === "password") {
       checkPasswordStrength(value);
     }
@@ -53,7 +51,7 @@ function Register() {
   };
 
   const getStrengthText = () => {
-    switch(passwordStrength) {
+    switch (passwordStrength) {
       case "weak": return "Faible";
       case "medium": return "Moyen";
       case "strong": return "Fort";
@@ -102,20 +100,15 @@ function Register() {
       status: "Active"
     };
 
-    console.log("Données envoyées :", userData);
-
     try {
-      const result = await register(userData);
-      console.log("Réponse du backend :", result);
+      await registerUser(userData);
       setMessage("Inscription réussie ! Redirection vers la page de connexion...");
 
-      // Rediriger après 2 secondes
       setTimeout(() => {
         navigate("/login");
       }, 2000);
 
     } catch (err) {
-      console.error("Erreur lors de l'inscription :", err.response || err.message || err);
       setError(err.response?.data?.message || "Erreur lors de l'inscription. Veuillez réessayer.");
     } finally {
       setLoading(false);
@@ -135,10 +128,12 @@ function Register() {
           <p>Rejoignez-nous et découvrez nos produits</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="register-form">
+        <form id="register-form" onSubmit={handleSubmit} className="register-form" noValidate>
           <div className="form-row">
             <div className="form-group">
+              <label htmlFor="register-lastname-input">Nom</label>
               <input
+                id="register-lastname-input"
                 type="text"
                 name="nom"
                 placeholder="Nom"
@@ -146,15 +141,12 @@ function Register() {
                 onChange={handleChange}
                 required
               />
-              <div className="input-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-              </div>
             </div>
 
             <div className="form-group">
+              <label htmlFor="register-firstname-input">Prénom</label>
               <input
+                id="register-firstname-input"
                 type="text"
                 name="prenom"
                 placeholder="Prénom"
@@ -162,16 +154,13 @@ function Register() {
                 onChange={handleChange}
                 required
               />
-              <div className="input-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-              </div>
             </div>
           </div>
 
           <div className="form-group">
+            <label htmlFor="register-username-input">Nom d'utilisateur</label>
             <input
+              id="register-username-input"
               type="text"
               name="username"
               placeholder="Nom d'utilisateur"
@@ -179,15 +168,12 @@ function Register() {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
-            </div>
           </div>
 
           <div className="form-group">
+            <label htmlFor="register-email-input">Email</label>
             <input
+              id="register-email-input"
               type="email"
               name="email"
               placeholder="Email"
@@ -195,15 +181,12 @@ function Register() {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
-            </div>
           </div>
 
           <div className="form-group">
+            <label htmlFor="register-phone-input">Téléphone</label>
             <input
+              id="register-phone-input"
               type="tel"
               name="tel"
               placeholder="Téléphone (10 chiffres)"
@@ -211,15 +194,12 @@ function Register() {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.28-.28.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-              </svg>
-            </div>
           </div>
 
           <div className="form-group">
+            <label htmlFor="register-password-input">Mot de passe</label>
             <input
+              id="register-password-input"
               type="password"
               name="password"
               placeholder="Mot de passe"
@@ -227,11 +207,6 @@ function Register() {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-              </svg>
-            </div>
             {passwordStrength && (
               <div className={`password-strength strength-${passwordStrength}`}>
                 Force du mot de passe : {getStrengthText()}
@@ -240,7 +215,9 @@ function Register() {
           </div>
 
           <button
-            type="submit"
+            id="register-submit-btn"
+            type="button"
+            onClick={handleSubmit}
             className="register-button"
             disabled={loading}
           >
@@ -256,10 +233,10 @@ function Register() {
         </form>
 
         {message && <div className="success-message">{message}</div>}
-        {error && <div className="error-message">{error}</div>}
+        {error && <div id="register-error-msg" className="error-message">{error}</div>}
 
         <div className="login-link">
-          Déjà un compte ? <Link to="/login">Connectez-vous</Link>
+          Déjà un compte ? <Link id="register-login-link" to="/login">Connectez-vous</Link>
         </div>
       </div>
     </div>

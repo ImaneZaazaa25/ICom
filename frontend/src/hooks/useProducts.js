@@ -1,7 +1,10 @@
-// src/hooks/useProducts.js
 import { useState, useEffect, useCallback } from 'react';
 import { getAllProducts } from '../api/productApi';
 
+/**
+ * Récupère et gère la liste complète des produits avec états de chargement et erreur.
+ * @returns {{ products: Array, loading: boolean, error: Error|null, refreshProducts: Function }}
+ */
 const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,4 +35,5 @@ const useProducts = () => {
   return { products, loading, error, refreshProducts };
 };
 
+export { useProducts };
 export default useProducts;

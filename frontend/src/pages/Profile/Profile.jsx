@@ -77,7 +77,6 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Client-side guards matching backend constraints
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       setClientError("Format d'email invalide.");
       return;
@@ -91,7 +90,6 @@ const Profile = () => {
       return;
     }
 
-    // Build partial DTO — only send non-empty fields
     const dto = {};
     if (form.nom.trim())        dto.nom        = form.nom.trim();
     if (form.prenom.trim())     dto.prenom     = form.prenom.trim();
@@ -134,7 +132,6 @@ const Profile = () => {
     <div className="profile-page">
       <div className="profile-container">
 
-        {/* Header */}
         <div className="profile-header">
           <div className="profile-avatar">{(p.prenom?.[0] ?? p.username?.[0] ?? "?").toUpperCase()}</div>
           <div>
@@ -144,10 +141,9 @@ const Profile = () => {
         </div>
 
         {saveSuccess && !editMode && (
-          <p className="profile-success">Profil mis à jour avec succès.</p>
+          <p id="profile-success-msg" className="profile-success">Profil mis à jour avec succès.</p>
         )}
 
-        {/* View mode */}
         {!editMode && (
           <div className="profile-card">
             <div className="profile-card-header">
@@ -181,7 +177,7 @@ const Profile = () => {
               <div className="profile-field">
                 <dt>Rôle</dt>
                 <dd>
-                  <span className={`profile-badge profile-badge-role`}>
+                  <span className="profile-badge profile-badge-role">
                     {ROLE_LABELS[p.role] ?? p.role}
                   </span>
                 </dd>
@@ -198,22 +194,21 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Edit mode */}
         {editMode && (
           <div className="profile-card">
             <div className="profile-card-header">
               <h2>Modifier mon profil</h2>
             </div>
 
-            {clientError && <ErrorMessage message={clientError} />}
-            {saveError   && <ErrorMessage message={saveError}   />}
+            {clientError && <ErrorMessage id="profile-error-msg" message={clientError} />}
+            {saveError   && <ErrorMessage id="profile-error-msg" message={saveError}   />}
 
-            <form className="profile-form" onSubmit={handleSubmit} noValidate>
+            <form id="profile-form" className="profile-form" onSubmit={handleSubmit} noValidate>
               <div className="profile-form-row">
                 <div className="profile-form-field">
-                  <label htmlFor="prenom">Prénom</label>
+                  <label htmlFor="profile-firstname-input">Prénom</label>
                   <input
-                    id="prenom"
+                    id="profile-firstname-input"
                     name="prenom"
                     type="text"
                     value={form.prenom}
@@ -222,9 +217,9 @@ const Profile = () => {
                   />
                 </div>
                 <div className="profile-form-field">
-                  <label htmlFor="nom">Nom</label>
+                  <label htmlFor="profile-lastname-input">Nom</label>
                   <input
-                    id="nom"
+                    id="profile-lastname-input"
                     name="nom"
                     type="text"
                     value={form.nom}
@@ -235,9 +230,9 @@ const Profile = () => {
               </div>
 
               <div className="profile-form-field">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="profile-email-input">Email</label>
                 <input
-                  id="email"
+                  id="profile-email-input"
                   name="email"
                   type="email"
                   value={form.email}
@@ -247,9 +242,9 @@ const Profile = () => {
               </div>
 
               <div className="profile-form-field">
-                <label htmlFor="tel">Téléphone</label>
+                <label htmlFor="profile-phone-input">Téléphone</label>
                 <input
-                  id="tel"
+                  id="profile-phone-input"
                   name="tel"
                   type="tel"
                   value={form.tel}
@@ -297,7 +292,7 @@ const Profile = () => {
               </div>
 
               <div className="profile-form-actions">
-                <button type="submit" className="profile-btn-save" disabled={saveLoading}>
+                <button id="profile-save-btn" type="submit" className="profile-btn-save" disabled={saveLoading}>
                   {saveLoading ? "Enregistrement…" : "Enregistrer"}
                 </button>
                 <button

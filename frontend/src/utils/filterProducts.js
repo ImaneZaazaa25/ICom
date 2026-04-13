@@ -1,15 +1,26 @@
-export const filterProducts = (products, filters) => {
+/**
+ * Filtre une liste de produits selon les critères fournis.
+ * Exclut toujours les produits inactifs (actif === false).
+ * @param {Array} products - Liste complète des produits
+ * @param {Object} filters - Critères : { search, categoryId, minPrice, maxPrice }
+ * @returns {Array} Liste filtrée
+ */
+export const filterProducts = (products, filters = {}) => {
+  const { search = "", categoryId = null, minPrice = null, maxPrice = null } = filters;
+
   return products.filter((product) => {
-    const matchNom = product.nom
-      .toLowerCase()
-      .includes(filters.nom.toLowerCase());
+    if (product.actif === false) return false;
+
+    const matchSearch =
+      !search ||
+      product.nom.toLowerCase().includes(search.toLowerCase());
 
     const matchCategorie =
-      !filters.categorieId || product.categorie?.id === filters.categorieId;
+      !categoryId || product.categorie?.id === categoryId;
 
-    const matchPrixMin = product.prix >= filters.prixMin;
-    const matchPrixMax = product.prix <= filters.prixMax;
+    const matchPrixMin = minPrice === null || product.prix >= minPrice;
+    const matchPrixMax = maxPrice === null || product.prix <= maxPrice;
 
-    return matchNom && matchCategorie && matchPrixMin && matchPrixMax;
+    return matchSearch && matchCategorie && matchPrixMin && matchPrixMax;
   });
 };

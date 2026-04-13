@@ -1,52 +1,58 @@
 import React from "react";
+import PropTypes from "prop-types";
 import useCarousel from "../../hooks/useCarousel";
 import { DEFAULT_IMAGE } from "../../utils/constants";
 
-const ImageCarousel = ({ images }) => {
+const ImageCarousel = ({ images, id }) => {
   const safeImages = images && images.length > 0 ? images : [];
-  const { currentIndex, prev, next, currentImage } = useCarousel(safeImages);
+  const { index, prev, next, currentImage } = useCarousel(safeImages);
 
   if (safeImages.length === 0) {
     return (
-      <div className="image-carousel">
-        <img src={DEFAULT_IMAGE} alt="Placeholder" className="carousel-image" />
+      <div id={id || "carousel-container"} className="image-carousel">
+        <img id="carousel-active-img" src={DEFAULT_IMAGE} alt="Placeholder" className="carousel-image" />
       </div>
     );
   }
 
   return (
-    <div className="image-carousel">
+    <div id={id || "carousel-container"} className="image-carousel">
       {safeImages.length > 1 && (
-        <button className="carousel-btn carousel-btn-prev" onClick={prev}>
+        <button id="carousel-prev-btn" className="carousel-btn carousel-btn-prev" onClick={prev}>
           &#8249;
         </button>
       )}
 
-     <img
-        src={currentImage}  // was currentImage?.url
-        alt={`Image ${currentIndex + 1}`}
+      <img
+        id="carousel-active-img"
+        src={currentImage}
+        alt={`Image ${index + 1}`}
         className="carousel-image"
       />
 
-
       {safeImages.length > 1 && (
-        <button className="carousel-btn carousel-btn-next" onClick={next}>
+        <button id="carousel-next-btn" className="carousel-btn carousel-btn-next" onClick={next}>
           &#8250;
         </button>
       )}
 
       {safeImages.length > 1 && (
         <div className="carousel-dots">
-          {safeImages.map((_, index) => (
-            <span
-              key={index}
-              className={`carousel-dot ${index === currentIndex ? "active" : ""}`}
-            />
-          ))}
+        {safeImages.map((img, i) => (
+          <span
+            key={img}
+            className={`carousel-dot ${i === index ? "active" : ""}`}
+          />
+        ))}
         </div>
       )}
     </div>
   );
+};
+
+ImageCarousel.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.string),
+  id: PropTypes.string,
 };
 
 export default ImageCarousel;

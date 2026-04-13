@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class Panier {
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User client;
+
+    // Colonne exigée NOT NULL par la DB — la valeur réelle est calculée dans buildDTO()
+    @Column(name = "total", nullable = false)
+    private BigDecimal total = BigDecimal.ZERO;
 
     // orphanRemoval = true : si on supprime une ligne du panier, elle est supprimée en BDD
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)

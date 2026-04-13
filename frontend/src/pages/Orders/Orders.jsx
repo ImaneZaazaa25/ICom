@@ -74,11 +74,11 @@ const Orders = () => {
 
   return (
     <div className="orders-page">
-      <div className="orders-container">
+      <div id="orders-list-container" className="orders-container">
         <h1 className="orders-title">Mes commandes</h1>
 
         {state.commandes.length === 0 ? (
-          <div className="orders-empty">
+          <div id="orders-empty-msg" className="orders-empty">
             <p className="orders-empty-text">Vous n'avez pas encore de commandes.</p>
             <Link to="/products" className="orders-btn-shop">
               Découvrir nos produits
@@ -87,7 +87,7 @@ const Orders = () => {
         ) : (
           <div className="orders-list">
             {state.commandes.map((commande) => (
-              <div key={commande.id} className="order-card">
+              <div key={commande.id} id={`order-card-${commande.id}`} className="order-card">
                 <button
                   className="order-card-header"
                   onClick={() => toggleOpen(commande.id)}
@@ -95,13 +95,20 @@ const Orders = () => {
                 >
                   <div className="order-card-meta">
                     <span className="order-card-id">Commande #{commande.id}</span>
-                    <span className="order-card-date">{formatDate(commande.dateCommande)}</span>
+                    <span id={`order-date-${commande.id}`} className="order-card-date">
+                      {formatDate(commande.dateCommande)}
+                    </span>
                   </div>
                   <div className="order-card-right">
-                    <span className={`order-card-status order-status-${commande.etat.toLowerCase()}`}>
+                    <span
+                      id={`order-status-${commande.id}`}
+                      className={`order-card-status order-status-${commande.etat.toLowerCase()}`}
+                    >
                       {ETAT_LABELS[commande.etat] ?? commande.etat}
                     </span>
-                    <span className="order-card-total">{formatPrice(commande.total)}</span>
+                    <span id={`order-total-${commande.id}`} className="order-card-total">
+                      {formatPrice(commande.total)}
+                    </span>
                     <span className="order-card-chevron">
                       {openId === commande.id ? "▲" : "▼"}
                     </span>

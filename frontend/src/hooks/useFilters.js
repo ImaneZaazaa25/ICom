@@ -1,20 +1,36 @@
 import { useState } from "react";
 
+/**
+ * Gère l'état des filtres de recherche de produits.
+ * @returns {{ searchTerm: string, categoryId: number|null, minPrice: number|null, maxPrice: number|null,
+ *   setSearchTerm: Function, setCategoryId: Function, setMinPrice: Function, setMaxPrice: Function,
+ *   resetFilters: Function }}
+ */
 const useFilters = () => {
-  const [filters, setFilters] = useState({
-    nom: "",
-    categorieId: null,
-    prixMin: 0,
-    prixMax: 999999,
-  });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryId, setCategoryId] = useState(null);
+  const [minPrice, setMinPrice] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(null);
 
-  const updateFilter = (key, value) =>
-    setFilters((prev) => ({ ...prev, [key]: value }));
+  const resetFilters = () => {
+    setSearchTerm("");
+    setCategoryId(null);
+    setMinPrice(null);
+    setMaxPrice(null);
+  };
 
-  const resetFilters = () =>
-    setFilters({ nom: "", categorieId: null, prixMin: 0, prixMax: 999999 });
-
-  return { filters, updateFilter, resetFilters };
+  return {
+    searchTerm,
+    categoryId,
+    minPrice,
+    maxPrice,
+    setSearchTerm,
+    setCategoryId,
+    setMinPrice,
+    setMaxPrice,
+    resetFilters,
+  };
 };
 
+export { useFilters };
 export default useFilters;

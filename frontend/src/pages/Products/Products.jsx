@@ -9,29 +9,41 @@ import "./Products.css";
 
 const Products = () => {
   const { products, loading, error } = useProducts();
-  const { filters, updateFilter, resetFilters } = useFilters();
-  
+  const {
+    searchTerm,
+    categoryId,
+    minPrice,
+    maxPrice,
+    setSearchTerm,
+    setCategoryId,
+    setMinPrice,
+    setMaxPrice,
+    resetFilters,
+  } = useFilters();
+
   const categories = useCategories();
 
   const filteredProducts = useMemo(
-    () => filterProducts(products, filters),
-    [products, filters]
+    () => filterProducts(products, { search: searchTerm, categoryId, minPrice, maxPrice }),
+    [products, searchTerm, categoryId, minPrice, maxPrice]
   );
 
   return (
     <div className="products-page">
       <h1>Nos Produits</h1>
       <ProductFilters
-        filters={filters}
-        onFilterChange={updateFilter}
-        onReset={resetFilters}
         categories={categories}
+        onSearchChange={setSearchTerm}
+        onCategoryChange={setCategoryId}
+        onMinPriceChange={setMinPrice}
+        onMaxPriceChange={setMaxPrice}
+        onReset={resetFilters}
       />
       <ProductGrid
         products={filteredProducts}
         loading={loading}
         error={error}
-        />
+      />
     </div>
   );
 };

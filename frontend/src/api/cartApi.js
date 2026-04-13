@@ -19,3 +19,8 @@ export const supprimerLigne = async (ligneId) => {
   const response = await axiosInstance.delete(`/panier/items/${ligneId}`);
   return response.data;
 };
+
+export const validerPanier = async () => {
+  const response = await axiosInstance.post("/commandes");
+  return response.data;
+};

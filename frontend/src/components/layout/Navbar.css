@@ -1,0 +1,144 @@
+/* ── Navbar ──────────────────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Conteneur interne centré — remplace l'absolute/transform */
+.navbar-brand {
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 100%;
+}
+
+/* Logo ICOM */
+.navbar-brand a {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-text);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-brand a:hover {
+  color: var(--color-text);
+}
+
+/* Liens de navigation centraux */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-sub);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+  color: var(--color-text);
+}
+
+/* Zone auth (droite) */
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-auth-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-sub);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-auth-link:hover {
+  color: var(--color-text);
+}
+
+/* Bouton Déconnexion */
+.navbar-logout-btn {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-sub);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-logout-btn:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+/* Badge panier */
+.cart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-error);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar-brand {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .navbar-links {
+    gap: 1rem;
+  }
+
+  .navbar-links a {
+    font-size: 0.75rem;
+  }
+
+  .navbar-auth {
+    gap: 0.5rem;
+  }
+
+  .navbar-logout-btn {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
