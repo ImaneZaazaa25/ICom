@@ -1,3 +1,4 @@
+// src/hooks/useProducts.js
 import { useState, useEffect, useCallback } from 'react';
 import { getActiveProducts } from '../api/productApi';
 
@@ -18,6 +19,7 @@ const useProducts = () => {
       setError(null);
     } catch (err) {
       setError(err);
+      setProducts([]);
       console.error('Error fetching products:', err);
     } finally {
       setLoading(false);

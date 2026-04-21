@@ -172,3 +172,10 @@
     max-width: 100%;
   }
 }
+
+.inactive-products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 24px;
+}

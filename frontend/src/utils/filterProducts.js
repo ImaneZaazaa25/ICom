@@ -9,7 +9,7 @@ export const filterProducts = (products, filters = {}) => {
   const { search = "", categoryId = null, minPrice = null, maxPrice = null } = filters;
 
   return products.filter((product) => {
-    if (product.actif === false) return false;
+    if (product.status === false) return false;
 
     const matchSearch =
       !search ||

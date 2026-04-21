@@ -8,10 +8,10 @@ describe('filterProducts', () => {
   beforeEach(() => {
     // ARRANGE — données partagées
     PRODUCTS = [
-      { id: 1, nom: 'Chaussures Nike', categorie: { id: 1, nom: 'Sport' }, prix: 89.99, actif: true },
-      { id: 2, nom: 'Veste Zara',      categorie: { id: 2, nom: 'Mode' },  prix: 49.99, actif: true },
-      { id: 3, nom: 'Produit Inactif', categorie: { id: 1, nom: 'Sport' }, prix: 20,    actif: false },
-      { id: 4, nom: 'Casque Audio',    categorie: { id: 3, nom: 'Tech' },  prix: 150,   actif: true },
+      { id: 1, nom: 'Chaussures Nike', categorie: { id: 1, nom: 'Sport' }, prix: 89.99, status: true },
+      { id: 2, nom: 'Veste Zara',      categorie: { id: 2, nom: 'Mode' },  prix: 49.99, status: true },
+      { id: 3, nom: 'Produit Inactif', categorie: { id: 1, nom: 'Sport' }, prix: 20,    status: false },
+      { id: 4, nom: 'Casque Audio',    categorie: { id: 3, nom: 'Tech' },  prix: 150,   status: true },
     ]
   })
 
@@ -20,7 +20,7 @@ describe('filterProducts', () => {
     const result = filterProducts(PRODUCTS, { search: '', categoryId: null, minPrice: null, maxPrice: null })
     // ASSERT
     expect(result).toHaveLength(3)
-    expect(result.every(p => p.actif)).toBe(true)
+    expect(result.every(p => p.status)).toBe(true)
   })
 
   it('filterProducts — produit inactif : jamais retourné même sans filtre', () => {

@@ -19,8 +19,10 @@ const HomeAdmin = () => {
 
   const categories = useCategories();
 
+  // FIX 1: .filter(Boolean) avant filterProducts pour éliminer les null/undefined
+  // et éviter le TypeError "Cannot read properties of undefined (reading 'nom')".
   const activeProducts = useMemo(() => {
-    const allProducts = filterProducts(products, filters);
+    const allProducts = filterProducts(products.filter(Boolean), filters);
     return allProducts.filter(product => product.statut === true);
   }, [products, filters]);
 
@@ -51,7 +53,6 @@ const HomeAdmin = () => {
   }, []);
 
   const handleModalSubmit = useCallback(async () => {
-    // Cette fonction est appelée après l'enregistrement dans le modal
     await refreshProducts();
     setIsModalOpen(false);
     setEditingProduct(null);
@@ -62,13 +63,23 @@ const HomeAdmin = () => {
     setEditingProduct(null);
   }, []);
 
+  // FIX 2: payload plat sans `id` ni objet `categorie` imbriqué.
+  // { ...productToUpdate } copiait tout l'objet (id inclus + categorie:{id, nom, ...})
+  // ce que le backend refusait avec un 400 Bad Request.
   const handleToggleStatus = useCallback(async (productId, newStatus) => {
     setActionLoading(true);
     try {
       const productToUpdate = activeProducts.find(p => p.id === productId);
       if (productToUpdate) {
-        const updatedProduct = { ...productToUpdate, statut: newStatus };
-        await updateProduct(productId, updatedProduct);
+        const payload = {
+          nom: productToUpdate.nom,
+          description: productToUpdate.description,
+          prix: productToUpdate.prix,
+          quantite: productToUpdate.quantite,
+          categorieId: productToUpdate.categorie?.id,
+          statut: newStatus,
+        };
+        await updateProduct(productId, payload);
         await refreshProducts();
         alert(`✅ Produit ${newStatus ? 'activé' : 'désactivé'} avec succès !`);
       }
@@ -103,7 +114,7 @@ const HomeAdmin = () => {
       </div>
 
       {loading ? (
-        <div id="loading-spinner" className="loading-spinner">Chargement des produits actifs...</div>
+        <div id="loading-spinner" className="loading-spinner">...</div>
       ) : error ? (
         <div id="error-message" className="error-message">
           Erreur: {error.message || "Une erreur est survenue"}
@@ -147,7 +158,7 @@ const HomeAdmin = () => {
 
       {actionLoading && (
         <div id="action-overlay" className="action-overlay">
-          <div className="loading-spinner">Traitement en cours...</div>
+          <div className="loading-spinner">...</div>
         </div>
       )}
     </div>
