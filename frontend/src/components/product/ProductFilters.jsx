@@ -106,5 +106,4 @@ ProductFilters.propTypes = {
   onMaxPriceChange: PropTypes.func,
   onReset: PropTypes.func,
 };
-
 export default ProductFilters;
