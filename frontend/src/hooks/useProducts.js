@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getAllProducts } from '../api/productApi';
+import { getActiveProducts } from '../api/productApi';
 
 /**
  * Récupère et gère la liste complète des produits avec états de chargement et erreur.
@@ -13,7 +13,7 @@ const useProducts = () => {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getAllProducts();
+      const data = await getActiveProducts();
       setProducts(data);
       setError(null);
     } catch (err) {
