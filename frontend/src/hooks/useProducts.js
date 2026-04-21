@@ -1,6 +1,6 @@
 // src/hooks/useProducts.js
 import { useState, useEffect, useCallback } from 'react';
-import { getAllProducts } from '../api/productApi';
+import { getActiveProducts } from '../api/productApi';
 
 /**
  * Récupère et gère la liste complète des produits avec états de chargement et erreur.
@@ -14,11 +14,8 @@ const useProducts = () => {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getAllProducts();
-      // FIX: on s'assure que la réponse est bien un tableau et on élimine
-      // les entrées null/undefined avant de stocker, ce qui évite le TypeError
-      // "Cannot read properties of undefined (reading 'nom')" dans les composants consommateurs.
-      setProducts(Array.isArray(data) ? data.filter(Boolean) : []);
+      const data = await getActiveProducts();
+      setProducts(data);
       setError(null);
     } catch (err) {
       setError(err);
