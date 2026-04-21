@@ -1,3 +1,4 @@
+// src/hooks/useProducts.js
 import { useState, useEffect, useCallback } from 'react';
 import { getAllProducts } from '../api/productApi';
 
@@ -14,10 +15,14 @@ const useProducts = () => {
     setLoading(true);
     try {
       const data = await getAllProducts();
-      setProducts(data);
+      // FIX: on s'assure que la réponse est bien un tableau et on élimine
+      // les entrées null/undefined avant de stocker, ce qui évite le TypeError
+      // "Cannot read properties of undefined (reading 'nom')" dans les composants consommateurs.
+      setProducts(Array.isArray(data) ? data.filter(Boolean) : []);
       setError(null);
     } catch (err) {
       setError(err);
+      setProducts([]);
       console.error('Error fetching products:', err);
     } finally {
       setLoading(false);

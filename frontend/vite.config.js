@@ -31,6 +31,7 @@ export default defineConfig({
     'src/pages/Register/**/*.{js,jsx}',
     'src/utils/filterProducts.js',
     'src/utils/formatPrice.js',
+    'src/pages/Admin/**/*.{js,jsx}',
   ],
   exclude: [],
 },

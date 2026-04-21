@@ -34,22 +34,27 @@ const AdminProductCard = ({
     }
   };
 
+  // FIX 1: confirm AVANT tout code async pour éviter la mise à jour sur un composant démonté.
+  // FIX 2: stopPropagation sur onChange ET onClick pour bloquer la navigation vers la fiche produit.
   const handleToggleStatus = async (e) => {
     e.stopPropagation();
     const newStatus = !product.statut;
     const action = newStatus ? 'activer' : 'désactiver';
 
-    if (window.confirm(`Êtes-vous sûr de vouloir ${action} le produit "${product.nom}" ?`)) {
-      setIsToggling(true);
-      try {
-        await onToggleStatus(product.id, newStatus);
-      } finally {
-        setIsToggling(false);
-      }
+    const confirmed = window.confirm(
+      `Êtes-vous sûr de vouloir ${action} le produit "${product.nom}" ?`
+    );
+    if (!confirmed) return;
+
+    setIsToggling(true);
+    try {
+      await onToggleStatus(product.id, newStatus);
+    } finally {
+      setIsToggling(false);
     }
   };
 
-  // Construction des URLs des images
+  // FIX 3: variable imageUrls centralisée et réutilisée dans le JSX (suppression du double calcul).
   const imageUrls = product.images && product.images.length > 0
     ? product.images.map(img => `http://localhost:9091/uploads/${img.url}`)
     : [];
@@ -81,11 +86,12 @@ const AdminProductCard = ({
         id={`product-image-${product.id}`}
         className="product-card-image"
       >
-        {product.images && product.images.length > 1 ? (
-          <ImageCarousel images={product.images.map(img => `http://localhost:9091/uploads/${img.url}`)} />
-        ) : product.images && product.images.length === 1 ? (
+        {/* FIX 3: utilisation de imageUrls au lieu de recalculer */}
+        {imageUrls.length > 1 ? (
+          <ImageCarousel images={imageUrls} />
+        ) : imageUrls.length === 1 ? (
           <img
-            src={`http://localhost:9091/uploads/${product.images[0]?.url}`}
+            src={imageUrls[0]}
             alt={product.nom}
             className="product-card-img"
           />
@@ -140,8 +146,8 @@ const AdminProductCard = ({
       </div>
 
       <div className="product-actions">
-        {/* Switch Toggle pour activation/désactivation */}
         {showToggle && (
+          // FIX 1: stopPropagation sur le conteneur ET sur l'input pour bloquer la navigation.
           <div className="switch-container" onClick={(e) => e.stopPropagation()}>
             <label className="switch-label">
               <span className="switch-text">
@@ -154,6 +160,7 @@ const AdminProductCard = ({
                   className="switch-input"
                   checked={product.statut}
                   onChange={handleToggleStatus}
+                  onClick={(e) => e.stopPropagation()}
                   disabled={isToggling}
                 />
                 <span className="switch-slider"></span>
@@ -162,7 +169,6 @@ const AdminProductCard = ({
           </div>
         )}
 
-        {/* Boutons Modifier/Supprimer avec icônes élégants */}
         {showEditDelete && (
           <div className="action-buttons">
             <button
