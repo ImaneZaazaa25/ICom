@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext';
 import "./Login.css";
 
 function Login() {
@@ -17,20 +17,15 @@ function Login() {
     setLoading(true);
     setError("");
 
-    const userData = {
-      username,
-      motdepasse: password
-    };
-
     try {
-      const token = await login(userData);
+      const token = await login(username, password);
 
       localStorage.setItem("token", token);
-if (!token) {
-  throw new Error("Token non reçu depuis le backend");
-}
+      if (!token) {
+        throw new Error("Token non reçu depuis le backend");
+      }
 
-const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1]));
       const userRole = payload.roles?.[0] || payload.role || payload.authorities?.[0];
 
       localStorage.setItem("roles", userRole);
@@ -44,7 +39,6 @@ const payload = JSON.parse(atob(token.split('.')[1]));
         localStorage.removeItem("savedUsername");
       }
 
-      // Redirection basée sur le rôle
       if (userRole === 'Admin' || userRole === 'ROLE_Admin') {
         navigate("/admin/adminhome");
       } else {
@@ -59,7 +53,6 @@ const payload = JSON.parse(atob(token.split('.')[1]));
     }
   };
 
-  // Charger le username sauvegardé si "remember me" était coché
   React.useEffect(() => {
     const savedUsername = localStorage.getItem("savedUsername");
     const remember = localStorage.getItem("rememberMe");
@@ -82,35 +75,29 @@ const payload = JSON.parse(atob(token.split('.')[1]));
           <p>Connectez-vous pour accéder à votre compte</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form id="login-form" onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
+            <label htmlFor="login-username-input">Nom d'utilisateur</label>
             <input
+              id="login-username-input"
               type="text"
               placeholder="Nom d'utilisateur"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <div className="input-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
-            </div>
           </div>
 
           <div className="form-group">
+            <label htmlFor="login-password-input">Mot de passe</label>
             <input
+              id="login-password-input"
               type="password"
               placeholder="Mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <div className="input-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-              </svg>
-            </div>
           </div>
 
           <div className="login-options">
@@ -127,10 +114,12 @@ const payload = JSON.parse(atob(token.split('.')[1]));
             </Link>
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          {error && <div id="login-error-msg" className="error-message">{error}</div>}
 
           <button
-            type="submit"
+            id="login-submit-btn"
+            type="button"
+            onClick={handleSubmit}
             className="login-button"
             disabled={loading}
           >
@@ -146,7 +135,7 @@ const payload = JSON.parse(atob(token.split('.')[1]));
         </form>
 
         <div className="register-link">
-          Pas encore de compte ? <Link to="/register">Inscrivez-vous</Link>
+          Pas encore de compte ? <Link id="login-register-link" to="/register">Inscrivez-vous</Link>
         </div>
       </div>
     </div>

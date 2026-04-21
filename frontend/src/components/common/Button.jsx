@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Button = ({ children, onClick, type = "button", className = "", disabled = false }) => {
+const Button = ({ children, onClick, type = "button", className = "", disabled = false, id }) => {
   return (
     <button
+      id={id}
       type={type}
       onClick={onClick}
       className={`btn ${className}`}
@@ -20,6 +21,7 @@ Button.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  id: PropTypes.string,
 };
 
 export default Button;

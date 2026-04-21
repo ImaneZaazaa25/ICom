@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 /**
- * Hook personnalisé pour accéder facilement au contexte d'authentification
- * @returns {Object} { user, login, register }
+ * Hook personnalisé pour accéder facilement au contexte d'authentification.
+ * @returns {{ user: Object|null, login: Function, register: Function, logout: Function }}
  */
-const useAuth = () => {
-  return useContext(AuthContext);
+export const useAuth = () => {
+  return useContext(AuthContext) || {};
 };
 
 export default useAuth;

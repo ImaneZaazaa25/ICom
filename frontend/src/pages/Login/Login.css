@@ -69,7 +69,7 @@
 }
 
 .login-header p {
-  color: #9a9a9a;
+  color: #767676;
   font-size: 0.85rem;
   font-weight: 300;
   margin: 0;
@@ -136,7 +136,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: #8a8a8a;
+  color: #767676;
 }
 
 .remember-me input {
@@ -190,7 +190,7 @@
 /* Message d'erreur */
 .error-message {
   background: #fef5f2;
-  color: #b87c6e;
+  color: #8b3a2a;
   padding: 12px 16px;
   border-radius: 12px;
   font-size: 0.8rem;
@@ -211,7 +211,7 @@
   margin-top: 32px;
   padding-top: 24px;
   border-top: 1px solid #f0ede8;
-  color: #8a8a8a;
+  color: #595959;
   font-size: 0.85rem;
 }
 

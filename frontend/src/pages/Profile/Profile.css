@@ -1,12 +1,17 @@
-/* Profile page */
+/* ── Page profil ─────────────────────────────────────────────────── */
 .profile-page {
-  max-width: 720px;
+  background: var(--color-bg-light);
+  min-height: 100vh;
+}
+
+.profile-container {
+  max-width: 600px;
   margin: 0 auto;
   padding: 3rem 2rem;
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Top header: avatar + name */
+/* ── En-tête avatar + nom ────────────────────────────────────────── */
 .profile-header {
   display: flex;
   align-items: center;
@@ -14,13 +19,14 @@
   margin-bottom: 2rem;
 }
 
+/* Avatar initiales — fond #1a1a1a, texte #fff */
 .profile-avatar {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: var(--color-primary);
-  color: white;
-  font-size: 1.6rem;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 1.5rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -28,33 +34,37 @@
   flex-shrink: 0;
 }
 
+/* Nom — ratio 16:1 ✅ */
 .profile-name {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
   margin: 0 0 0.15rem;
 }
 
+/* Username — ratio 4.54:1 ✅ */
 .profile-username {
   font-size: 0.88rem;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   margin: 0;
 }
 
-/* Success banner */
+/* ── Bannière succès ─────────────────────────────────────────────── */
 .profile-success {
   font-size: 0.88rem;
   font-weight: 500;
-  color: #15803d;
-  background: #f0fdf4;
+  color: var(--color-success);
+  background: #f0faf0;
+  border: 1px solid #c3e6c3;
   padding: 0.6rem 1rem;
   border-radius: 8px;
   margin-bottom: 1.25rem;
 }
 
-/* Card */
+/* ── Carte ───────────────────────────────────────────────────────── */
 .profile-card {
-  background: var(--color-card);
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
@@ -72,39 +82,39 @@
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
+  color: var(--color-text);
 }
 
-/* Edit button */
+/* ── Bouton Modifier ─────────────────────────────────────────────── */
 .profile-btn-edit {
-  padding: 0.5rem 1.1rem;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border: 1px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 500;
   font-family: inherit;
-  color: var(--color-primary);
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .profile-btn-edit:hover {
-  background: var(--color-border);
-  border-color: var(--color-primary);
-  transform: none;
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
-/* Field list (view mode) */
+/* ── Champs en lecture ───────────────────────────────────────────── */
 .profile-fields {
   padding: 0.5rem 0;
 }
 
 .profile-field {
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 160px 1fr;
   align-items: center;
   padding: 0.85rem 1.5rem;
-  border-bottom: 1px solid var(--color-bg);
+  border-bottom: 1px solid var(--color-bg-light);
   gap: 1rem;
 }
 
@@ -112,35 +122,39 @@
   border-bottom: none;
 }
 
+/* Label — ratio 4.54:1 ✅ */
 .profile-field dt {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
+/* Valeur — ratio 16:1 ✅ */
 .profile-field dd {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
-  color: var(--color-primary);
+  color: var(--color-text);
   margin: 0;
 }
 
 .profile-empty {
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
-/* Badges */
+/* ── Badges ──────────────────────────────────────────────────────── */
 .profile-badge {
   display: inline-block;
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.25rem 0.7rem;
-  border-radius: 999px;
+  border-radius: 20px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
 }
 
 .profile-badge-role {
@@ -149,16 +163,16 @@
 }
 
 .profile-badge-status-active {
-  background: #f0fdf4;
-  color: #15803d;
+  background: #f0faf0;
+  color: var(--color-success);
 }
 
 .profile-badge-status-inactive {
-  background: #fef2f2;
-  color: var(--color-accent);
+  background: #fff0f0;
+  color: var(--color-error);
 }
 
-/* Edit form */
+/* ── Formulaire édition ──────────────────────────────────────────── */
 .profile-form {
   padding: 1.5rem;
   display: flex;
@@ -179,31 +193,34 @@
 }
 
 .profile-form-field label {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
 .profile-form-field input {
-  padding: 0.6rem 0.9rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: inherit;
-  color: var(--color-primary);
+  color: var(--color-text);
   background: var(--color-bg);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .profile-form-field input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  background: var(--color-card);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(181, 134, 13, 0.1);
 }
 
-/* Password section divider */
+/* Séparateur mot de passe */
 .profile-form-divider {
   padding: 0.75rem 0 0.25rem;
   border-top: 1px solid var(--color-border);
@@ -212,91 +229,89 @@
 .profile-form-divider span {
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-text);
 }
 
-/* Hint text */
 .profile-form-hint {
   font-size: 0.8rem;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   margin: 0.2rem 0 0;
 }
 
-/* Username read-only note */
+/* Note nom d'utilisateur */
 .profile-form-note {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.82rem;
-  color: var(--color-muted);
-  background: var(--color-bg);
+  color: var(--color-text-muted);
+  background: var(--color-bg-light);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 0.6rem 0.9rem;
+  padding: 0.6rem 1rem;
 }
 
 .profile-form-note strong {
-  color: var(--color-primary);
+  color: var(--color-text);
 }
 
-/* Form action buttons */
+/* ── Boutons formulaire ──────────────────────────────────────────── */
 .profile-form-actions {
   display: flex;
   gap: 0.75rem;
   padding-top: 0.25rem;
 }
 
+/* Sauvegarder */
 .profile-btn-save {
-  padding: 0.75rem 1.5rem;
-  background: var(--color-primary);
-  color: white;
+  padding: 0.75rem 2rem;
+  background: var(--color-text);
+  color: var(--color-bg);
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .profile-btn-save:hover:not(:disabled) {
-  background: #1a1a1a;
-  transform: scale(1.02);
+  background: #333333;
 }
 
 .profile-btn-save:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
+/* Annuler */
 .profile-btn-cancel {
-  padding: 0.75rem 1.25rem;
-  background: var(--color-bg);
+  padding: 0.75rem 1.5rem;
+  background: transparent;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 20px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
   font-family: inherit;
-  color: var(--color-primary);
+  color: var(--color-text-sub);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .profile-btn-cancel:hover:not(:disabled) {
-  background: var(--color-border);
-  transform: none;
+  border-color: var(--color-error);
+  color: var(--color-error);
 }
 
 .profile-btn-cancel:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
 }
 
-/* Responsive */
+/* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .profile-page {
+  .profile-container {
     padding: 2rem 1rem;
   }
 

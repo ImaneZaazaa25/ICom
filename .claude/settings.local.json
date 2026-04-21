@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx vitest:*)",
+      "Bash(timeout 30 node:*)",
+      "Bash(mvn spring-boot:run -q)",
+      "Bash(echo \"Backend starting in background \\(PID: $!\\)\")",
+      "Bash(netstat -ano)",
+      "Bash(taskkill:*)",
+      "Bash(cmd:*)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(powershell -Command \"Stop-Process -Id 26972 -Force\")",
+      "Bash(mvn spring-boot:run)",
+      "Bash(powershell:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

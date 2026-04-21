@@ -1,63 +1,40 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useCart from "../../hooks/useCart";
-import useAuth from "../../hooks/useAuth";
+import { useCart } from "../../context/CartContext";
+import { ajouterAuPanier, validerPanier as validerPanierApi } from "../../api/cartApi";
 import Loader from "../../components/common/Loader";
 import ErrorMessage from "../../components/common/ErrorMessage";
 import { formatPrice } from "../../utils/formatPrice";
-import { validerPanier } from "../../api/commandeApi";
 import "./Cart.css";
 
-const initialState = { loading: true, error: null };
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_START":   return { loading: true,  error: null };
-    case "FETCH_SUCCESS": return { loading: false, error: null };
-    case "FETCH_ERROR":   return { loading: false, error: action.payload };
-    default: return state;
-  }
-};
-
 const Cart = () => {
-  const { user } = useAuth();
-  const { panier, fetchPanier, modifierArticle, supprimerArticle } = useCart();
+  const { cartItems, total, removeFromCart, updateQuantity, clearCart } = useCart();
   const navigate = useNavigate();
-
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [actionError, setActionError] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       navigate("/login");
-      return;
     }
-    dispatch({ type: "FETCH_START" });
-    fetchPanier()
-      .then(() => dispatch({ type: "FETCH_SUCCESS" }))
-      .catch((err) => dispatch({ type: "FETCH_ERROR", payload: err }));
-  }, [user]);
+  }, [navigate]);
 
-  const handleQuantityChange = async (ligneId, newQty) => {
+  const handleQuantityChange = (id, newQty) => {
     const qty = Math.max(1, Number.parseInt(newQty) || 1);
-    setActionError(null);
-    setActionLoading(true);
-    try {
-      await modifierArticle(ligneId, qty);
-    } catch (err) {
-      setActionError(err.response?.data?.message || err.message || "Erreur lors de la mise à jour");
-    } finally {
-      setActionLoading(false);
-    }
+    updateQuantity(id, qty);
   };
 
   const handleCheckout = async () => {
     setActionError(null);
     setActionLoading(true);
     try {
-      await validerPanier();
-      await fetchPanier(); // reset cart badge to 0
+      // Synchronise le panier local vers le panier serveur avant validation
+      for (const item of cartItems) {
+        await ajouterAuPanier(item.id, item.quantite);
+      }
+      await validerPanierApi();
+      clearCart();
       navigate("/orders");
     } catch (err) {
       setActionError(err.response?.data?.message || err.message || "Erreur lors de la validation de la commande");
@@ -66,33 +43,25 @@ const Cart = () => {
     }
   };
 
-  const handleRemove = async (ligneId) => {
-    setActionError(null);
-    setActionLoading(true);
-    try {
-      await supprimerArticle(ligneId);
-    } catch (err) {
-      setActionError(err.response?.data?.message || err.message || "Erreur lors de la suppression");
-    } finally {
-      setActionLoading(false);
-    }
+  const handleRemove = (id) => {
+    removeFromCart(id);
   };
 
-  if (!user) return null;
-  if (state.loading) return <Loader />;
-  if (state.error) return <ErrorMessage message={state.error.response?.data?.message || state.error.message || "Erreur lors du chargement du panier"} />;
+  const handleClear = () => {
+    clearCart();
+  };
 
-  const lignes = panier?.lignes ?? [];
+  if (actionLoading) return <Loader />;
 
   return (
-    <div className="cart-page">
-      <div className="cart-container">
+    <div id="cart-container" className="cart-page">
+      <div className="cart-inner">
         <h1 className="cart-title">Mon panier</h1>
 
         {actionError && <ErrorMessage message={actionError} />}
 
-        {lignes.length === 0 ? (
-          <div className="cart-empty">
+        {cartItems.length === 0 ? (
+          <div id="cart-empty-msg" className="cart-empty">
             <p className="cart-empty-text">Votre panier est vide.</p>
             <Link to="/products" className="cart-btn-continue">
               Continuer vos achats
@@ -101,42 +70,52 @@ const Cart = () => {
         ) : (
           <div className="cart-content">
             <div className="cart-items">
-              {lignes.map((ligne) => (
-                <div key={ligne.id} className="cart-item">
+              {cartItems.map((item) => (
+                <div key={item.id} id={`cart-item-${item.id}`} className="cart-item">
                   <div className="cart-item-info">
-                    <Link to={`/products/${ligne.produitId}`} className="cart-item-name">
-                      {ligne.nomProduit}
+                    <Link to={`/products/${item.id}`} className="cart-item-name">
+                      {item.nom}
                     </Link>
-                    <p className="cart-item-price">{formatPrice(ligne.prixUnitaire)}</p>
+                    <p className="cart-item-price">{formatPrice(item.prix)}</p>
                   </div>
 
                   <div className="cart-item-actions">
                     <div className="cart-item-quantity">
                       <button
                         className="cart-qty-btn"
-                        onClick={() => handleQuantityChange(ligne.id, ligne.quantite - 1)}
-                        disabled={actionLoading || ligne.quantite <= 1}
+                        onClick={() => handleQuantityChange(item.id, item.quantite - 1)}
+                        disabled={item.quantite <= 1}
                         aria-label="Diminuer la quantité"
                       >
                         −
                       </button>
-                      <span className="cart-qty-value">{ligne.quantite}</span>
+                      <input
+                        id={`cart-item-quantity-${item.id}`}
+                        type="number"
+                        className="cart-qty-value"
+                        value={item.quantite}
+                        min="1"
+                        max={item.stock}
+                        onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                        aria-label="Quantité"
+                      />
                       <button
                         className="cart-qty-btn"
-                        onClick={() => handleQuantityChange(ligne.id, ligne.quantite + 1)}
-                        disabled={actionLoading}
+                        onClick={() => handleQuantityChange(item.id, item.quantite + 1)}
                         aria-label="Augmenter la quantité"
                       >
                         +
                       </button>
                     </div>
 
-                    <p className="cart-item-subtotal">{formatPrice(ligne.sousTotal)}</p>
+                    <p id={`cart-item-subtotal-${item.id}`} className="cart-item-subtotal">
+                      {formatPrice(item.prix * item.quantite)}
+                    </p>
 
                     <button
+                      id={`cart-item-remove-btn-${item.id}`}
                       className="cart-item-remove"
-                      onClick={() => handleRemove(ligne.id)}
-                      disabled={actionLoading}
+                      onClick={() => handleRemove(item.id)}
                       aria-label="Supprimer l'article"
                     >
                       ×
@@ -149,19 +128,26 @@ const Cart = () => {
             <div className="cart-summary">
               <h2 className="cart-summary-title">Récapitulatif</h2>
               <div className="cart-summary-row">
-                <span>Articles ({lignes.reduce((sum, l) => sum + l.quantite, 0)})</span>
-                <span>{formatPrice(panier.total)}</span>
+                <span>Articles ({cartItems.reduce((sum, i) => sum + i.quantite, 0)})</span>
+                <span id="cart-total-price">{formatPrice(total)}</span>
               </div>
               <div className="cart-summary-total">
                 <span>Total</span>
-                <span>{formatPrice(panier.total)}</span>
+                <span>{formatPrice(total)}</span>
               </div>
               <button
+                id="cart-validate-btn"
                 className="cart-btn-checkout"
-                disabled={actionLoading}
                 onClick={handleCheckout}
               >
-                {actionLoading ? "Validation en cours…" : "Passer la commande"}
+                Passer la commande
+              </button>
+              <button
+                id="cart-clear-btn"
+                className="cart-btn-clear"
+                onClick={handleClear}
+              >
+                Vider le panier
               </button>
               <Link to="/products" className="cart-btn-continue">
                 Continuer vos achats
