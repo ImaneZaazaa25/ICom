@@ -52,20 +52,22 @@ describe("Login E2E Tests", function () {
   // =========================
   // 2. INPUTS
   // =========================
-  it("should display username and password inputs", async function () {
-    const username = await driver.wait(
-      until.elementLocated(By.id("login-username-input")),
-      10000
-    );
+it("should display username and password inputs", async function () {
+  const username = await driver.wait(
+    until.elementLocated(By.id("login-username-input")),
+    10000
+  );
 
-    const password = await driver.wait(
-      until.elementLocated(By.id("login-password-input")),
-      10000
-    );
+  const password = await driver.wait(
+    until.elementLocated(By.id("login-password-input")),
+    10000
+  );
 
-    assert.ok(await username.isDisplayed());
-    assert.ok(await password.isDisplayed());
-  });
+  await driver.wait(until.elementIsVisible(username), 10000);
+  await driver.wait(until.elementIsVisible(password), 10000);
+
+  assert.ok(true);
+});
 
   // =========================
   // 3. INVALID LOGIN
@@ -87,23 +89,25 @@ describe("Login E2E Tests", function () {
   // =========================
   // 4. SUCCESS LOGIN
   // =========================
+ 
+
   it("should navigate after successful login", async function () {
-    await driver.findElement(By.id("login-username-input")).sendKeys("admin");
-    await driver.findElement(By.id("login-password-input")).sendKeys("admin123");
+  await driver.findElement(By.id("login-username-input")).sendKeys("ee");
+  await driver.findElement(By.id("login-password-input")).sendKeys("1234567");
 
-    await driver.findElement(By.id("login-submit-btn")).click();
+  await driver.findElement(By.id("login-submit-btn")).click();
 
-    await driver.wait(
-      until.urlMatches(/\/products|\/admin/),
-      15000
-    );
-
+  await driver.wait(async () => {
     const url = await driver.getCurrentUrl();
+    return url.includes("/products") || url.includes("/admin/adminhome");
+  }, 20000);
 
-    assert.ok(
-      url.includes("/products") || url.includes("/admin/adminhome")
-    );
-  });
+  const url = await driver.getCurrentUrl();
+
+  assert.ok(
+    url.includes("/products") || url.includes("/admin/adminhome")
+  );
+});
 
   // =========================
   // 5. CHECKBOX

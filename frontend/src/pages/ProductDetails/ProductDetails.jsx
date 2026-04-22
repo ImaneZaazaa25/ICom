@@ -65,6 +65,10 @@ const { addToCart } = useCart() || {};
 
   const handleAddToCart = async () => {
   if (!user) {
+    localStorage.setItem(
+      "pendingCart",
+      JSON.stringify([{ product: state.product, quantity }])
+    );
     navigate("/login");
     return;
   }
