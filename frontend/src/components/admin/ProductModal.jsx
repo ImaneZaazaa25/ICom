@@ -150,21 +150,22 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay" id="product-modal-overlay">
+      <div className="modal-content" id="product-modal-content">
         <div className="modal-header">
-          <h2>{product ? "Modifier le produit" : "Ajouter un produit"}</h2>
-          <button className="close-btn" onClick={onClose}>
+          <h2 id="product-modal-title">{product ? "Modifier le produit" : "Ajouter un produit"}</h2>
+          <button className="close-btn" onClick={onClose} id="product-modal-close-btn">
             ×
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="product-form">
           <div className="form-group">
-            <label>Nom *</label>
+            <label htmlFor="product-name-input">Nom *</label>
             <input
               type="text"
               name="nom"
+              id="product-name-input"
               value={formData.nom}
               onChange={handleChange}
               required
@@ -172,9 +173,10 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </div>
 
           <div className="form-group">
-            <label>Description</label>
+            <label htmlFor="product-description-textarea">Description</label>
             <textarea
               name="description"
+              id="product-description-textarea"
               value={formData.description}
               onChange={handleChange}
               rows="3"
@@ -183,10 +185,11 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Prix (MAD) *</label>
+              <label htmlFor="product-price-input">Prix (MAD) *</label>
               <input
                 type="number"
                 name="prix"
+                id="product-price-input"
                 value={formData.prix}
                 onChange={handleChange}
                 step="0.01"
@@ -194,10 +197,11 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
               />
             </div>
             <div className="form-group">
-              <label>Quantité *</label>
+              <label htmlFor="product-quantity-input">Quantité *</label>
               <input
                 type="number"
                 name="quantite"
+                id="product-quantity-input"
                 value={formData.quantite}
                 onChange={handleChange}
                 required
@@ -206,9 +210,10 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </div>
 
           <div className="form-group">
-            <label>Catégorie</label>
+            <label htmlFor="product-category-select">Catégorie</label>
             <select
               name="categoryId"
+              id="product-category-select"
               value={formData.categoryId}
               onChange={handleChange}
             >
@@ -222,10 +227,11 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </div>
 
           <div className="form-group">
-            <label className="checkbox-label">
+            <label className="checkbox-label" htmlFor="product-status-checkbox">
               <input
                 type="checkbox"
                 name="statut"
+                id="product-status-checkbox"
                 checked={formData.statut}
                 onChange={handleChange}
               />
@@ -234,18 +240,23 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </div>
 
           <div className="form-group">
-            <label>Images</label>
+            <label htmlFor="product-images-input">Images</label>
             <input
               type="file"
               multiple
               accept="image/*"
+              id="product-images-input"
               onChange={handleImageChange}
             />
-            <div className="image-list">
+            <div className="image-list" id="product-images-preview">
               {formData.images.map((file, index) => (
-                <div key={index} className="image-item">
+                <div key={index} className="image-item" id={`product-image-item-${index}`}>
                   <img src={URL.createObjectURL(file)} alt={`preview-${index}`} />
-                  <button type="button" onClick={() => handleRemoveImage(index)}>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    id={`product-image-remove-btn-${index}`}
+                  >
                     Supprimer
                   </button>
                 </div>
@@ -254,10 +265,19 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </div>
 
           <div className="modal-actions">
-            <button type="button" onClick={onClose} className="cancel-btn">
+            <button
+              type="button"
+              onClick={onClose}
+              className="cancel-btn"
+              id="product-modal-cancel-btn"
+            >
               Annuler
             </button>
-            <button type="submit" className="submit-btn">
+            <button
+              type="submit"
+              className="submit-btn"
+              id="product-modal-submit-btn"
+            >
               {product ? "Modifier" : "Ajouter"}
             </button>
           </div>
