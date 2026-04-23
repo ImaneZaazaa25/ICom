@@ -16,33 +16,45 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // récupérer le profil utilisateur connecté
     public UserProfileDTO getProfil(String username) {
+
         User user = userRepository.findByUsername(username);
+
         if (user == null) {
             throw new ResourceNotFoundException("Utilisateur non trouvé : " + username);
         }
+
         return mapToDTO(user);
     }
 
+    // mise à jour du profil utilisateur
     public UserProfileDTO updateProfil(String username, UpdateProfileDTO dto) {
+
         User user = userRepository.findByUsername(username);
+
         if (user == null) {
             throw new ResourceNotFoundException("Utilisateur non trouvé : " + username);
         }
 
-        // Mise à jour partielle : seulement les champs fournis (non null, non vide)
+        // mise à jour partielle des champs
         if (dto.getNom() != null && !dto.getNom().isBlank()) {
             user.setNom(dto.getNom());
         }
+
         if (dto.getPrenom() != null && !dto.getPrenom().isBlank()) {
             user.setPrenom(dto.getPrenom());
         }
+
         if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
             user.setEmail(dto.getEmail());
         }
+
         if (dto.getTel() != null && !dto.getTel().isBlank()) {
             user.setTel(dto.getTel());
         }
+
+        // mise à jour mot de passe (si fourni)
         if (dto.getMotdepasse() != null && !dto.getMotdepasse().isBlank()) {
             user.setMotdepasse(passwordEncoder.encode(dto.getMotdepasse()));
         }
@@ -50,7 +62,9 @@ public class UserService {
         return mapToDTO(userRepository.save(user));
     }
 
+    // conversion Entity -> DTO
     private UserProfileDTO mapToDTO(User user) {
+
         return new UserProfileDTO(
                 user.getIdUser(),
                 user.getNom(),

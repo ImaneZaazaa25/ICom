@@ -19,6 +19,13 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests unitaires du ProductService.
+ * Objectif :
+ * - Vérifier la gestion des produits (CRUD)
+ * - Vérifier l'association avec les catégories et images
+ * - Vérifier les règles métier (suppression sécurisée, filtrage, etc.)
+ */
 public class ProductServiceTest {
 
     @Mock
@@ -31,7 +38,7 @@ public class ProductServiceTest {
     private ImageRepository imageRepository;
 
     @Mock
-    private LigneCommandeRepository ligneCommandeRepository; // <-- ajouté
+    private LigneCommandeRepository ligneCommandeRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -39,21 +46,32 @@ public class ProductServiceTest {
     private Product product;
     private Category category;
 
+    /**
+     * Initialisation des objets de test avant chaque scénario.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        // Création d'une catégorie fictive
         category = new Category();
         category.setId(1L);
 
+        // Création d'un produit de test
         product = new Product();
         product.setId(1L);
         product.setNom("Laptop");
         product.setPrix(5000);
     }
 
+    /**
+     * Test : ajout d'un produit avec images associées
+     * - Vérifie sauvegarde produit
+     * - Vérifie sauvegarde images
+     */
     @Test
     void testAjouterProduit() {
+
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(productRepository.save(product)).thenReturn(product);
 
@@ -68,8 +86,12 @@ public class ProductServiceTest {
         verify(imageRepository, times(1)).save(img);
     }
 
+    /**
+     * Test : récupération de tous les produits
+     */
     @Test
     void testListerProduits() {
+
         List<Product> produits = List.of(product);
         when(productRepository.findAll()).thenReturn(produits);
 
@@ -79,8 +101,12 @@ public class ProductServiceTest {
         verify(productRepository).findAll();
     }
 
+    /**
+     * Test : recherche d'un produit par ID
+     */
     @Test
     void testTrouverProduit() {
+
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
         Optional<Product> result = productService.trouverProduit(1L);
@@ -89,11 +115,17 @@ public class ProductServiceTest {
         assertEquals("Laptop", result.get().getNom());
     }
 
+    /**
+     * Test : suppression d'un produit
+     * - Vérifie suppression images
+     * - Vérifie suppression produit
+     */
     @Test
     void testSupprimerProduit() {
+
         Long produitId = 1L;
 
-        // Mock pour éviter NullPointerException
+        // On simule qu'aucune commande ne contient ce produit
         when(ligneCommandeRepository.existsByProduitId(produitId)).thenReturn(false);
 
         productService.supprimerProduit(produitId);
@@ -102,8 +134,12 @@ public class ProductServiceTest {
         verify(productRepository).deleteById(produitId);
     }
 
+    /**
+     * Test : récupération des produits par catégorie
+     */
     @Test
     void testProduitsParCategorie() {
+
         List<Product> produits = List.of(product);
         when(productRepository.findByCategorieId(1L)).thenReturn(produits);
 
@@ -112,8 +148,12 @@ public class ProductServiceTest {
         assertEquals(1, result.size());
     }
 
+    /**
+     * Test : recherche produit par nom (LIKE)
+     */
     @Test
     void testProduitsParNom() {
+
         List<Product> produits = List.of(product);
         when(productRepository.findByNomContaining("Lap")).thenReturn(produits);
 

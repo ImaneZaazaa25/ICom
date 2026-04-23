@@ -26,82 +26,103 @@ public class CommandeService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
+    // validation du panier et création d'une commande
     public CommandeResponseDTO validerPanier(String username) {
+
+        // récupération utilisateur
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new ResourceNotFoundException("Utilisateur non trouvé : " + username);
         }
 
+        // récupération panier utilisateur
         Panier panier = panierRepository.findByClientUsername(username)
                 .orElseThrow(() -> new RuntimeException("Aucun panier trouvé. Ajoutez des produits d'abord."));
 
         List<LignePanier> lignes = lignePanierRepository.findByPanierId(panier.getId());
+
+        // vérifie que le panier n'est pas vide
         if (lignes.isEmpty()) {
             throw new RuntimeException("Le panier est vide. Ajoutez des produits avant de valider.");
         }
 
-        // === PHASE 1 : Vérification globale avant de modifier quoi que ce soit ===
+        // vérification des produits avant traitement
         for (LignePanier ligne : lignes) {
+
             Product produit = ligne.getProduit();
+
+            // produit inactif
             if (!produit.isStatut()) {
                 throw new ProduitInactifException(
-                        "Le produit \"" + produit.getNom() + "\" n'est plus disponible. "
-                        + "Retirez-le de votre panier avant de valider.");
+                        "Le produit \"" + produit.getNom() + "\" n'est plus disponible. " +
+                                "Retirez-le de votre panier avant de valider."
+                );
             }
+
+            // stock insuffisant
             if (produit.getQuantite() < ligne.getQuantite()) {
                 throw new StockInsuffisantException(
-                        "Stock insuffisant pour \"" + produit.getNom() + "\". "
-                        + "Disponible : " + produit.getQuantite()
-                        + ", dans votre panier : " + ligne.getQuantite());
+                        "Stock insuffisant pour \"" + produit.getNom() + "\". " +
+                                "Disponible : " + produit.getQuantite() +
+                                ", demandé : " + ligne.getQuantite()
+                );
             }
         }
 
-        // === PHASE 2 : Création de la commande ===
+        // création de la commande
         Commande commande = new Commande();
         commande.setClient(user);
         commande.setDateCommande(new Date());
         commande.setEtat(EtatCommande.EN_COURS);
-       commande= commandeRepository.save(commande);
+
+        commande = commandeRepository.save(commande);
 
         double total = 0;
 
-        // === PHASE 3 : Création des lignes + décrémentation stock ===
+        // création des lignes de commande + mise à jour stock
         for (LignePanier lp : lignes) {
+
             Product produit = lp.getProduit();
 
             LigneCommande lc = new LigneCommande();
             lc.setCommande(commande);
             lc.setProduit(produit);
             lc.setQuantite(lp.getQuantite());
-            lc.setPrixUnitaire(lp.getPrixUnitaire()); // snapshot du prix au moment de l'achat
+            lc.setPrixUnitaire(lp.getPrixUnitaire());
+
             ligneCommandeRepository.save(lc);
 
-            // Décrémentation du stock
+            // décrémentation du stock
             produit.setQuantite(produit.getQuantite() - lp.getQuantite());
             productRepository.save(produit);
 
             total += lp.getPrixUnitaire() * lp.getQuantite();
         }
 
-        // Sauvegarder le total dans la commande (snapshot)
+        // mise à jour finale de la commande
         commande.setTotal(total);
         commande.setEtat(EtatCommande.VALIDEE);
-        commande=commandeRepository.save(commande);
 
-        // === PHASE 4 : Vider le panier ===
+        commande = commandeRepository.save(commande);
+
+        // vider le panier après validation
         lignePanierRepository.deleteAll(lignes);
 
         return buildDTO(commande);
     }
 
+    // récupération des commandes utilisateur
     @Transactional(readOnly = true)
     public List<CommandeResponseDTO> getMesCommandes(String username) {
-        return commandeRepository.findByClientUsername(username).stream()
+        return commandeRepository.findByClientUsername(username)
+                .stream()
                 .map(this::buildDTO)
                 .toList();
     }
 
+    // transformation entity -> DTO
     private CommandeResponseDTO buildDTO(Commande commande) {
+
         List<LigneCommande> lignes = ligneCommandeRepository.findByCommandeId(commande.getId());
 
         List<LigneCommandeResponseDTO> lignesDTO = lignes.stream()

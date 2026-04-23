@@ -33,90 +33,113 @@ public class PanierService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
-    // Récupère le panier ou le crée si c'est la première fois
+    // récupérer le panier ou le créer s'il n'existe pas
     private Panier getOrCreatePanier(String username) {
         return panierRepository.findByClientUsername(username)
                 .orElseGet(() -> {
+
                     User user = userRepository.findByUsername(username);
+
                     if (user == null) {
                         throw new ResourceNotFoundException("Utilisateur non trouvé : " + username);
                     }
+
                     Panier nouveau = new Panier();
                     nouveau.setClient(user);
+
                     return panierRepository.save(nouveau);
                 });
     }
 
+    // récupérer le panier utilisateur
     public PanierResponseDTO getPanier(String username) {
         Panier panier = getOrCreatePanier(username);
         return buildDTO(panier);
     }
 
+    // ajouter un produit au panier
     public PanierResponseDTO ajouterProduit(String username, AjoutPanierDTO dto) {
+
         Panier panier = getOrCreatePanier(username);
 
         Product produit = productRepository.findById(dto.getProduitId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Produit non trouvé avec l'id : " + dto.getProduitId()));
+                        "Produit non trouvé avec l'id : " + dto.getProduitId()
+                ));
 
-        // Règle : produit inactif → refus
+        // produit inactif
         if (!produit.isStatut()) {
             throw new ProduitInactifException(
-                    "Le produit \"" + produit.getNom() + "\" est inactif et ne peut pas être ajouté au panier.");
+                    "Le produit \"" + produit.getNom() + "\" est inactif et ne peut pas être ajouté au panier."
+            );
         }
 
-        // Le produit est-il déjà dans le panier ?
+        // vérifier si produit déjà dans panier
         List<LignePanier> lignesExistantes = lignePanierRepository.findByPanierId(panier.getId());
+
         Optional<LignePanier> ligneExistante = lignesExistantes.stream()
                 .filter(l -> l.getProduit().getId().equals(dto.getProduitId()))
                 .findFirst();
 
         if (ligneExistante.isPresent()) {
-            // On cumule la quantité et on vérifie le stock total
+
+            // mise à jour quantité existante
             LignePanier ligne = ligneExistante.get();
             int nouvelleQte = ligne.getQuantite() + dto.getQuantite();
+
+            // vérification stock total
             if (produit.getQuantite() < nouvelleQte) {
                 throw new StockInsuffisantException(
-                        "Stock insuffisant pour \"" + produit.getNom() + "\". "
-                        + "Disponible : " + produit.getQuantite()
-                        + ", demandé au total : " + nouvelleQte);
+                        "Stock insuffisant pour \"" + produit.getNom() + "\". " +
+                                "Disponible : " + produit.getQuantite() +
+                                ", demandé : " + nouvelleQte
+                );
             }
+
             ligne.setQuantite(nouvelleQte);
             lignePanierRepository.save(ligne);
+
         } else {
-            // Vérification stock pour un nouvel ajout
+
+            // ajout nouveau produit
             if (produit.getQuantite() < dto.getQuantite()) {
                 throw new StockInsuffisantException(
-                        "Stock insuffisant pour \"" + produit.getNom() + "\". "
-                        + "Disponible : " + produit.getQuantite());
+                        "Stock insuffisant pour \"" + produit.getNom() + "\". " +
+                                "Disponible : " + produit.getQuantite()
+                );
             }
+
             LignePanier nouvelle = new LignePanier();
             nouvelle.setPanier(panier);
             nouvelle.setProduit(produit);
             nouvelle.setQuantite(dto.getQuantite());
-            nouvelle.setPrixUnitaire(produit.getPrix()); // snapshot du prix actuel
+            nouvelle.setPrixUnitaire(produit.getPrix());
+
             lignePanierRepository.save(nouvelle);
         }
 
         return buildDTO(panier);
     }
 
+    // modifier quantité d'une ligne panier
     public PanierResponseDTO modifierQuantite(String username, Long ligneId, ModifierQuantiteDTO dto) {
+
         Panier panier = getOrCreatePanier(username);
 
         LignePanier ligne = lignePanierRepository.findById(ligneId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ligne panier non trouvée : " + ligneId));
 
-        // Sécurité : la ligne doit appartenir au panier du user connecté
+        // sécurité : vérification propriétaire
         if (!ligne.getPanier().getId().equals(panier.getId())) {
             throw new AccessDeniedException("Vous ne pouvez pas modifier cette ligne.");
         }
 
-        // Vérification stock
+        // vérification stock
         if (ligne.getProduit().getQuantite() < dto.getQuantite()) {
             throw new StockInsuffisantException(
-                    "Stock insuffisant pour \"" + ligne.getProduit().getNom() + "\". "
-                    + "Disponible : " + ligne.getProduit().getQuantite());
+                    "Stock insuffisant pour \"" + ligne.getProduit().getNom() + "\". " +
+                            "Disponible : " + ligne.getProduit().getQuantite()
+            );
         }
 
         ligne.setQuantite(dto.getQuantite());
@@ -125,13 +148,15 @@ public class PanierService {
         return buildDTO(panier);
     }
 
+    // supprimer une ligne du panier
     public PanierResponseDTO supprimerLigne(String username, Long ligneId) {
+
         Panier panier = getOrCreatePanier(username);
 
         LignePanier ligne = lignePanierRepository.findById(ligneId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ligne panier non trouvée : " + ligneId));
 
-        // Sécurité : appartenance au panier du user connecté
+        // sécurité ownership
         if (!ligne.getPanier().getId().equals(panier.getId())) {
             throw new AccessDeniedException("Vous ne pouvez pas supprimer cette ligne.");
         }
@@ -141,8 +166,9 @@ public class PanierService {
         return buildDTO(panier);
     }
 
-    // Construit le DTO en relisant les lignes fraîches depuis la BDD
+    // construction du DTO panier
     private PanierResponseDTO buildDTO(Panier panier) {
+
         List<LignePanier> lignes = lignePanierRepository.findByPanierId(panier.getId());
 
         List<LignePanierResponseDTO> lignesDTO = lignes.stream()

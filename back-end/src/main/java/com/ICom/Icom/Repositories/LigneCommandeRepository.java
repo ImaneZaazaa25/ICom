@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface LigneCommandeRepository extends JpaRepository<LigneCommande, Long> {
+    //chercher produit par id
     List<LigneCommande> findByCommandeId(Long commandeId);
     boolean existsByProduitId(Long produitId);
 }
