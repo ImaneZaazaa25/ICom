@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
 import "./Header.css";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth();
   const { cartCount } = useContext(CartContext);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,10 +25,7 @@ const Header = () => {
   const closeMenu = () => setMenuOpen(false);
 
   const handleLogout = () => {
-    logout();
-    localStorage.removeItem("token");
-    localStorage.removeItem("roles");
-    localStorage.removeItem("username");
+    logout(); // nettoie localStorage + state
     navigate("/");
     closeMenu();
   };
