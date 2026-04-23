@@ -1,6 +1,6 @@
 // src/pages/admin/InactiveProducts.jsx
 import React, { useMemo, useCallback, useState } from "react";
-import useProducts from "../../hooks/useProducts";
+import useInactiveProducts from "../../hooks/useInactiveProducts"; // Changement ici
 import useFilters from "../../hooks/useFilters";
 import { updateProduct } from "../../api/adminApi";
 import AdminProductCard from "../../components/admin/AdminProductCard";
@@ -10,18 +10,22 @@ import useCategories from "../../hooks/useCategories";
 import "./HomeAdmin.css";
 
 const InactiveProducts = () => {
-  const { products, loading, error, refreshProducts } = useProducts();
+  // Changement: utiliser useInactiveProducts au lieu de useProducts
+  const { products, loading, error, refreshProducts } = useInactiveProducts();
   const { filters, updateFilter, resetFilters } = useFilters();
   const [actionLoading, setActionLoading] = useState(false);
   const categories = useCategories();
 
-  const inactiveProducts = useMemo(() => {
+  // Simplification: plus besoin de filtrer les inactifs car products contient déjà uniquement les inactifs
+  const filteredProducts = useMemo(() => {
     // Sécurité 1: Vérifier que products existe et est un tableau
     if (!products || !Array.isArray(products)) {
       console.warn("Products n'est pas un tableau:", products);
       return [];
     }
-    console.log(products);
+
+    console.log("Produits inactifs reçus:", products);
+
     // Sécurité 2: Nettoyage complet des produits
     const validProducts = [];
     for (let i = 0; i < products.length; i++) {
@@ -45,16 +49,15 @@ const InactiveProducts = () => {
       }
     }
 
-    // Sécurité 4: Filtrer les inactifs
-    return filtered.filter(product => {
-      return product && product.statut === false;
-    });
+    // Note: Plus besoin de filtrer les inactifs car products ne contient déjà que des inactifs
+    return filtered;
   }, [products, filters]);
 
   const handleToggleStatus = useCallback(async (productId, newStatus) => {
     setActionLoading(true);
     try {
-      const productToUpdate = inactiveProducts.find(p => p && p.id === productId);
+      // Chercher le produit dans filteredProducts au lieu de inactiveProducts
+      const productToUpdate = filteredProducts.find(p => p && p.id === productId);
       if (productToUpdate) {
         const payload = {
           nom: productToUpdate.nom,
@@ -65,7 +68,7 @@ const InactiveProducts = () => {
           statut: newStatus,
         };
         await updateProduct(productId, payload);
-        await refreshProducts();
+        await refreshProducts(); // Rafraîchit la liste des produits inactifs
         alert(`✅ Produit ${newStatus ? 'activé' : 'désactivé'} avec succès !`);
       }
     } catch (error) {
@@ -74,7 +77,7 @@ const InactiveProducts = () => {
     } finally {
       setActionLoading(false);
     }
-  }, [inactiveProducts, refreshProducts]);
+  }, [filteredProducts, refreshProducts]);
 
   if (loading) return <div id="loading-spinner" className="loading-spinner">Chargement...</div>;
   if (error) return <div id="error-message" className="error-message">Erreur: {error.message}</div>;
@@ -95,11 +98,11 @@ const InactiveProducts = () => {
       </div>
 
       <div id="inactive-products-stats" className="products-stats">
-        {inactiveProducts.length} produit(s) inactif(s)
+        {filteredProducts.length} produit(s) inactif(s)
       </div>
 
       <div id="inactive-products-grid" className="inactive-products-grid">
-        {inactiveProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <AdminProductCard
             key={product.id}
             product={product}
@@ -112,7 +115,7 @@ const InactiveProducts = () => {
         ))}
       </div>
 
-      {inactiveProducts.length === 0 && (
+      {filteredProducts.length === 0 && (
         <div id="no-products-message" className="no-products">
           <h3>Aucun produit inactif</h3>
         </div>
