@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import useCart from '../../hooks/useCart';
 import "./Login.css";
 
 function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { flushPendingCart } = useCart() || {};
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -18,18 +20,8 @@ function Login() {
     setError("");
 
     try {
-      const token = await login(username, password);
-
-      localStorage.setItem("token", token);
-      if (!token) {
-        throw new Error("Token non reçu depuis le backend");
-      }
-
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const userRole = payload.roles?.[0] || payload.role || payload.authorities?.[0];
-
-      localStorage.setItem("roles", userRole);
-      localStorage.setItem("username", username);
+      // login() gère localStorage (token, roles, username) et retourne { token, role }
+      const { role } = await login(username, password);
 
       if (rememberMe) {
         localStorage.setItem("rememberMe", "true");
@@ -39,8 +31,13 @@ function Login() {
         localStorage.removeItem("savedUsername");
       }
 
-      if (userRole === 'Admin' || userRole === 'ROLE_Admin') {
+      const hasPendingCart = !!localStorage.getItem("pendingCart");
+      flushPendingCart?.();
+
+      if (role === "Admin" || role === "ROLE_Admin") {
         navigate("/admin/adminhome");
+      } else if (hasPendingCart) {
+        navigate("/cart");
       } else {
         navigate("/products");
       }
