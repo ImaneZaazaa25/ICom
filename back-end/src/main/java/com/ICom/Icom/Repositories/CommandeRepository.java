@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CommandeRepository extends JpaRepository<Commande, Long> {
+    // chercher commande par nom
     List<Commande> findByClientUsername(String username);
 }

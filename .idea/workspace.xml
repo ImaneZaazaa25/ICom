@@ -6,17 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9f5cd277-d0a9-44e1-9a0e-52955613dce1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/admin/AdminProductCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/admin/AdminProductCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useProducts.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useProducts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Admin/HomeAdmin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/InactiveProducts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Admin/InactiveProducts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/AppRoutes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/__tests__/filterProducts.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/__tests__/filterProducts.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/filterProducts.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/filterProducts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +37,7 @@
     </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="vstable" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -102,7 +91,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;Spring Boot.IcomApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;testfront&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;interface-ajoiut-produit&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/pc/Downloads/Icom/Icom/frontend/src&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
@@ -121,7 +110,6 @@
       <recent name="C:\Users\pc\Downloads\Icom\Icom\src\main\java\com\ICom\Icom\Service" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src\pages\Admin" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom" />
       <recent name="C:\Users\pc\Downloads\Icom\Icom\back-end" />
@@ -175,5 +163,16 @@
     <MESSAGE value="modify architecture front back separe6" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/back-end/src/main/java/com/ICom/Icom/Model/Image.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

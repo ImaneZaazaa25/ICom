@@ -12,41 +12,42 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    // injection du repository Category
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    // Ajouter une catégorie
+    // ajouter une catégorie
     public Category ajouterCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-    // Lister toutes les catégories
+    // récupérer toutes les catégories
     public List<Category> listerCategories() {
         return categoryRepository.findAll();
     }
 
-    // Chercher une catégorie par ID
+    // rechercher une catégorie par id
     public Optional<Category> trouverCategory(Long id) {
         return categoryRepository.findById(id);
     }
 
-    // Modifier une catégorie
+    // modifier une catégorie (save = update si id existe)
     public Category modifierCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-    // Supprimer une catégorie
+    // supprimer une catégorie par id
     public void supprimerCategory(Long id) {
         categoryRepository.deleteById(id);
     }
 
-    // Chercher une catégorie par nom
+    // rechercher une catégorie par nom
     public Optional<Category> categoryParNom(String nom) {
         return categoryRepository.findByNom(nom);
     }
 
-    // Vérifier si une catégorie existe par nom
+    // vérifier si une catégorie existe par nom
     public boolean existeCategory(String nom) {
         return categoryRepository.existsByNom(nom);
     }

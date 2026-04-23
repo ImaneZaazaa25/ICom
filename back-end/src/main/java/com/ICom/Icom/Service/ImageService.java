@@ -18,7 +18,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final ProductRepository productRepository;
 
-    // dossier upload
+    // dossier de stockage des images uploadées
     private String uploadDir = "uploads/";
 
     public ImageService(ImageRepository imageRepository,
@@ -27,26 +27,27 @@ public class ImageService {
         this.productRepository = productRepository;
     }
 
-    // Ajouter image avec fichier
+    // ajout d'une image à un produit
     public Image ajouterImage(Long productId, MultipartFile file) throws IOException {
 
+        // récupération du produit
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
 
-        // nom unique
+        // génération d'un nom unique pour éviter les conflits
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
-        // créer dossier upload
+        // création du dossier upload si nécessaire
         Path uploadPath = Paths.get(uploadDir);
         Files.createDirectories(uploadPath);
 
         // chemin final du fichier
         Path filePath = uploadPath.resolve(fileName);
 
-        // copier fichier
+        // sauvegarde physique du fichier sur le disque
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // sauvegarder en base
+        // sauvegarde en base de données
         Image image = new Image();
         image.setUrl(fileName);
         image.setProduit(product);
@@ -54,12 +55,12 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    // Lister images d'un produit
+    // récupérer les images d'un produit
     public List<Image> imagesParProduit(Long productId) {
         return imageRepository.findByProduitId(productId);
     }
 
-    // Supprimer image (base + fichier)
+    // suppression d'une image (fichier + base de données)
     public void supprimerImage(Long id) throws IOException {
 
         Image image = imageRepository.findById(id)
@@ -67,10 +68,10 @@ public class ImageService {
 
         Path filePath = Paths.get(uploadDir).resolve(image.getUrl());
 
-        // supprimer fichier s'il existe
+        // suppression du fichier s'il existe
         Files.deleteIfExists(filePath);
 
-        // supprimer en base
+        // suppression en base
         imageRepository.deleteById(id);
     }
 }

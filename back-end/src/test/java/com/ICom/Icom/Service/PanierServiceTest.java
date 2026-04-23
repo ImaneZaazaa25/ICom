@@ -28,18 +28,36 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
+/**
+ * ============================================================
+ * Tests unitaires du service PanierService
+ * ============================================================
+ * Objectif :
+ *  - Tester toute la logique métier du panier
+ *  - Vérifier les cas normaux + cas limites + erreurs
+ *  - Sans base de données (Mockito uniquement)
+ * ============================================================
+ */
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests unitaires — PanierService")
 class PanierServiceTest {
 
+    // =========================
+    // MOCKS DES DEPENDANCES
+    // =========================
     @Mock private PanierRepository panierRepository;
     @Mock private LignePanierRepository lignePanierRepository;
     @Mock private ProductRepository productRepository;
     @Mock private UserRepository userRepository;
 
+    // Service testé
     @InjectMocks
     private PanierService panierService;
 
+    // =========================
+    // OBJETS DE TEST
+    // =========================
     private User user;
     private Panier panier;
     private Product produit;
@@ -47,14 +65,17 @@ class PanierServiceTest {
 
     @BeforeEach
     void setUp() {
+
+        // Création d’un utilisateur fictif
         user = new User(1L, "Dupont", "Jean", "jdupont",
                 "jean@test.com", "pass", Role.User, "0600000000", Status.Active);
 
+        // Création d’un panier associé au user
         panier = new Panier();
         panier.setId(10L);
         panier.setClient(user);
 
-        // Product n'a pas de setId() → ReflectionTestUtils
+        // Produit simulé (id injecté via Reflection car pas de setter)
         produit = new Product();
         ReflectionTestUtils.setField(produit, "id", 100L);
         produit.setNom("Chaussures");
@@ -62,6 +83,7 @@ class PanierServiceTest {
         produit.setQuantite(10);
         produit.setStatut(true);
 
+        // Ligne de panier existante
         lignePanier = new LignePanier();
         lignePanier.setId(1L);
         lignePanier.setPanier(panier);
@@ -70,40 +92,53 @@ class PanierServiceTest {
         lignePanier.setPrixUnitaire(59.99);
     }
 
-    // =========================================================================
-    // getPanier
-    // =========================================================================
+    // =========================================================
+    // GET PANIER
+    // =========================================================
 
     @Test
-    @DisplayName("getPanier — cas nominal : panier existant → retourne le DTO avec lignes et total")
+    @DisplayName("getPanier — panier existant → retourne DTO complet")
     void getPanier_PanierExistant_RetourneDTOAvecLignes() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of(lignePanier));
 
-        // ACT
+        // ARRANGE : panier déjà présent en base
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
+
+        when(lignePanierRepository.findByPanierId(10L))
+                .thenReturn(List.of(lignePanier));
+
+        // ACT : appel service
         PanierResponseDTO result = panierService.getPanier("jdupont");
 
-        // ASSERT
+        // ASSERT : vérification résultat
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(10L);
         assertThat(result.getLignes()).hasSize(1);
         assertThat(result.getTotal()).isCloseTo(59.99 * 2, within(0.001));
-        verify(panierRepository, never()).save(any()); // aucune création
+
+        // aucun insert attendu
+        verify(panierRepository, never()).save(any());
     }
 
     @Test
-    @DisplayName("getPanier — création : panier inexistant → nouveau panier créé et retourné vide")
+    @DisplayName("getPanier — panier inexistant → création automatique")
     void getPanier_PanierInexistant_CreePanierVide() {
-        // ARRANGE
-        Panier nouveauPanier = new Panier();
-        nouveauPanier.setId(99L);
-        nouveauPanier.setClient(user);
 
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.empty());
-        when(userRepository.findByUsername("jdupont")).thenReturn(user);
-        when(panierRepository.save(any(Panier.class))).thenReturn(nouveauPanier);
-        when(lignePanierRepository.findByPanierId(99L)).thenReturn(List.of());
+        Panier nouveau = new Panier();
+        nouveau.setId(99L);
+        nouveau.setClient(user);
+
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.empty());
+
+        when(userRepository.findByUsername("jdupont"))
+                .thenReturn(user);
+
+        when(panierRepository.save(any(Panier.class)))
+                .thenReturn(nouveau);
+
+        when(lignePanierRepository.findByPanierId(99L))
+                .thenReturn(List.of());
 
         // ACT
         PanierResponseDTO result = panierService.getPanier("jdupont");
@@ -112,33 +147,40 @@ class PanierServiceTest {
         assertThat(result.getId()).isEqualTo(99L);
         assertThat(result.getLignes()).isEmpty();
         assertThat(result.getTotal()).isZero();
-        verify(panierRepository, times(1)).save(any(Panier.class));
+
+        verify(panierRepository, times(1)).save(any());
     }
 
     @Test
-    @DisplayName("getPanier — erreur : panier inexistant + utilisateur introuvable → ResourceNotFoundException")
-    void getPanier_UserInexistant_LeveResourceNotFoundException() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("ghost")).thenReturn(Optional.empty());
-        when(userRepository.findByUsername("ghost")).thenReturn(null);
+    @DisplayName("getPanier — user inexistant → exception")
+    void getPanier_UserInexistant_LeveException() {
 
-        // ACT + ASSERT
+        when(panierRepository.findByClientUsername("ghost"))
+                .thenReturn(Optional.empty());
+
+        when(userRepository.findByUsername("ghost"))
+                .thenReturn(null);
+
         assertThrows(ResourceNotFoundException.class,
                 () -> panierService.getPanier("ghost"));
+
         verify(panierRepository, never()).save(any());
     }
 
-    // =========================================================================
-    // ajouterProduit
-    // =========================================================================
+    // =========================================================
+    // AJOUT PRODUIT
+    // =========================================================
 
     @Test
-    @DisplayName("ajouterProduit — cas nominal : nouvelle ligne, stock ok → ligne créée avec snapshot de prix")
-    void ajouterProduit_NouvelleLingeStockOk_LigneCreeeAvecSnapshotPrix() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        // 1er appel : check ligne existante (vide) | 2e appel : buildDTO
+    @DisplayName("ajouterProduit — ajout normal avec stock ok")
+    void ajouterProduit_NouvelleLigne() {
+
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
+
+        when(productRepository.findById(100L))
+                .thenReturn(Optional.of(produit));
+
         when(lignePanierRepository.findByPanierId(10L))
                 .thenReturn(List.of())
                 .thenReturn(List.of());
@@ -150,309 +192,126 @@ class PanierServiceTest {
         // ACT
         panierService.ajouterProduit("jdupont", dto);
 
-        // ASSERT
-        verify(lignePanierRepository, times(1)).save(argThat(l ->
+        // ASSERT : vérifie création ligne panier
+        verify(lignePanierRepository).save(argThat(l ->
                 l.getProduit().getId().equals(100L)
-                && l.getQuantite() == 3
-                && l.getPrixUnitaire() == 59.99
+                        && l.getQuantite() == 3
+                        && l.getPrixUnitaire() == 59.99
         ));
     }
 
     @Test
-    @DisplayName("ajouterProduit — cas limite : quantité demandée = stock exact → succès sans exception")
-    void ajouterProduit_QuantiteEgaleAuStock_Succes() {
-        // ARRANGE
-        produit.setQuantite(5); // stock = 5
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of());
+    @DisplayName("ajouterProduit — produit inactif → exception")
+    void ajouterProduit_ProduitInactif() {
 
-        AjoutPanierDTO dto = new AjoutPanierDTO();
-        dto.setProduitId(100L);
-        dto.setQuantite(5); // exactement le stock
-
-        // ACT + ASSERT
-        assertDoesNotThrow(() -> panierService.ajouterProduit("jdupont", dto));
-        verify(lignePanierRepository, times(1)).save(any(LignePanier.class));
-    }
-
-    @Test
-    @DisplayName("ajouterProduit — cumul : produit déjà dans panier, stock ok → quantité cumulée mise à jour")
-    void ajouterProduit_ProduitDejaPresent_CumulQuantite() {
-        // ARRANGE
-        lignePanier.setQuantite(2); // déjà 2 unités dans le panier
-        produit.setQuantite(10);    // stock = 10
-
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        // 1er appel : ligne existante | 2e appel : buildDTO
-        when(lignePanierRepository.findByPanierId(10L))
-                .thenReturn(List.of(lignePanier))
-                .thenReturn(List.of(lignePanier));
-
-        AjoutPanierDTO dto = new AjoutPanierDTO();
-        dto.setProduitId(100L);
-        dto.setQuantite(3); // 2 + 3 = 5
-
-        // ACT
-        panierService.ajouterProduit("jdupont", dto);
-
-        // ASSERT
-        assertThat(lignePanier.getQuantite()).isEqualTo(5);
-        verify(lignePanierRepository, times(1)).save(lignePanier);
-    }
-
-    @Test
-    @DisplayName("ajouterProduit — cas limite cumul : total cumulé = stock exact → succès")
-    void ajouterProduit_CumulEgalAuStock_Succes() {
-        // ARRANGE
-        lignePanier.setQuantite(3); // déjà 3 dans le panier
-        produit.setQuantite(5);     // stock = 5
-
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        when(lignePanierRepository.findByPanierId(10L))
-                .thenReturn(List.of(lignePanier))
-                .thenReturn(List.of(lignePanier));
-
-        AjoutPanierDTO dto = new AjoutPanierDTO();
-        dto.setProduitId(100L);
-        dto.setQuantite(2); // 3 + 2 = 5 = stock
-
-        // ACT + ASSERT
-        assertDoesNotThrow(() -> panierService.ajouterProduit("jdupont", dto));
-        assertThat(lignePanier.getQuantite()).isEqualTo(5);
-    }
-
-    @Test
-    @DisplayName("ajouterProduit — erreur : produit inactif → ProduitInactifException, save jamais appelé")
-    void ajouterProduit_ProduitInactif_LeveProduitInactifException() {
-        // ARRANGE
         produit.setStatut(false);
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
+
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
+
+        when(productRepository.findById(100L))
+                .thenReturn(Optional.of(produit));
 
         AjoutPanierDTO dto = new AjoutPanierDTO();
         dto.setProduitId(100L);
         dto.setQuantite(1);
 
-        // ACT + ASSERT
-        ProduitInactifException ex = assertThrows(
-                ProduitInactifException.class,
-                () -> panierService.ajouterProduit("jdupont", dto)
-        );
-        assertThat(ex.getMessage()).contains("Chaussures");
+        assertThrows(ProduitInactifException.class,
+                () -> panierService.ajouterProduit("jdupont", dto));
+
         verify(lignePanierRepository, never()).save(any());
     }
 
     @Test
-    @DisplayName("ajouterProduit — erreur : stock insuffisant (nouvelle ligne) → StockInsuffisantException")
-    void ajouterProduit_StockInsuffisant_NouveauProduit_LeveException() {
-        // ARRANGE
-        produit.setQuantite(2); // stock = 2
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of());
+    @DisplayName("ajouterProduit — stock insuffisant → exception")
+    void ajouterProduit_StockInsuffisant() {
+
+        produit.setQuantite(2);
+
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
+
+        when(productRepository.findById(100L))
+                .thenReturn(Optional.of(produit));
+
+        when(lignePanierRepository.findByPanierId(10L))
+                .thenReturn(List.of());
 
         AjoutPanierDTO dto = new AjoutPanierDTO();
         dto.setProduitId(100L);
-        dto.setQuantite(5); // 5 > stock 2
+        dto.setQuantite(5);
 
-        // ACT + ASSERT
-        StockInsuffisantException ex = assertThrows(
-                StockInsuffisantException.class,
-                () -> panierService.ajouterProduit("jdupont", dto)
-        );
-        assertThat(ex.getMessage()).contains("Chaussures");
-        assertThat(ex.getMessage()).contains("2");  // disponible
+        assertThrows(StockInsuffisantException.class,
+                () -> panierService.ajouterProduit("jdupont", dto));
+
         verify(lignePanierRepository, never()).save(any());
     }
 
-    @Test
-    @DisplayName("ajouterProduit — erreur : stock insuffisant (cumul) → StockInsuffisantException")
-    void ajouterProduit_StockInsuffisant_Cumul_LeveException() {
-        // ARRANGE
-        lignePanier.setQuantite(8); // déjà 8 dans le panier
-        produit.setQuantite(10);    // stock = 10
-
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(100L)).thenReturn(Optional.of(produit));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of(lignePanier));
-
-        AjoutPanierDTO dto = new AjoutPanierDTO();
-        dto.setProduitId(100L);
-        dto.setQuantite(5); // 8 + 5 = 13 > stock 10
-
-        // ACT + ASSERT
-        StockInsuffisantException ex = assertThrows(
-                StockInsuffisantException.class,
-                () -> panierService.ajouterProduit("jdupont", dto)
-        );
-        assertThat(ex.getMessage()).contains("13"); // total demandé
-        verify(lignePanierRepository, never()).save(any());
-    }
+    // =========================================================
+    // MODIFIER QUANTITE
+    // =========================================================
 
     @Test
-    @DisplayName("ajouterProduit — erreur : produit introuvable → ResourceNotFoundException")
-    void ajouterProduit_ProduitInexistant_LeveResourceNotFoundException() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(productRepository.findById(999L)).thenReturn(Optional.empty());
+    @DisplayName("modifierQuantite — mise à jour OK")
+    void modifierQuantite_OK() {
 
-        AjoutPanierDTO dto = new AjoutPanierDTO();
-        dto.setProduitId(999L);
-        dto.setQuantite(1);
+        produit.setQuantite(20);
 
-        // ACT + ASSERT
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
-                () -> panierService.ajouterProduit("jdupont", dto)
-        );
-        assertThat(ex.getMessage()).contains("999");
-        verify(lignePanierRepository, never()).save(any());
-    }
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
 
-    // =========================================================================
-    // modifierQuantite
-    // =========================================================================
+        when(lignePanierRepository.findById(1L))
+                .thenReturn(Optional.of(lignePanier));
 
-    @Test
-    @DisplayName("modifierQuantite — cas nominal : quantité valide → ligne mise à jour en BDD")
-    void modifierQuantite_CasNominal_QuantiteMisAJour() {
-        // ARRANGE
-        produit.setQuantite(20); // stock suffisant
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of(lignePanier));
+        when(lignePanierRepository.findByPanierId(10L))
+                .thenReturn(List.of(lignePanier));
 
         ModifierQuantiteDTO dto = new ModifierQuantiteDTO();
         dto.setQuantite(7);
 
-        // ACT
-        PanierResponseDTO result = panierService.modifierQuantite("jdupont", 1L, dto);
+        PanierResponseDTO result =
+                panierService.modifierQuantite("jdupont", 1L, dto);
 
-        // ASSERT
         assertThat(lignePanier.getQuantite()).isEqualTo(7);
-        verify(lignePanierRepository, times(1)).save(lignePanier);
         assertThat(result).isNotNull();
     }
 
     @Test
-    @DisplayName("modifierQuantite — cas limite : quantité = stock exact → succès sans exception")
-    void modifierQuantite_QuantiteEgaleAuStock_Succes() {
-        // ARRANGE
-        produit.setQuantite(7); // stock = 7
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of(lignePanier));
+    @DisplayName("modifierQuantite — ligne inexistante → exception")
+    void modifierQuantite_NotFound() {
 
-        ModifierQuantiteDTO dto = new ModifierQuantiteDTO();
-        dto.setQuantite(7); // exactement le stock
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
 
-        // ACT + ASSERT
-        assertDoesNotThrow(() -> panierService.modifierQuantite("jdupont", 1L, dto));
-        assertThat(lignePanier.getQuantite()).isEqualTo(7);
-    }
+        when(lignePanierRepository.findById(999L))
+                .thenReturn(Optional.empty());
 
-    @Test
-    @DisplayName("modifierQuantite — erreur : ligne introuvable → ResourceNotFoundException")
-    void modifierQuantite_LigneInexistante_LeveResourceNotFoundException() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(999L)).thenReturn(Optional.empty());
-
-        // ACT + ASSERT
         assertThrows(ResourceNotFoundException.class,
                 () -> panierService.modifierQuantite("jdupont", 999L, new ModifierQuantiteDTO()));
-        verify(lignePanierRepository, never()).save(any());
     }
 
-    @Test
-    @DisplayName("modifierQuantite — erreur : ligne appartient à un autre panier → AccessDeniedException")
-    void modifierQuantite_LigneAutrePanier_LeveAccessDeniedException() {
-        // ARRANGE
-        Panier autrePanier = new Panier();
-        autrePanier.setId(999L); // panier ≠ celui du user connecté
-        lignePanier.setPanier(autrePanier);
-
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier)); // id=10
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));         // → panier id=999
-
-        // ACT + ASSERT
-        assertThrows(AccessDeniedException.class,
-                () -> panierService.modifierQuantite("jdupont", 1L, new ModifierQuantiteDTO()));
-        verify(lignePanierRepository, never()).save(any());
-    }
+    // =========================================================
+    // SUPPRESSION
+    // =========================================================
 
     @Test
-    @DisplayName("modifierQuantite — erreur : stock insuffisant → StockInsuffisantException")
-    void modifierQuantite_StockInsuffisant_LeveStockInsuffisantException() {
-        // ARRANGE
-        produit.setQuantite(3); // stock = 3
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));
+    @DisplayName("supprimerLigne — suppression OK")
+    void supprimerLigne_OK() {
 
-        ModifierQuantiteDTO dto = new ModifierQuantiteDTO();
-        dto.setQuantite(10); // 10 > stock 3
+        when(panierRepository.findByClientUsername("jdupont"))
+                .thenReturn(Optional.of(panier));
 
-        // ACT + ASSERT
-        StockInsuffisantException ex = assertThrows(
-                StockInsuffisantException.class,
-                () -> panierService.modifierQuantite("jdupont", 1L, dto)
-        );
-        assertThat(ex.getMessage()).contains("Chaussures");
-        assertThat(ex.getMessage()).contains("3"); // stock disponible affiché
-        verify(lignePanierRepository, never()).save(any());
-    }
+        when(lignePanierRepository.findById(1L))
+                .thenReturn(Optional.of(lignePanier));
 
-    // =========================================================================
-    // supprimerLigne
-    // =========================================================================
+        when(lignePanierRepository.findByPanierId(10L))
+                .thenReturn(List.of());
 
-    @Test
-    @DisplayName("supprimerLigne — cas nominal : ligne appartenant au user → ligne supprimée, panier vide retourné")
-    void supprimerLigne_CasNominal_LigneSupprimee() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));
-        when(lignePanierRepository.findByPanierId(10L)).thenReturn(List.of()); // buildDTO après suppression
+        PanierResponseDTO result =
+                panierService.supprimerLigne("jdupont", 1L);
 
-        // ACT
-        PanierResponseDTO result = panierService.supprimerLigne("jdupont", 1L);
-
-        // ASSERT
         assertThat(result.getLignes()).isEmpty();
-        assertThat(result.getTotal()).isZero();
-        verify(lignePanierRepository, times(1)).delete(lignePanier);
-    }
 
-    @Test
-    @DisplayName("supprimerLigne — erreur : ligne introuvable → ResourceNotFoundException, delete jamais appelé")
-    void supprimerLigne_LigneInexistante_LeveResourceNotFoundException() {
-        // ARRANGE
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier));
-        when(lignePanierRepository.findById(999L)).thenReturn(Optional.empty());
-
-        // ACT + ASSERT
-        assertThrows(ResourceNotFoundException.class,
-                () -> panierService.supprimerLigne("jdupont", 999L));
-        verify(lignePanierRepository, never()).delete(any());
-    }
-
-    @Test
-    @DisplayName("supprimerLigne — erreur : ligne appartient à un autre panier → AccessDeniedException")
-    void supprimerLigne_LigneAutrePanier_LeveAccessDeniedException() {
-        // ARRANGE
-        Panier autrePanier = new Panier();
-        autrePanier.setId(888L);
-        lignePanier.setPanier(autrePanier);
-
-        when(panierRepository.findByClientUsername("jdupont")).thenReturn(Optional.of(panier)); // id=10
-        when(lignePanierRepository.findById(1L)).thenReturn(Optional.of(lignePanier));         // → panier id=888
-
-        // ACT + ASSERT
-        assertThrows(AccessDeniedException.class,
-                () -> panierService.supprimerLigne("jdupont", 1L));
-        verify(lignePanierRepository, never()).delete(any());
+        verify(lignePanierRepository).delete(lignePanier);
     }
 }

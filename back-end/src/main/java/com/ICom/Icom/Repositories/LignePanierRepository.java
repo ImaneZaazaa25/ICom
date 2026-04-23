@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface LignePanierRepository extends JpaRepository<LignePanier, Long> {
+    //chercher par id
     List<LignePanier> findByPanierId(Long panierId);
 }

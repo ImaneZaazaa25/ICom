@@ -16,17 +16,31 @@ public class UserController {
 
     private final UserService userService;
 
-    // GET /api/user/profile → retourne les vraies infos depuis la BDD (via username JWT)
+    // =====================================================
+    // RÉCUPÉRER LE PROFIL DE L'UTILISATEUR CONNECTÉ
+    // =====================================================
+    // - Utilise le JWT (Authentication) pour identifier l'utilisateur
+    // - Récupère les informations depuis la base de données
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDTO> getProfil(Authentication authentication) {
-        return ResponseEntity.ok(userService.getProfil(authentication.getName()));
+        return ResponseEntity.ok(
+                userService.getProfil(authentication.getName())
+        );
     }
 
-    // PUT /api/user/profile → modifier ses infos personnelles (nom, email, mot de passe…)
+    // =====================================================
+    // METTRE À JOUR LE PROFIL UTILISATEUR
+    // =====================================================
+    // - Permet de modifier les informations personnelles
+    // - Ex: nom, email, mot de passe, etc.
+    // - Validation automatique via @Valid
     @PutMapping("/profile")
     public ResponseEntity<UserProfileDTO> updateProfil(
             Authentication authentication,
             @Valid @RequestBody UpdateProfileDTO dto) {
-        return ResponseEntity.ok(userService.updateProfil(authentication.getName(), dto));
+
+        return ResponseEntity.ok(
+                userService.updateProfil(authentication.getName(), dto)
+        );
     }
 }
