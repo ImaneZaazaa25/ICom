@@ -91,7 +91,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;Spring Boot.IcomApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;interface-ajoiut-produit&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;createProduct&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/pc/Downloads/Icom/Icom/frontend/src&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
@@ -100,7 +100,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\pc\Downloads\Icom\Icom\frontend\src" />
