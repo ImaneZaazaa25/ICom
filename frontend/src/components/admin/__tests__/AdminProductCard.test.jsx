@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import AdminProductCard from "./AdminProductCard";
+import AdminProductCard from "../AdminProductCard";
 import { BrowserRouter } from "react-router-dom";
 
 // Mock navigate

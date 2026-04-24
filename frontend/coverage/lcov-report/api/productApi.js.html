@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>6/18</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>6/18</span>
             </div>
         
             
@@ -98,32 +98,32 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,32 +131,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import axiosInstance from "./axiosInstance";
 &nbsp;
-export const getAllProducts = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
+export const getAllProducts = <span class="fstat-no" title="function not covered" >async () =&gt; {</span>
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get("/produits");</span>
 <span class="cstat-no" title="statement not covered" >  return response.data;</span>
 };
 &nbsp;
-export const getActiveProducts = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
+export const getActiveProducts = <span class="fstat-no" title="function not covered" >async () =&gt; {</span>
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get("/produits/actifs");</span>
 <span class="cstat-no" title="statement not covered" >  return response.data;</span>
 };
 &nbsp;
-export const getProductById = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (i</span>d) =&gt; {</span>
+export const getProductById = <span class="fstat-no" title="function not covered" >async (i</span>d) =&gt; {
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get(`/produits/${id}`);</span>
 <span class="cstat-no" title="statement not covered" >  return response.data;</span>
 };
 &nbsp;
-export const getProductsByName = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (k</span>eyword) =&gt; {</span>
+export const getProductsByName = <span class="fstat-no" title="function not covered" >async (k</span>eyword) =&gt; {
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get(`/produits/nom/${keyword}`);</span>
 <span class="cstat-no" title="statement not covered" >  return response.data;</span>
 };
 &nbsp;
-export const getProductsByCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (c</span>ategoryId) =&gt; {</span>
+export const getProductsByCategory = <span class="fstat-no" title="function not covered" >async (c</span>ategoryId) =&gt; {
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get(`/produits/categorie/${categoryId}`);</span>
 <span class="cstat-no" title="statement not covered" >  return response.data;</span>
 };
 &nbsp;
-export const getProductsByPrice = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (m</span>in, max) =&gt; {</span>
+export const getProductsByPrice = <span class="fstat-no" title="function not covered" >async (m</span>in, max) =&gt; {
   const response = <span class="cstat-no" title="statement not covered" >await axiosInstance.get("/produits/prix", {</span>
     params: { min, max },
   });
@@ -169,7 +169,7 @@ export const getProductsByPrice = <span class="cstat-no" title="statement not co
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-23T23:13:08.760Z
+                at 2026-04-24T15:05:20.588Z
             </div>
         <script src="../prettify.js"></script>
         <script>

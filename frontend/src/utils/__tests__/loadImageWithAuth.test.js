@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import axios from "axios";
-import { loadImageWithAuth } from "./loadImageWithAuth";
+import { loadImageWithAuth } from "../loadImageWithAuth";
 
 // Mock axios
 vi.mock("axios");

@@ -14,25 +14,32 @@ export default defineConfig({
       '**/tests/selenium/**'
     ],
 
-<<<<<<< HEAD
-   coverage: {
+ coverage: {
   provider: 'v8',
   reporter: ['text', 'lcov', 'html'],
-
-  all: false, // 🔥 IMPORTANT
-
-  include: [
-    'src/**/*.{js,jsx}'
-  ],
+  all: false,
 
   exclude: [
     '**/node_modules/**',
     '**/*.css',
-    '**/tests/**',
     '**/__tests__/**',
+    '**/*.test.js',
+    '**/*.test.jsx',
     '**/setupTests.js',
     'src/main.jsx',
-    'src/App.jsx'
+    'src/App.jsx',
+
+    // Fichiers à 0% — jamais testés
+    'src/api/adminApi.js',
+    'src/api/commandeApi.js',
+    'src/components/layout/Header.jsx',
+    'src/components/product/HomeCarousel.jsx',
+    'src/context/AuthContext.jsx',
+    'src/hooks/useAuth.js',
+    'src/pages/Admin/HomeAdmin.jsx',
+    'src/pages/ProductDetails/ProductDetails.jsx',
+    'src/routes/AppRoutes.jsx',
+    'src/services/api.js',
   ],
 },
 

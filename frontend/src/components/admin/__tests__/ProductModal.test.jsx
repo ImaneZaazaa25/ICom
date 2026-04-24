@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import ProductModal from "./ProductModal";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import ProductModal from "../ProductModal";
 import axios from "axios";
 
 vi.mock("axios");
@@ -11,6 +11,9 @@ const categoriesMock = [
 ];
 
 describe("ProductModal", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   const setup = (props = {}) =>
     render(
@@ -26,62 +29,141 @@ describe("ProductModal", () => {
   it("affiche le modal", () => {
     setup();
 
-    expect(screen.getByText(/Ajouter un produit/)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Ajouter un produit/i })
+    ).toBeInTheDocument();
   });
 
   it("remplit les champs", () => {
     setup();
 
-    fireEvent.change(screen.getByLabelText(/Nom/), {
+    const input = screen.getByLabelText(/Nom/i);
+
+    fireEvent.change(input, {
       target: { value: "Produit X" },
     });
 
-    expect(screen.getByDisplayValue("Produit X")).toBeInTheDocument();
+    expect(input.value).toBe("Produit X");
   });
 
   it("validation échoue si nom vide", async () => {
-    vi.spyOn(window, "alert").mockImplementation(() => {});
+    const alertMock = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
 
     setup();
 
-    fireEvent.click(screen.getByText("Ajouter"));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Ajouter/i })
+    );
 
-    expect(window.alert).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith(
+        "Le nom du produit est requis"
+      );
+    });
+  });
+
+  it("validation échoue si prix invalide", async () => {
+    const alertMock = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
+
+    setup();
+
+    fireEvent.change(screen.getByLabelText(/Nom/i), {
+      target: { value: "Produit X" },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Prix/i), {
+      target: { value: "-10" },
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /Ajouter/i })
+    );
+
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith(
+        "Le prix doit être un nombre positif"
+      );
+    });
+  });
+
+  it("validation échoue si quantité invalide", async () => {
+    const alertMock = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
+
+    setup();
+
+    fireEvent.change(screen.getByLabelText(/Nom/i), {
+      target: { value: "Produit X" },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Prix/i), {
+      target: { value: "100" },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Quantité/i), {
+      target: { value: "-5" },
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /Ajouter/i })
+    );
+
+    await waitFor(() => {
+      expect(alertMock).toHaveBeenCalledWith(
+        "La quantité doit être un nombre valide"
+      );
+    });
   });
 
   it("crée un produit (POST)", async () => {
     axios.post.mockResolvedValue({ data: { id: 10 } });
-    vi.spyOn(window, "alert").mockImplementation(() => {});
+
+    const alertMock = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
 
     const onSubmit = vi.fn();
     const onClose = vi.fn();
 
     setup({ onSubmit, onClose });
 
-    fireEvent.change(screen.getByLabelText(/Nom/), {
+    fireEvent.change(screen.getByLabelText(/Nom/i), {
       target: { value: "Produit X" },
     });
 
-    fireEvent.change(screen.getByLabelText(/Prix/), {
+    fireEvent.change(screen.getByLabelText(/Prix/i), {
       target: { value: "100" },
     });
 
-    fireEvent.change(screen.getByLabelText(/Quantité/), {
+    fireEvent.change(screen.getByLabelText(/Quantité/i), {
       target: { value: "5" },
     });
 
-    fireEvent.click(screen.getByText("Ajouter"));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Ajouter/i })
+    );
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalled();
       expect(onSubmit).toHaveBeenCalled();
       expect(onClose).toHaveBeenCalled();
+      expect(alertMock).toHaveBeenCalledWith(
+        "Produit enregistré avec succès !"
+      );
     });
   });
 
   it("modifie un produit (PUT)", async () => {
     axios.put.mockResolvedValue({});
-    vi.spyOn(window, "alert").mockImplementation(() => {});
+
+    const alertMock = vi
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
 
     const product = {
       id: 1,
@@ -94,15 +176,27 @@ describe("ProductModal", () => {
 
     setup({ product });
 
-    fireEvent.change(screen.getByLabelText(/Nom/), {
+    fireEvent.change(screen.getByLabelText(/Nom/i), {
       target: { value: "Updated" },
     });
 
-    fireEvent.click(screen.getByText("Modifier"));
+    fireEvent.change(screen.getByLabelText(/Prix/i), {
+      target: { value: "200" },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Quantité/i), {
+      target: { value: "10" },
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /Modifier/i })
+    );
 
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalled();
+      expect(alertMock).toHaveBeenCalledWith(
+        "Produit enregistré avec succès !"
+      );
     });
   });
-
 });

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -113,38 +113,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// src/hooks/useInactiveProducts.js (NOUVEAU FICHIER)
@@ -155,38 +155,38 @@ import { getAllProducts } from '../api/productApi';
  * Récupère uniquement les produits inactifs
  * @returns {{ products: Array, loading: boolean, error: Error|null, refreshProducts: Function }}
  */
-const <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useInactiveProducts = () =&gt; {</span></span>
-  const [products, <span class="cstat-no" title="statement not covered" >setProducts] = useState([]);</span>
-  const [loading, <span class="cstat-no" title="statement not covered" >setLoading] = useState(true);</span>
-  const [error, <span class="cstat-no" title="statement not covered" >setError] = useState(null);</span>
+const useInactiveProducts = () =&gt; {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 &nbsp;
-  const <span class="cstat-no" title="statement not covered" >fetchProducts = useCallback(<span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    setLoading(true);</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const allProducts = <span class="cstat-no" title="statement not covered" >await getAllProducts();</span>
+  const fetchProducts = useCallback(async () =&gt; {
+    setLoading(true);
+    try {
+      const allProducts = await getAllProducts();
       // Filtrer pour ne garder que les produits inactifs
-      const inactiveProducts = <span class="cstat-no" title="statement not covered" >allProducts.<span class="fstat-no" title="function not covered" >filter(p</span>roduct =&gt; <span class="cstat-no" title="statement not covered" >product.statut=== false);</span></span>
-<span class="cstat-no" title="statement not covered" >      setProducts(inactiveProducts);</span>
-<span class="cstat-no" title="statement not covered" >      setError(null);</span>
-<span class="cstat-no" title="statement not covered" >      console.log(`✅ ${inactiveProducts.length} produits inactifs chargés`);</span>
+      const inactiveProducts = allProducts.filter(product =&gt; product.statut=== false);
+      setProducts(inactiveProducts);
+      setError(null);
+      console.log(`✅ ${inactiveProducts.length} produits inactifs chargés`);
     } catch (err) {
-<span class="cstat-no" title="statement not covered" >      setError(err);</span>
-<span class="cstat-no" title="statement not covered" >      setProducts([]);</span>
-<span class="cstat-no" title="statement not covered" >      console.error('Error fetching inactive products:', err);</span>
+      setError(err);
+      setProducts([]);
+      console.error('Error fetching inactive products:', err);
     } finally {
-<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+      setLoading(false);
     }
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  useEffect(() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    fetchProducts();</span>
+  useEffect(() =&gt; {
+    fetchProducts();
   }, [fetchProducts]);
 &nbsp;
-  const <span class="cstat-no" title="statement not covered" >refreshProducts = <span class="fstat-no" title="function not covered" >useCallback(() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    fetchProducts();</span>
+  const refreshProducts = useCallback(() =&gt; {
+    fetchProducts();
   }, [fetchProducts]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { products, loading, error, refreshProducts };</span>
+  return { products, loading, error, refreshProducts };
 };
 &nbsp;
 export default useInactiveProducts;</pre></td></tr></table></pre>
@@ -196,7 +196,7 @@ export default useInactiveProducts;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-23T23:13:08.760Z
+                at 2026-04-24T15:05:20.588Z
             </div>
         <script src="../prettify.js"></script>
         <script>
