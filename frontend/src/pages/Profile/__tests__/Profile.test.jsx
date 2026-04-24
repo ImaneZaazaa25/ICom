@@ -86,3 +86,57 @@ describe('Profile — page', () => {
   })
 
 })
+it('Profile — validation : email invalide affiche erreur', async () => {
+  renderProfile()
+  await waitFor(() => fireEvent.click(screen.getByText('Modifier')))
+
+  fireEvent.change(document.getElementById('profile-email-input'), {
+    target: { value: 'emailinvalide' }
+  })
+  fireEvent.click(document.getElementById('profile-save-btn'))
+
+  await waitFor(() => {
+    expect(screen.getByText(/email invalide/i)).toBeInTheDocument()
+  })
+})
+
+it('Profile — validation : mot de passe trop court', async () => {
+  renderProfile()
+  await waitFor(() => fireEvent.click(screen.getByText('Modifier')))
+
+  fireEvent.change(document.getElementById('motdepasse'), {
+    target: { value: '123' }
+  })
+  fireEvent.click(document.getElementById('profile-save-btn'))
+
+  await waitFor(() => {
+    expect(screen.getByText(/6 caractères/i)).toBeInTheDocument()
+  })
+})
+
+it('Profile — validation : mots de passe non identiques', async () => {
+  renderProfile()
+  await waitFor(() => fireEvent.click(screen.getByText('Modifier')))
+
+  fireEvent.change(document.getElementById('motdepasse'), {
+    target: { value: 'motdepasse1' }
+  })
+  fireEvent.change(document.getElementById('confirmMotdepasse'), {
+    target: { value: 'different' }
+  })
+  fireEvent.click(document.getElementById('profile-save-btn'))
+
+  await waitFor(() => {
+    expect(screen.getByText(/correspondent pas/i)).toBeInTheDocument()
+  })
+})
+
+it('Profile — succès : message de succès après mise à jour', async () => {
+  renderProfile()
+  await waitFor(() => fireEvent.click(screen.getByText('Modifier')))
+  fireEvent.click(document.getElementById('profile-save-btn'))
+
+  await waitFor(() => {
+    expect(document.getElementById('profile-success-msg')).toBeInTheDocument()
+  })
+})

@@ -159,8 +159,7 @@ const ProductModal = ({ isOpen, onClose, onSubmit, product, categories }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} id="product-form">
-          <div className="form-group">
+<form onSubmit={handleSubmit} id="product-form" noValidate>          <div className="form-group">
             <label htmlFor="product-name-input">Nom *</label>
             <input
               type="text"
