@@ -21,8 +21,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests d'intégration Produit + Image
+ *
+ * Objectif :
+ * - Vérifier la création d’un produit
+ * - Vérifier l’ajout d’images liées au produit
+ * - Vérifier la suppression produit + images
+ * - Tester la cohérence BDD + service + repository
+ */
 @SpringBootTest
-@Transactional// Permet de rollback après chaque test
+@Transactional // rollback automatique après chaque test
 @ActiveProfiles("test")
 public class ProductImageIntegrationTest {
 
@@ -41,14 +50,26 @@ public class ProductImageIntegrationTest {
     @Autowired
     private ImageRepository imageRepository;
 
+    /**
+     * Test : création produit + ajout image
+     * Vérifie :
+     * - produit bien sauvegardé
+     * - relation produit → image correcte
+     * - récupération des images par produit
+     */
     @Test
     void testAjouterProduitEtImage() throws IOException {
-        // Création d'une catégorie
+
+        // =========================
+        // 1. Création catégorie
+        // =========================
         Category cat = new Category();
         cat.setNom("Électronique");
         Category savedCat = categoryRepository.save(cat);
 
-        // Création du produit
+        // =========================
+        // 2. Création produit
+        // =========================
         Product p = new Product();
         p.setNom("Laptop");
         p.setPrix(5000);
@@ -57,11 +78,14 @@ public class ProductImageIntegrationTest {
 
         Product savedProduct = productService.ajouterProduit(p, savedCat.getId(), null);
 
+        // Vérification produit
         assertNotNull(savedProduct.getId());
         assertEquals("Laptop", savedProduct.getNom());
         assertEquals(savedCat.getId(), savedProduct.getCategorie().getId());
 
-        // Création d'une image pour le produit
+        // =========================
+        // 3. Création image simulée (fichier upload)
+        // =========================
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 "image.png",
@@ -69,19 +93,32 @@ public class ProductImageIntegrationTest {
                 "contenu image".getBytes()
         );
 
+        // Ajout image via service
         Image savedImage = imageService.ajouterImage(savedProduct.getId(), file);
 
+        // Vérification relation image → produit
         assertNotNull(savedImage.getId());
         assertEquals(savedProduct.getId(), savedImage.getProduit().getId());
 
-        // Vérifier la liste des images par produit
+        // =========================
+        // 4. Vérification récupération images produit
+        // =========================
         List<Image> images = imageService.imagesParProduit(savedProduct.getId());
         assertEquals(1, images.size());
     }
 
+    /**
+     * Test : suppression produit
+     * Vérifie :
+     * - suppression produit en base
+     * - suppression image associée (cascade logique)
+     */
     @Test
     void testSupprimerProduitEtImage() throws IOException {
-        // Création produit + image
+
+        // =========================
+        // 1. Création produit
+        // =========================
         Product p = new Product();
         p.setNom("Phone");
         p.setPrix(3000);
@@ -90,6 +127,9 @@ public class ProductImageIntegrationTest {
 
         Product savedProduct = productRepository.save(p);
 
+        // =========================
+        // 2. Ajout image produit
+        // =========================
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 "phone.png",
@@ -99,10 +139,19 @@ public class ProductImageIntegrationTest {
 
         Image img = imageService.ajouterImage(savedProduct.getId(), file);
 
-        // Supprimer le produit (doit supprimer aussi l'image en cascade)
+        // =========================
+        // 3. Suppression produit
+        // =========================
         productService.supprimerProduit(savedProduct.getId());
 
+        // =========================
+        // 4. Vérifications après suppression
+        // =========================
+
+        // Produit supprimé
         assertFalse(productRepository.findById(savedProduct.getId()).isPresent());
+
+        // Image supprimée
         assertFalse(imageRepository.findById(img.getId()).isPresent());
     }
 }

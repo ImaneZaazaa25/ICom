@@ -18,35 +18,57 @@ public class PanierController {
 
     private final PanierService panierService;
 
-    // GET /api/panier → voir mon panier (créé automatiquement si inexistant)
+    // =====================================================
+    // RÉCUPÉRER LE PANIER DE L'UTILISATEUR
+    // =====================================================
+    // - Retourne le panier de l'utilisateur connecté
+    // - Si le panier n'existe pas, il est créé automatiquement (côté service)
     @GetMapping
     public ResponseEntity<PanierResponseDTO> getPanier(Authentication authentication) {
         return ResponseEntity.ok(panierService.getPanier(authentication.getName()));
     }
 
-    // POST /api/panier/items → ajouter un produit { "produitId": 1, "quantite": 2 }
+    // =====================================================
+    // AJOUTER UN PRODUIT AU PANIER
+    // =====================================================
+    // - Body attendu : AjoutPanierDTO { produitId, quantite }
+    // - Crée une nouvelle ligne ou augmente la quantité si déjà présent
     @PostMapping("/items")
     public ResponseEntity<PanierResponseDTO> ajouterProduit(
             Authentication authentication,
             @Valid @RequestBody AjoutPanierDTO dto) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(panierService.ajouterProduit(authentication.getName(), dto));
     }
 
-    // PUT /api/panier/items/{ligneId} → modifier la quantité { "quantite": 5 }
+    // =====================================================
+    // MODIFIER LA QUANTITÉ D'UN PRODUIT DANS LE PANIER
+    // =====================================================
+    // - Identifié par ligneId (id de la ligne du panier)
+    // - Body : ModifierQuantiteDTO { quantite }
     @PutMapping("/items/{ligneId}")
     public ResponseEntity<PanierResponseDTO> modifierQuantite(
             Authentication authentication,
             @PathVariable Long ligneId,
             @Valid @RequestBody ModifierQuantiteDTO dto) {
-        return ResponseEntity.ok(panierService.modifierQuantite(authentication.getName(), ligneId, dto));
+
+        return ResponseEntity.ok(
+                panierService.modifierQuantite(authentication.getName(), ligneId, dto)
+        );
     }
 
-    // DELETE /api/panier/items/{ligneId} → supprimer une ligne du panier
+    // =====================================================
+    // SUPPRIMER UNE LIGNE DU PANIER
+    // =====================================================
+    // - Supprime un produit du panier via son ligneId
     @DeleteMapping("/items/{ligneId}")
     public ResponseEntity<PanierResponseDTO> supprimerLigne(
             Authentication authentication,
             @PathVariable Long ligneId) {
-        return ResponseEntity.ok(panierService.supprimerLigne(authentication.getName(), ligneId));
+
+        return ResponseEntity.ok(
+                panierService.supprimerLigne(authentication.getName(), ligneId)
+        );
     }
 }

@@ -60,6 +60,23 @@ const CartProvider = ({ children }) => {
     return result;
   }, [cartItems]);
 
+  // Lit le panier temporaire (pendingCart) stocké dans localStorage avant un redirect
+  // vers /login, ajoute les articles au panier React, puis nettoie le localStorage.
+  const flushPendingCart = () => {
+    try {
+      const raw = localStorage.getItem("pendingCart");
+      if (!raw) return;
+      const items = JSON.parse(raw);
+      if (Array.isArray(items)) {
+        items.forEach(({ product, quantity }) => addToCart(product, quantity));
+      }
+    } catch {
+      // JSON malformé — on ignore silencieusement
+    } finally {
+      localStorage.removeItem("pendingCart");
+    }
+  };
+
   const contextValue = useMemo(
     () => ({
       cartItems,
@@ -70,6 +87,7 @@ const CartProvider = ({ children }) => {
       total,
       cartCount,
       validerPanier,
+      flushPendingCart,
     }),
     [cartItems, total, cartCount, validerPanier]
   );

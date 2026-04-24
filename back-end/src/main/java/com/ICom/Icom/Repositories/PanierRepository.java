@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PanierRepository extends JpaRepository<Panier, Long> {
+    // chercher client par usernme
     Optional<Panier> findByClientUsername(String username);
 }

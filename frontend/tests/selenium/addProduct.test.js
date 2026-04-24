@@ -30,11 +30,11 @@ describe("Complete Product Creation Flow", function () {
       10000
     );
     await usernameInput.clear();
-    await usernameInput.sendKeys("imane25");
+    await usernameInput.sendKeys("haru1");
 
     const passwordInput = await driver.findElement(By.id("login-password-input"));
     await passwordInput.clear();
-    await passwordInput.sendKeys("imane2511");
+    await passwordInput.sendKeys("12345678");
 
     const submitBtn = await driver.findElement(By.id("login-submit-btn"));
     await submitBtn.click();
