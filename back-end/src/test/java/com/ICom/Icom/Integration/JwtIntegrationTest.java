@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -25,7 +26,7 @@ class JwtIntegrationTest {
 
         String username = "safwan25";
 
-        // 1️⃣ SIGNUP pour créer l'utilisateur
+        // 1️⃣ inscription utilisateur (signup)
         String signupResponse = mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -44,12 +45,12 @@ class JwtIntegrationTest {
                 .getResponse()
                 .getContentAsString();
 
-        // Si l'utilisateur existe déjà, juste afficher le message et continuer
+        // si utilisateur existe déjà, on continue le test
         if (!signupResponse.equals("User enregistrer avec succes")) {
             System.out.println("Utilisateur existe déjà : " + signupResponse);
         }
 
-        // 2️⃣ SIGNIN pour récupérer le token
+        // 2️⃣ connexion utilisateur (signin) pour récupérer le JWT
         String token = mockMvc.perform(post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -63,7 +64,7 @@ class JwtIntegrationTest {
                 .getResponse()
                 .getContentAsString();
 
-        // 3️⃣ Accéder à un endpoint protégé avec le token
+        // 3️⃣ accès à un endpoint protégé avec le token JWT
         mockMvc.perform(get("/api/user/profile")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());

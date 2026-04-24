@@ -42,7 +42,6 @@ APRÈS (code corrigé) :
 
 */
 
-
 //version imane
 // @Component
 // public class AuthEntryPointJwt implements AuthenticationEntryPoint {

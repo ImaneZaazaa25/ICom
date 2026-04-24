@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ModifierQuantiteDTO {
 
+    // quantité du produit dans le panier
+    // doit être au minimum 1
     @Min(value = 1, message = "La quantité doit être au moins 1")
     private int quantite;
 }

@@ -14,6 +14,7 @@ export default defineConfig({
       '**/tests/selenium/**'
     ],
 
+<<<<<<< HEAD
    coverage: {
   provider: 'v8',
   reporter: ['text', 'lcov', 'html'],
@@ -34,5 +35,6 @@ export default defineConfig({
     'src/App.jsx'
   ],
 },
+
   },
 })

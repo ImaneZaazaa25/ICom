@@ -17,11 +17,17 @@ public class ImageController {
 
     private final ImageService imageService;
 
+    // Injection du service ImageService via le constructeur
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
     }
 
-    // Upload plusieurs images pour un produit
+    // =====================================================
+    // UPLOAD DE PLUSIEURS IMAGES POUR UN PRODUIT
+    // =====================================================
+    // - Accessible uniquement par ADMIN
+    // - Permet d’envoyer plusieurs fichiers (MultipartFile[])
+    // - Chaque image est associée à un produit via productId
     @PostMapping("/upload/{productId}")
     @PreAuthorize("hasRole('Admin')")
     public List<Image> uploadImages(@PathVariable Long productId,
@@ -29,7 +35,9 @@ public class ImageController {
 
         List<Image> uploadedImages = new ArrayList<>();
 
+        // Parcours de tous les fichiers envoyés
         for (MultipartFile file : files) {
+            // Sauvegarde chaque image dans le service
             Image image = imageService.ajouterImage(productId, file);
             uploadedImages.add(image);
         }
@@ -37,13 +45,20 @@ public class ImageController {
         return uploadedImages;
     }
 
-    // Images d’un produit
+    // =====================================================
+    // RÉCUPÉRER LES IMAGES D’UN PRODUIT
+    // =====================================================
+    // - Retourne toutes les images liées à un produit
     @GetMapping("/product/{productId}")
     public List<Image> imagesParProduit(@PathVariable Long productId) {
         return imageService.imagesParProduit(productId);
     }
 
-    // Supprimer image
+    // =====================================================
+    // SUPPRIMER UNE IMAGE
+    // =====================================================
+    // - Accessible uniquement par ADMIN
+    // - Supprime l’image de la base et éventuellement du stockage
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('Admin')")
     public void supprimerImage(@PathVariable Long id) throws IOException {

@@ -7,17 +7,29 @@ import java.util.List;
 
 public class ProductDTO {
 
+    // nom du produit
     private String nom;
+
+    // description du produit
     private String description;
+
+    // prix du produit
     private double prix;
+
+    // quantité en stock
     private int quantite;
+
+    // statut du produit (actif / inactif)
     private boolean statut;
-    private Long categoryId;       // Pour créer ou corriger la catégorie
-    private List<Image> images;    // Liste des images du produit
+
+    // id de la catégorie associée au produit
+    private Long categoryId;
+
+    // liste des images du produit
+    private List<Image> images;
 
     public ProductDTO() {}
 
-    // Getters et setters
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
 
@@ -39,7 +51,7 @@ public class ProductDTO {
     public List<Image> getImages() { return images; }
     public void setImages(List<Image> images) { this.images = images; }
 
-    // Convertir en Product (sans catégorie)
+    // conversion du DTO vers l'entité Product
     public Product toProduct() {
         Product produit = new Product();
         produit.setNom(this.nom);

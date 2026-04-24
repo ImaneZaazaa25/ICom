@@ -17,40 +17,52 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    // Injection du service Category via le constructeur
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
-    // Ajouter une catégorie
+    // =========================
+    // AJOUTER UNE CATÉGORIE
+    // =========================
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
-
+    @PreAuthorize("hasRole('Admin')") // accès réservé à l'admin
     public ResponseEntity<Category> ajouterCategory(@RequestBody Category category) {
         Category savedCategory = categoryService.ajouterCategory(category);
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
-    // Lister toutes les catégories
+    // =========================
+    // LISTER TOUTES LES CATÉGORIES
+    // =========================
     @GetMapping
     public ResponseEntity<List<Category>> listerCategories() {
         List<Category> categories = categoryService.listerCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    // Chercher une catégorie par ID
+    // =========================
+    // TROUVER UNE CATÉGORIE PAR ID
+    // =========================
     @GetMapping("/{id}")
     public ResponseEntity<Category> trouverCategory(@PathVariable Long id) {
         Optional<Category> category = categoryService.trouverCategory(id);
+
+        // si trouvé -> 200 OK, sinon -> 404 NOT FOUND
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Modifier une catégorie
+    // =========================
+    // MODIFIER UNE CATÉGORIE
+    // =========================
     @PutMapping("/{id}")
     public ResponseEntity<Category> modifierCategory(@PathVariable Long id, @RequestBody Category category) {
         Optional<Category> existingCategory = categoryService.trouverCategory(id);
+
         if (existingCategory.isPresent()) {
-            category.setId(id); // Assure que l'ID reste le même
+            // on force l'ID pour éviter les modifications incorrectes
+            category.setId(id);
             Category updatedCategory = categoryService.modifierCategory(category);
             return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
         } else {
@@ -58,7 +70,9 @@ public class CategoryController {
         }
     }
 
-    // Supprimer une catégorie
+    // =========================
+    // SUPPRIMER UNE CATÉGORIE
+    // =========================
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> supprimerCategory(@PathVariable Long id) {
         if (categoryService.trouverCategory(id).isPresent()) {
@@ -69,18 +83,22 @@ public class CategoryController {
         }
     }
 
-    // Chercher une catégorie par nom
+    // =========================
+    // RECHERCHER PAR NOM
+    // =========================
     @GetMapping("/search")
     public ResponseEntity<Category> categoryParNom(@RequestParam String nom) {
         Optional<Category> category = categoryService.categoryParNom(nom);
+
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Vérifier si une catégorie existe par nom
+    // =========================
+    // VÉRIFIER SI UNE CATÉGORIE EXISTE
+    // =========================
     @GetMapping("/exists")
-    @PreAuthorize("hasAnyRole('Admin')")
-
+    @PreAuthorize("hasAnyRole('Admin')") // seulement admin
     public ResponseEntity<Boolean> existeCategory(@RequestParam String nom) {
         boolean exists = categoryService.existeCategory(nom);
         return new ResponseEntity<>(exists, HttpStatus.OK);

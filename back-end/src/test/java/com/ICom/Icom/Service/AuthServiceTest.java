@@ -20,6 +20,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests unitaires du AuthService
+ *
+ * Objectif :
+ * - Tester signup (cas succès + utilisateur existant)
+ * - Tester signin (auth + génération JWT)
+ * - Isoler complètement les dépendances avec Mockito
+ */
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
@@ -38,27 +46,50 @@ class AuthServiceTest {
     @InjectMocks
     AuthService authService;
 
+    // ======================================================
+    // TEST 1 : Signup utilisateur déjà existant
+    // ======================================================
+
+    /**
+     * Vérifie que :
+     * - si le username existe déjà
+     * - le service retourne un message d’erreur
+     * - aucun save en base n’est effectué
+     */
     @Test
     void testSignup_UserAlreadyExists() {
-        // Préparer l'utilisateur
+
+        // Création utilisateur de test
         User user = new User();
         user.setUsername("imane");
 
-        // Simuler le repository : username existe déjà
+        // Simulation : utilisateur déjà présent en BDD
         when(userRepository.existsByUsername("imane")).thenReturn(true);
 
-        // Appel de la méthode
+        // Appel méthode signup
         String result = authService.signup(user);
 
-        // Vérification
+        // Vérification message retour
         assertEquals("User existe deja", result);
 
-        // Pas de sauvegarde puisque user existe
+        // Vérifie qu'aucun enregistrement n'a été fait
         verify(userRepository, never()).save(any());
     }
 
+    // ======================================================
+    // TEST 2 : Signup réussi
+    // ======================================================
+
+    /**
+     * Vérifie que :
+     * - un nouvel utilisateur est bien créé
+     * - le mot de passe est encodé
+     * - le user est sauvegardé en base
+     */
     @Test
     void testSignup_Success() {
+
+        // Données utilisateur
         User user = new User();
         user.setUsername("sihame25");
         user.setMotdepasse("sihame2511");
@@ -67,31 +98,47 @@ class AuthServiceTest {
         user.setRole(Role.User);
         user.setStatus(Status.Active);
 
-        // Simuler : username n'existe pas
+        // Simulation : utilisateur n'existe pas encore
         when(userRepository.existsByUsername("sihame25")).thenReturn(false);
 
-        // Simuler l'encodage du mot de passe
+        // Simulation encodage password
         when(passwordEncoder.encode("sihame2511")).thenReturn("encoded");
 
-        // Appel de la méthode
+        // Appel méthode signup
         String result = authService.signup(user);
 
+        // Vérification message retour
         assertEquals("User enregistrer avec succes", result);
 
-        // Vérifier que save a été appelé avec un User dont le mot de passe est encodé
-        verify(userRepository).save(argThat(u -> u.getMotdepasse().equals("encoded")
-                && u.getUsername().equals("sihame25")));
+        // Vérifie que le user sauvegardé contient le password encodé
+        verify(userRepository).save(argThat(u ->
+                u.getMotdepasse().equals("encoded") &&
+                        u.getUsername().equals("sihame25")
+        ));
     }
 
+    // ======================================================
+    // TEST 3 : Signin réussi + génération token JWT
+    // ======================================================
+
+    /**
+     * Vérifie que :
+     * - authenticationManager valide les credentials
+     * - JWT est généré correctement
+     * - token retourné est correct
+     */
     @Test
     void testSignin_Success() {
+
+        // Données login
         User user = new User();
         user.setUsername("imane25");
         user.setMotdepasse("imane2511");
 
-        // Mock authentication
+        // Mock authentication Spring Security
         Authentication authentication = mock(Authentication.class);
 
+        // Simulation UserDetails retourné après auth
         UserDetails springUser =
                 new org.springframework.security.core.userdetails.User(
                         "imane25",
@@ -99,19 +146,24 @@ class AuthServiceTest {
                         List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
                 );
 
-        // Simuler authentication OK
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(springUser);
+        // Simulation authentication réussie
+        when(authenticationManager.authenticate(any()))
+                .thenReturn(authentication);
 
-        // ✅ Correction ici
-        when(jwtUtil.generateToken(springUser)).thenReturn("admintoken123");
+        when(authentication.getPrincipal())
+                .thenReturn(springUser);
 
-        // Appel
+        // Simulation génération JWT
+        when(jwtUtil.generateToken(springUser))
+                .thenReturn("admintoken123");
+
+        // Appel signin
         String token = authService.signin(user);
 
-        // Vérification
+        // Vérification token retourné
         assertEquals("admintoken123", token);
 
+        // Vérifie interactions
         verify(authenticationManager).authenticate(any());
         verify(jwtUtil).generateToken(springUser);
     }

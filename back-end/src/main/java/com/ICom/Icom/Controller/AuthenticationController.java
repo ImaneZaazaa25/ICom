@@ -13,11 +13,22 @@ public class AuthenticationController {
 
     private final AuthService authService;
 
+    /**
+     *
+     * @param user
+     * @return
+     */
+
     @PostMapping("/auth/signin")
     public String authenticateUser(@RequestBody User user){
         return authService.signin(user);
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @PostMapping("/auth/signup")
     public String registerUser(@RequestBody User user){
         return authService.signup(user);

@@ -17,14 +17,23 @@ public class CommandeController {
 
     private final CommandeService commandeService;
 
-    // POST /api/commandes → valider le panier : crée la commande, vide le panier, décrémente le stock
+    // ==========================================
+    // VALIDER LE PANIER (CRÉER UNE COMMANDE)
+    // ==========================================
+    // - Récupère l'utilisateur connecté via Authentication
+    // - Crée une commande à partir du panier
+    // - Vide le panier
+    // - Décrémente le stock des produits
     @PostMapping
     public ResponseEntity<CommandeResponseDTO> validerPanier(Authentication authentication) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commandeService.validerPanier(authentication.getName()));
     }
 
-    // GET /api/commandes → historique de mes commandes
+    // ==========================================
+    // OBTENIR L'HISTORIQUE DES COMMANDES
+    // ==========================================
+    // - Retourne toutes les commandes de l'utilisateur connecté
     @GetMapping
     public ResponseEntity<List<CommandeResponseDTO>> getMesCommandes(Authentication authentication) {
         return ResponseEntity.ok(commandeService.getMesCommandes(authentication.getName()));

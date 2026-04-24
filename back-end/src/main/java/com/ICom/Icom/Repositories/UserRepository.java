@@ -4,6 +4,7 @@ import com.ICom.Icom.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Long> {
+    // chercher par username
     User findByUsername(String username);
     boolean existsByUsername(String username);
 }
